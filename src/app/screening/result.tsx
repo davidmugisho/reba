@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
-import { Body, Button, Card, Screen } from '../../components/reba-kit';
+import { Body, Button, Card, Screen, Title } from '../../components/reba-kit';
 import { useScreening } from '../../context/ScreeningContext';
 import type { RiskLevel } from '../../types/screening';
 import { color, radius, space, type } from '../../theme';
@@ -36,8 +36,23 @@ const BANDS: Record<RiskLevel, { title: string; body: string; bg: string; fg: st
 export default function Result() {
   const router = useRouter();
   const { draft } = useScreening();
-  const risk = draft.risk ?? 'monitor';
-  const band = BANDS[risk];
+  const band = draft.risk ? BANDS[draft.risk] : null;
+
+  // No analysis in hand — the screen was reached by a reload or a link into a
+  // flow that has already finished. Never fall back to a band: the mildest one
+  // reads as "recheck in 3 months" and would quietly stand down a patient who
+  // was in fact referred.
+  if (!band) {
+    return (
+      <Screen footer={<Button label="Back to start" onPress={() => router.replace('/')} />}>
+        <Title>No result to show</Title>
+        <Body muted>
+          This screening is not in progress any more, so there is nothing to report. Run the check
+          again from the beginning.
+        </Body>
+      </Screen>
+    );
+  }
 
   return (
     <Screen
