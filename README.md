@@ -107,8 +107,12 @@ the Expo template and is not wired to anything — ignore it, or delete it.
 ## Storage
 
 One module, [`src/storage/screenings.ts`](src/storage/screenings.ts), owns the
-disk. It uses the AsyncStorage v3 API (`createAsyncStorage`) against a database
-named `reba`, with every record list under the key `screenings:v1`.
+disk. Records live in AsyncStorage under the key `reba:screenings:v1`.
+
+Stay on the version Expo pins — `npx expo install --check` is the authority,
+not npm's latest. AsyncStorage's v3 line has a nicer API, but its native module
+is not in Expo Go for this SDK, so a v3 build cannot be tested on a phone
+without a custom dev client.
 
 Two behaviours there are deliberate and should survive refactoring:
 

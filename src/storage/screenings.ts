@@ -1,15 +1,17 @@
-import { createAsyncStorage } from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { Screening } from '../types/screening';
 
 /**
- * Our own database rather than the shared default store. The package's default
- * export is a v2 compatibility shim that its own docs discourage; this is the
- * v3 API. One database per app also means clearAll() can never reach another
- * library's keys.
+ * The key is namespaced by hand because AsyncStorage is a single store shared
+ * with anything else in the app. Bump the version suffix rather than migrating
+ * in place if the record shape ever changes.
+ *
+ * Stay on the API that Expo SDK 57 pins (async-storage 2.2.0). The package's
+ * v3 line exposes a nicer createAsyncStorage(), but its native module is not
+ * in Expo Go for this SDK, so a v3 build cannot be tested on a phone without
+ * a custom dev client.
  */
-const storage = createAsyncStorage('reba');
-
-const KEY = 'screenings:v1';
+const KEY = 'reba:screenings:v1';
 
 const newestFirst = (a: Screening, b: Screening) => b.createdAt.localeCompare(a.createdAt);
 
@@ -22,7 +24,7 @@ const newestFirst = (a: Screening, b: Screening) => b.createdAt.localeCompare(a.
  * device already holds.
  */
 async function readAll(): Promise<Screening[]> {
-  const raw = await storage.getItem(KEY);
+  const raw = await AsyncStorage.getItem(KEY);
   if (raw == null) return [];
 
   try {
@@ -32,8 +34,8 @@ async function readAll(): Promise<Screening[]> {
   } catch (cause) {
     // Corrupt payload. Park it under its own key rather than letting the next
     // save overwrite it, so the records can still be pulled off the device.
-    await storage.setItem(`${KEY}:corrupt:${Date.now()}`, raw);
-    await storage.removeItem(KEY);
+    await AsyncStorage.setItem(`${KEY}:corrupt:${Date.now()}`, raw);
+    await AsyncStorage.removeItem(KEY);
     console.warn('[reba] screening store was unreadable and has been quarantined', cause);
     return [];
   }
@@ -66,9 +68,9 @@ export async function getScreening(id: string): Promise<Screening | null> {
 export async function saveScreening(screening: Screening): Promise<void> {
   const all = await readAll();
   const next = [screening, ...all.filter((s) => s.id !== screening.id)];
-  await storage.setItem(KEY, JSON.stringify(next));
+  await AsyncStorage.setItem(KEY, JSON.stringify(next));
 }
 
 export async function clearAll(): Promise<void> {
-  await storage.removeItem(KEY);
+  await AsyncStorage.removeItem(KEY);
 }
