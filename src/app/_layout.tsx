@@ -1,18 +1,31 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useColorScheme } from 'react-native';
+import '../global.css';
 
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
+import { Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ScreeningProvider } from '../context/ScreeningContext';
+import { color, type } from '../theme';
 
-SplashScreen.preventAutoHideAsync();
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+export default function RootLayout() {
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AnimatedSplashOverlay />
-      <AppTabs />
-    </ThemeProvider>
+    <SafeAreaProvider>
+      <ScreeningProvider>
+        <StatusBar style="dark" />
+        <Stack
+          screenOptions={{
+            headerStyle: { backgroundColor: color.paper },
+            headerTitleStyle: { ...type.heading, color: color.ink },
+            headerTintColor: color.ink,
+            headerShadowVisible: false,
+            contentStyle: { backgroundColor: color.paper },
+          }}
+        >
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="screening" options={{ headerShown: false }} />
+          <Stack.Screen name="history/index" options={{ title: 'Screenings' }} />
+          <Stack.Screen name="history/[id]" options={{ title: 'Screening' }} />
+        </Stack>
+      </ScreeningProvider>
+    </SafeAreaProvider>
   );
 }
