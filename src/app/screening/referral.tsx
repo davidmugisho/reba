@@ -8,24 +8,47 @@ import { color, radius, space, type } from '../../theme';
 
 export default function Referral() {
   const router = useRouter();
-  const { draft, update, reset } = useScreening();
+  const { draft, reset } = useScreening();
   const [notes, setNotes] = useState('');
   const [saving, setSaving] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   async function finish() {
     setSaving(true);
+    setFailed(false);
     const record = { ...draft, notes: notes.trim(), referred: draft.risk === 'refer' };
-    update(record);
-    await saveScreening(record);
+
+    try {
+      await saveScreening(record);
+    } catch (cause) {
+      // The draft is left intact so the button is a real retry, and the slip
+      // stays on screen to be copied onto paper.
+      console.warn('[reba] could not save screening', cause);
+      setFailed(true);
+      setSaving(false);
+      return;
+    }
+
     reset();
-    router.dismissAll();
     router.replace('/');
   }
 
   return (
     <Screen
       footer={
-        <Button label={saving ? 'Saving…' : 'Save and finish'} onPress={finish} disabled={saving} />
+        <>
+          {failed ? (
+            <Text style={s.failure}>
+              Not saved. Copy this slip onto the paper form before the patient leaves, then try
+              again.
+            </Text>
+          ) : null}
+          <Button
+            label={saving ? 'Saving…' : failed ? 'Try saving again' : 'Save and finish'}
+            onPress={finish}
+            disabled={saving}
+          />
+        </>
       }
     >
       <Eyebrow>Step 6 of 6</Eyebrow>
@@ -66,6 +89,15 @@ function Row({ label, value }: { label: string; value: string }) {
 }
 
 const s = StyleSheet.create({
+  failure: {
+    ...type.body,
+    color: color.refer,
+    fontWeight: '600',
+    borderWidth: 1.5,
+    borderColor: color.refer,
+    borderRadius: radius.md,
+    padding: space.md,
+  },
   slip: { backgroundColor: color.raised, gap: space.md },
   row: { flexDirection: 'row', justifyContent: 'space-between', gap: space.md },
   rowLabel: { ...type.label, color: color.inkMuted },
