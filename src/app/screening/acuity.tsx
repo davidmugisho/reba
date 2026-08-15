@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Body, Button, Card, Eyebrow, Screen, StepDots, Title } from '../../components/reba-kit';
 import { useScreening } from '../../context/ScreeningContext';
+import { useT } from '../../i18n';
 import { color, radius, space, TAP, type } from '../../theme';
 
 /**
@@ -26,6 +27,7 @@ const ROTATION: Record<Direction, string> = {
 export default function Acuity() {
   const router = useRouter();
   const { draft, update } = useScreening();
+  const t = useT();
   const [levelIndex, setLevelIndex] = useState(0);
   const [direction] = useState<Direction>('right');
 
@@ -43,13 +45,11 @@ export default function Acuity() {
   }
 
   return (
-    <Screen footer={<Button label="Continue to eye capture" onPress={skip} />}>
+    <Screen footer={<Button label={t.acuity.next} onPress={skip} />}>
       <StepDots current={2} total={6} />
-      <Eyebrow>Step 3 of 6</Eyebrow>
-      <Title>Which way do the legs point?</Title>
-      <Body muted>
-        Stand the patient three metres away. Cover the left eye first. Ask them to point.
-      </Body>
+      <Eyebrow>{t.acuity.step}</Eyebrow>
+      <Title>{t.acuity.title}</Title>
+      <Body muted>{t.acuity.lead}</Body>
 
       <Card style={s.chart}>
         <Text style={[s.letterE, { transform: [{ rotate: ROTATION[direction] }] }]}>E</Text>
@@ -59,29 +59,38 @@ export default function Acuity() {
 
       <View style={s.pad}>
         <View style={s.padRow}>
-          <Arrow label="↑" onPress={() => answer('up')} />
+          <Arrow symbol="↑" name={t.acuity.up} onPress={() => answer('up')} />
         </View>
         <View style={s.padRow}>
-          <Arrow label="←" onPress={() => answer('left')} />
-          <Arrow label="→" onPress={() => answer('right')} />
+          <Arrow symbol="←" name={t.acuity.left} onPress={() => answer('left')} />
+          <Arrow symbol="→" name={t.acuity.right} onPress={() => answer('right')} />
         </View>
         <View style={s.padRow}>
-          <Arrow label="↓" onPress={() => answer('down')} />
+          <Arrow symbol="↓" name={t.acuity.down} onPress={() => answer('down')} />
         </View>
       </View>
     </Screen>
   );
 }
 
-function Arrow({ label, onPress }: { label: string; onPress: () => void }) {
+/** The arrowhead is what the health worker taps; `name` is what a screen reader says. */
+function Arrow({
+  symbol,
+  name,
+  onPress,
+}: {
+  symbol: string;
+  name: string;
+  onPress: () => void;
+}) {
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={label}
+      accessibilityLabel={name}
       onPress={onPress}
       style={({ pressed }) => [s.arrow, pressed && { backgroundColor: color.raised }]}
     >
-      <Text style={s.arrowLabel}>{label}</Text>
+      <Text style={s.arrowLabel}>{symbol}</Text>
     </Pressable>
   );
 }

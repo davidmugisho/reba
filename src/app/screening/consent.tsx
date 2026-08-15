@@ -3,18 +3,13 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Body, Button, Card, Eyebrow, Screen, StepDots, Title } from '../../components/reba-kit';
 import { useScreening } from '../../context/ScreeningContext';
+import { useT } from '../../i18n';
 import { color, radius, space, type } from '../../theme';
-
-const POINTS = [
-  'This check looks for signs that the eyes need a closer look by a nurse or doctor.',
-  'It is not a diagnosis. Nothing here replaces a clinic visit.',
-  'Two photos of the eyes are taken. They stay on this phone.',
-  'You can stop at any point.',
-];
 
 export default function Consent() {
   const router = useRouter();
   const { update } = useScreening();
+  const t = useT();
   const [agreed, setAgreed] = useState(false);
 
   function next() {
@@ -24,15 +19,15 @@ export default function Consent() {
 
   return (
     <Screen
-      footer={<Button label="Continue" onPress={next} disabled={!agreed} />}
+      footer={<Button label={t.common.continue} onPress={next} disabled={!agreed} />}
     >
       <StepDots current={0} total={6} />
-      <Eyebrow>Step 1 of 6</Eyebrow>
-      <Title>Read this to the patient</Title>
-      <Body muted>Use their own words if it helps. Wait for a clear yes.</Body>
+      <Eyebrow>{t.consent.step}</Eyebrow>
+      <Title>{t.consent.title}</Title>
+      <Body muted>{t.consent.lead}</Body>
 
       <Card>
-        {POINTS.map((point) => (
+        {t.consent.points.map((point) => (
           <View key={point} style={s.point}>
             <View style={s.bullet} />
             <Text style={s.pointText}>{point}</Text>
@@ -49,7 +44,7 @@ export default function Consent() {
         <View style={[s.box, agreed && s.boxOn]}>
           {agreed ? <Text style={s.tick}>✓</Text> : null}
         </View>
-        <Text style={s.checkLabel}>The patient, or their guardian, agreed out loud.</Text>
+        <Text style={s.checkLabel}>{t.consent.agreed}</Text>
       </Pressable>
     </Screen>
   );

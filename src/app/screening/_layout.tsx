@@ -1,4 +1,5 @@
 import { Stack } from 'expo-router';
+import { useT } from '../../i18n';
 import { color, type } from '../../theme';
 
 /**
@@ -7,6 +8,7 @@ import { color, type } from '../../theme';
  * losing the thread.
  */
 export default function ScreeningLayout() {
+  const t = useT();
   return (
     <Stack
       screenOptions={{
@@ -14,17 +16,20 @@ export default function ScreeningLayout() {
         headerTitleStyle: { ...type.heading, color: color.ink },
         headerTintColor: color.ink,
         headerShadowVisible: false,
-        headerBackTitle: 'Back',
+        headerBackTitle: t.nav.back,
         contentStyle: { backgroundColor: color.paper },
       }}
     >
-      <Stack.Screen name="consent" options={{ title: 'Consent' }} />
-      <Stack.Screen name="patient" options={{ title: 'Patient' }} />
-      <Stack.Screen name="acuity" options={{ title: 'Visual acuity' }} />
-      <Stack.Screen name="capture" options={{ title: 'Eye capture' }} />
-      <Stack.Screen name="analysis" options={{ title: 'Analysing', headerBackVisible: false }} />
-      <Stack.Screen name="result" options={{ title: 'Result', headerBackVisible: false }} />
-      <Stack.Screen name="referral" options={{ title: 'Referral' }} />
+      <Stack.Screen name="consent" options={{ title: t.nav.consent }} />
+      <Stack.Screen name="patient" options={{ title: t.nav.patient }} />
+      <Stack.Screen name="acuity" options={{ title: t.nav.acuity }} />
+      <Stack.Screen name="capture" options={{ title: t.nav.capture }} />
+      <Stack.Screen
+        name="analysis"
+        options={{ title: t.nav.analysing, headerBackVisible: false }}
+      />
+      <Stack.Screen name="result" options={{ title: t.nav.result, headerBackVisible: false }} />
+      <Stack.Screen name="referral" options={{ title: t.nav.referral }} />
     </Stack>
   );
 }

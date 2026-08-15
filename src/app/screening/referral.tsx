@@ -3,12 +3,14 @@ import { useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { Body, Button, Card, Eyebrow, Screen, Title } from '../../components/reba-kit';
 import { useScreening } from '../../context/ScreeningContext';
+import { useT } from '../../i18n';
 import { saveScreening } from '../../storage/screenings';
 import { color, radius, space, type } from '../../theme';
 
 export default function Referral() {
   const router = useRouter();
   const { draft, reset } = useScreening();
+  const t = useT();
   const [notes, setNotes] = useState('');
   const [saving, setSaving] = useState(false);
   const [failed, setFailed] = useState(false);
@@ -37,42 +39,51 @@ export default function Referral() {
     <Screen
       footer={
         <>
-          {failed ? (
-            <Text style={s.failure}>
-              Not saved. Copy this slip onto the paper form before the patient leaves, then try
-              again.
-            </Text>
-          ) : null}
+          {failed ? <Text style={s.failure}>{t.referral.failed}</Text> : null}
           <Button
-            label={saving ? 'Saving…' : failed ? 'Try saving again' : 'Save and finish'}
+            label={saving ? t.referral.saving : failed ? t.referral.retry : t.referral.save}
             onPress={finish}
             disabled={saving}
           />
         </>
       }
     >
-      <Eyebrow>Step 6 of 6</Eyebrow>
-      <Title>Referral slip</Title>
-      <Body muted>Show this to the family, or copy it onto the paper form.</Body>
+      <Eyebrow>{t.referral.step}</Eyebrow>
+      <Title>{t.referral.title}</Title>
+      <Body muted>{t.referral.lead}</Body>
 
       <Card style={s.slip}>
-        <Row label="Age" value={draft.patient.ageYears ? `${draft.patient.ageYears} years` : '—'} />
-        <Row label="Village" value={draft.patient.village || '—'} />
-        <Row label="Facility" value={draft.patient.facilityCode || '—'} />
         <Row
-          label="Acuity"
-          value={draft.acuity.right ? `R 6/${draft.acuity.right} · L 6/${draft.acuity.left}` : '—'}
+          label={t.referral.age}
+          value={
+            draft.patient.ageYears
+              ? t.history.years(draft.patient.ageYears)
+              : t.common.none
+          }
         />
-        <Row label="Outcome" value={draft.risk === 'refer' ? 'Refer now' : 'Recheck'} />
+        <Row label={t.referral.village} value={draft.patient.village || t.common.none} />
+        <Row label={t.referral.referTo} value={draft.patient.facilityCode || t.common.none} />
+        <Row
+          label={t.referral.acuity}
+          value={
+            draft.acuity.right
+              ? `R 6/${draft.acuity.right} · L 6/${draft.acuity.left}`
+              : t.common.none
+          }
+        />
+        <Row
+          label={t.referral.outcome}
+          value={draft.risk === 'refer' ? t.referral.referNow : t.referral.recheck}
+        />
       </Card>
 
-      <Text style={s.fieldLabel}>NOTES</Text>
+      <Text style={s.fieldLabel}>{t.common.notes}</Text>
       <TextInput
         style={s.notes}
         value={notes}
         onChangeText={setNotes}
         multiline
-        placeholder="Anything the clinic should know"
+        placeholder={t.referral.notesPlaceholder}
         placeholderTextColor={color.inkFaint}
       />
     </Screen>

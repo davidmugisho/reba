@@ -103,6 +103,7 @@ src/
     history/              # list, and [id] for one record
   components/reba-kit.tsx # Screen, Button, Card, Title, Body, StepDots
   context/                # the screening being carried out right now
+  i18n/                   # en is the source; fr, de, rw are typed against it
   storage/                # the only module that touches the disk
   theme.ts                # design tokens
   types/screening.ts      # the record shape
@@ -136,6 +137,31 @@ Two behaviours there are deliberate and should survive refactoring:
 If a save fails, the referral screen says so, keeps the slip on screen to be
 copied onto paper, and offers a retry. An app that claims to have saved a
 screening and hasn't is worse than no app at all.
+
+## Language
+
+Kinyarwanda, English, French and German. The picker sits on home under the two
+buttons — a health worker sets it once at the start of a shift — and the choice
+is stored on the device.
+
+[`src/i18n/en.ts`](src/i18n/en.ts) is the source. Every other locale is typed
+against it, so a missing key is a compile error rather than a blank label in
+front of a patient. Values that vary with data are functions rather than
+template strings glued together at the call site, because word order moves
+between languages and a sentence assembled from fragments cannot follow it.
+
+**The Kinyarwanda has not been checked by a native speaker.** It was drafted,
+not translated, and it must be read by one before the app meets a real patient.
+The consent screen is why: a health worker reads it aloud, and it is where the
+patient is told this is *not* a diagnosis. If that sentence lands wrong,
+someone walks away believing their eyes have been examined when they have not.
+The result bands carry the same weight. The warning is repeated at the top of
+[`src/i18n/rw.ts`](src/i18n/rw.ts) so it cannot be missed while editing.
+
+German is in because it was asked for. Worth knowing that Rwanda's official
+languages are Kinyarwanda, English, French and Swahili — if these screens are
+ever used near the eastern border, Swahili will earn its place before German
+does.
 
 ## Design
 

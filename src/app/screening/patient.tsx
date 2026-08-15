@@ -3,17 +3,18 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Button, Eyebrow, Screen, StepDots, Title } from '../../components/reba-kit';
 import { useScreening } from '../../context/ScreeningContext';
+import { useT } from '../../i18n';
 import { color, radius, space, TAP, type } from '../../theme';
-
-const SEX_OPTIONS = [
-  { value: 'f' as const, label: 'Female' },
-  { value: 'm' as const, label: 'Male' },
-  { value: 'other' as const, label: 'Other' },
-];
 
 export default function Patient() {
   const router = useRouter();
   const { draft, update } = useScreening();
+  const t = useT();
+  const sexOptions = [
+    { value: 'f' as const, label: t.patient.female },
+    { value: 'm' as const, label: t.patient.male },
+    { value: 'other' as const, label: t.patient.other },
+  ];
   const [age, setAge] = useState('');
   const [sex, setSex] = useState<'f' | 'm' | 'other' | null>(null);
   const [village, setVillage] = useState('');
@@ -35,26 +36,26 @@ export default function Patient() {
   }
 
   return (
-    <Screen footer={<Button label="Continue" onPress={next} disabled={!ready} />}>
+    <Screen footer={<Button label={t.common.continue} onPress={next} disabled={!ready} />}>
       <StepDots current={1} total={6} />
-      <Eyebrow>Step 2 of 6</Eyebrow>
-      <Title>Who are you screening?</Title>
+      <Eyebrow>{t.patient.step}</Eyebrow>
+      <Title>{t.patient.title}</Title>
 
-      <Field label="Age in years">
+      <Field label={t.patient.age}>
         <TextInput
           style={s.input}
           value={age}
           onChangeText={setAge}
           keyboardType="number-pad"
-          placeholder="e.g. 6"
+          placeholder={t.patient.agePlaceholder}
           placeholderTextColor={color.inkFaint}
           maxLength={3}
         />
       </Field>
 
-      <Field label="Sex">
+      <Field label={t.patient.sex}>
         <View style={s.row}>
-          {SEX_OPTIONS.map((option) => (
+          {sexOptions.map((option) => (
             <Pressable
               key={option.value}
               onPress={() => setSex(option.value)}
@@ -70,23 +71,22 @@ export default function Patient() {
         </View>
       </Field>
 
-      <Field label="Village">
+      <Field label={t.patient.village}>
         <TextInput
           style={s.input}
           value={village}
           onChangeText={setVillage}
-          placeholder="Optional"
+          placeholder={t.common.optional}
           placeholderTextColor={color.inkFaint}
         />
       </Field>
 
-      <Field label="Facility code">
+      <Field label={t.patient.referTo}>
         <TextInput
           style={s.input}
           value={facility}
           onChangeText={setFacility}
-          autoCapitalize="characters"
-          placeholder="Optional"
+          placeholder={t.patient.referToPlaceholder}
           placeholderTextColor={color.inkFaint}
         />
       </Field>

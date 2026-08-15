@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Body, Button, Eyebrow, Screen, StepDots, Title } from '../../components/reba-kit';
 import { useScreening } from '../../context/ScreeningContext';
+import { useT } from '../../i18n';
 import type { Eye } from '../../types/screening';
 import { color, radius, space, type } from '../../theme';
 
@@ -13,6 +14,7 @@ import { color, radius, space, type } from '../../theme';
 export default function Capture() {
   const router = useRouter();
   const { draft, update } = useScreening();
+  const t = useT();
   const [eye, setEye] = useState<Eye>('right');
 
   const captured = draft.captures.map((c) => c.eye);
@@ -32,39 +34,53 @@ export default function Capture() {
     <Screen
       footer={
         bothDone ? (
-          <Button label="Analyse" onPress={() => router.push('/screening/analysis')} />
+          <Button label={t.capture.analyse} onPress={() => router.push('/screening/analysis')} />
         ) : (
-          <Button label={`Capture ${eye} eye`} onPress={shoot} />
+          <Button
+            label={eye === 'right' ? t.capture.captureRight : t.capture.captureLeft}
+            onPress={shoot}
+          />
         )
       }
     >
       <StepDots current={3} total={6} />
-      <Eyebrow>Step 4 of 6</Eyebrow>
-      <Title>{bothDone ? 'Both eyes captured' : `Capture the ${eye} eye`}</Title>
-      <Body muted>
-        Darken the room if you can. Hold the phone one metre away, flash on, and fill the ring
-        with the eye.
-      </Body>
+      <Eyebrow>{t.capture.step}</Eyebrow>
+      <Title>
+        {bothDone
+          ? t.capture.bothDone
+          : eye === 'right'
+            ? t.capture.titleRight
+            : t.capture.titleLeft}
+      </Title>
+      <Body muted>{t.capture.lead}</Body>
 
       <View style={s.viewfinder}>
         <View style={s.ring} />
-        <Text style={s.placeholder}>Camera — day 4</Text>
+        <Text style={s.placeholder}>{t.capture.placeholder}</Text>
       </View>
 
       <View style={s.status}>
-        <EyeChip eye="right" done={captured.includes('right')} active={eye === 'right'} />
-        <EyeChip eye="left" done={captured.includes('left')} active={eye === 'left'} />
+        <EyeChip
+          label={t.capture.rightEye}
+          done={captured.includes('right')}
+          active={eye === 'right'}
+        />
+        <EyeChip
+          label={t.capture.leftEye}
+          done={captured.includes('left')}
+          active={eye === 'left'}
+        />
       </View>
     </Screen>
   );
 }
 
-function EyeChip({ eye, done, active }: { eye: Eye; done: boolean; active: boolean }) {
+function EyeChip({ label, done, active }: { label: string; done: boolean; active: boolean }) {
   return (
     <View style={[s.chip, done && s.chipDone, active && !done && s.chipActive]}>
       <Text style={[s.chipLabel, done && { color: color.clear }]}>
         {done ? '✓ ' : ''}
-        {eye === 'right' ? 'Right eye' : 'Left eye'}
+        {label}
       </Text>
     </View>
   );

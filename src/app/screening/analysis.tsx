@@ -2,6 +2,7 @@ import { useRouter } from 'expo-router';
 import { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { useScreening } from '../../context/ScreeningContext';
+import { useT } from '../../i18n';
 import type { RiskLevel } from '../../types/screening';
 import { color, space, type } from '../../theme';
 
@@ -21,6 +22,7 @@ function bandFor(score: number): RiskLevel {
 export default function Analysis() {
   const router = useRouter();
   const { update } = useScreening();
+  const t = useT();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -37,8 +39,8 @@ export default function Analysis() {
   return (
     <View style={s.wrap}>
       <ActivityIndicator size="large" color={color.accent} />
-      <Text style={s.label}>Checking both eyes</Text>
-      <Text style={s.sub}>This runs on the phone. Nothing is uploaded.</Text>
+      <Text style={s.label}>{t.analysis.title}</Text>
+      <Text style={s.sub}>{t.analysis.sub}</Text>
     </View>
   );
 }

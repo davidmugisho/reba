@@ -2,6 +2,7 @@ import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Body, Screen, Title } from '../../components/reba-kit';
+import { useT } from '../../i18n';
 import { listScreenings } from '../../storage/screenings';
 import type { RiskLevel, Screening } from '../../types/screening';
 import { color, radius, space, type } from '../../theme';
@@ -12,14 +13,14 @@ const BAND_COLOR: Record<RiskLevel, string> = {
   refer: color.refer,
 };
 
-const BAND_LABEL: Record<RiskLevel, string> = {
-  clear: 'No signs',
-  monitor: 'Recheck',
-  refer: 'Referred',
-};
-
 export default function History() {
   const router = useRouter();
+  const t = useT();
+  const bandLabel: Record<RiskLevel, string> = {
+    clear: t.history.bandClear,
+    monitor: t.history.bandMonitor,
+    refer: t.history.bandRefer,
+  };
   const [items, setItems] = useState<Screening[] | null>(null);
 
   useFocusEffect(
@@ -28,13 +29,13 @@ export default function History() {
     }, []),
   );
 
-  if (items === null) return <Screen><Body muted>Loading…</Body></Screen>;
+  if (items === null) return <Screen><Body muted>{t.common.loading}</Body></Screen>;
 
   if (items.length === 0) {
     return (
       <Screen>
-        <Title>No screenings yet</Title>
-        <Body muted>Screenings you complete are saved here, on this phone only.</Body>
+        <Title>{t.history.emptyTitle}</Title>
+        <Body muted>{t.history.emptyBody}</Body>
       </Screen>
     );
   }
@@ -49,7 +50,7 @@ export default function History() {
         >
           <View style={s.rowMain}>
             <Text style={s.rowTitle}>
-              {item.patient.ageYears ? `${item.patient.ageYears} years` : 'Age not recorded'}
+              {item.patient.ageYears ? t.history.years(item.patient.ageYears) : t.history.noAge}
               {item.patient.village ? ` · ${item.patient.village}` : ''}
             </Text>
             <Text style={s.rowDate}>
@@ -59,7 +60,7 @@ export default function History() {
           {item.risk ? (
             <View style={[s.tag, { borderColor: BAND_COLOR[item.risk] }]}>
               <Text style={[s.tagLabel, { color: BAND_COLOR[item.risk] }]}>
-                {BAND_LABEL[item.risk]}
+                {bandLabel[item.risk]}
               </Text>
             </View>
           ) : null}
