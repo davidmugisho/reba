@@ -1,12 +1,20 @@
 import { useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { useFocusEffect } from 'expo-router';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  Image,
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  type ImageSourcePropType,
+} from 'react-native';
 import { Button, Screen } from '../components/reba-kit';
 import { useScreening } from '../context/ScreeningContext';
-import { LOCALES, LOCALE_NAMES, useLocale, useT } from '../i18n';
+import { LOCALES, LOCALE_NAMES, useLocale, useT, type Locale } from '../i18n';
 import { listScreenings } from '../storage/screenings';
-import { color, radius, space, type } from '../theme';
+import { color, radius, space, TAP, type } from '../theme';
 
 /**
  * The first thing anyone sees — a health worker at the start of a shift,
@@ -70,37 +78,83 @@ export default function Home() {
 }
 
 /**
- * Set once at the start of a shift, so it lives under the two real actions
- * rather than competing with them. Each language is written in itself — a
- * Kinyarwanda speaker should not have to read English to find it.
+ * Flags are drawn assets rather than emoji: flag emoji fall back to bare
+ * letters on a lot of cheap Android builds, which is exactly the hardware
+ * this runs on.
+ */
+const FLAGS: Record<Locale, ImageSourcePropType> = {
+  rw: require('../../assets/images/flags/rw.png'),
+  en: require('../../assets/images/flags/gb.png'),
+  fr: require('../../assets/images/flags/fr.png'),
+  de: require('../../assets/images/flags/de.png'),
+};
+
+/**
+ * Set once at the start of a shift, so it sits under the two real actions
+ * rather than competing with them. Collapsed to the current language until
+ * tapped — four chips side by side read as four choices to make before
+ * starting, which is not what this is.
+ *
+ * Each language is written in itself: a Kinyarwanda speaker should not have
+ * to read English to find it.
  */
 function LanguagePicker() {
   const { locale, setLocale } = useLocale();
   const t = useT();
+  const [open, setOpen] = useState(false);
 
   return (
-    <View style={s.langWrap}>
-      <Text style={s.langLabel}>{t.home.language}</Text>
-      <View style={s.langRow}>
-        {LOCALES.map((code) => {
-          const active = code === locale;
-          return (
-            <Pressable
-              key={code}
-              onPress={() => setLocale(code)}
-              accessibilityRole="radio"
-              accessibilityState={{ selected: active }}
-              accessibilityLabel={LOCALE_NAMES[code].name}
-              style={[s.langChip, active && s.langChipOn]}
-            >
-              <Text style={[s.langChipLabel, active && s.langChipLabelOn]}>
-                {LOCALE_NAMES[code].code}
-              </Text>
-            </Pressable>
-          );
-        })}
-      </View>
-    </View>
+    <>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={`${t.home.language}: ${LOCALE_NAMES[locale].name}`}
+        onPress={() => setOpen(true)}
+        style={({ pressed }) => [s.langButton, pressed && { backgroundColor: color.raised }]}
+      >
+        <Image source={FLAGS[locale]} style={s.flag} resizeMode="cover" />
+        <Text style={s.langCurrent}>{LOCALE_NAMES[locale].name}</Text>
+        <Text style={s.chevron}>▾</Text>
+      </Pressable>
+
+      <Modal
+        visible={open}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setOpen(false)}
+      >
+        {/* Tapping anywhere off the sheet closes it. */}
+        <Pressable style={s.backdrop} onPress={() => setOpen(false)}>
+          {/* Swallows taps so choosing inside the sheet does not dismiss it. */}
+          <Pressable style={s.sheet} onPress={() => {}}>
+            <Text style={s.sheetLabel}>{t.home.language}</Text>
+            {LOCALES.map((code) => {
+              const active = code === locale;
+              return (
+                <Pressable
+                  key={code}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: active }}
+                  onPress={() => {
+                    setLocale(code);
+                    setOpen(false);
+                  }}
+                  style={({ pressed }) => [
+                    s.option,
+                    pressed && { backgroundColor: color.raised },
+                  ]}
+                >
+                  <Image source={FLAGS[code]} style={s.flag} resizeMode="cover" />
+                  <Text style={[s.optionLabel, active && s.optionLabelOn]}>
+                    {LOCALE_NAMES[code].name}
+                  </Text>
+                  {active ? <Text style={s.tick}>✓</Text> : null}
+                </Pressable>
+              );
+            })}
+          </Pressable>
+        </Pressable>
+      </Modal>
+    </>
   );
 }
 
@@ -154,19 +208,50 @@ const s = StyleSheet.create({
   tallyNumber: { ...type.title, fontSize: 28, color: color.ink },
   tallyLabel: { ...type.body, color: color.inkMuted },
 
-  langWrap: { gap: space.sm, marginTop: space.xs },
-  langLabel: { ...type.label, color: color.inkFaint, textAlign: 'center' },
-  langRow: { flexDirection: 'row', gap: space.sm, justifyContent: 'center' },
-  langChip: {
-    minWidth: 56,
-    paddingVertical: space.sm,
-    paddingHorizontal: space.md,
-    borderRadius: radius.sm,
-    borderWidth: 1.5,
-    borderColor: color.line,
+  // Collapsed control. Deliberately lighter than the two buttons above it.
+  langButton: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    gap: space.sm,
+    minHeight: TAP,
+    paddingHorizontal: space.md,
+    borderRadius: radius.md,
   },
-  langChipOn: { backgroundColor: color.ink, borderColor: color.ink },
-  langChipLabel: { ...type.label, color: color.inkMuted },
-  langChipLabelOn: { color: color.onDark },
+  langCurrent: { ...type.body, fontWeight: '600', color: color.inkMuted },
+  chevron: { ...type.body, color: color.inkFaint },
+
+  flag: {
+    width: 30,
+    height: 20,
+    borderRadius: 3,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: color.line,
+  },
+
+  backdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(7, 32, 60, 0.45)',
+    justifyContent: 'flex-end',
+  },
+  sheet: {
+    backgroundColor: color.paper,
+    borderTopLeftRadius: radius.lg,
+    borderTopRightRadius: radius.lg,
+    padding: space.lg,
+    paddingBottom: space.xl,
+    gap: space.xs,
+  },
+  sheetLabel: { ...type.label, color: color.inkMuted, marginBottom: space.xs },
+  option: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: space.md,
+    minHeight: TAP,
+    paddingHorizontal: space.sm,
+    borderRadius: radius.md,
+  },
+  optionLabel: { ...type.body, color: color.ink, flex: 1 },
+  optionLabelOn: { fontWeight: '700' },
+  tick: { ...type.heading, color: color.accent },
 });

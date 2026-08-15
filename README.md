@@ -141,8 +141,13 @@ screening and hasn't is worse than no app at all.
 ## Language
 
 Kinyarwanda, English, French and German. The picker sits on home under the two
-buttons — a health worker sets it once at the start of a shift — and the choice
-is stored on the device.
+buttons, collapsed to the current language until tapped — a health worker sets
+it once at the start of a shift, so it should not read as a fourth decision to
+make before starting. The choice is stored on the device.
+
+Flags are drawn PNGs in [`assets/images/flags/`](assets/images/flags), not flag
+emoji. Emoji flags degrade to bare letters on a lot of cheap Android builds,
+which is the hardware this is for.
 
 [`src/i18n/en.ts`](src/i18n/en.ts) is the source. Every other locale is typed
 against it, so a missing key is a compile error rather than a blank label in
