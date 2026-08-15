@@ -71,7 +71,7 @@ survive.
 
 ```bash
 npm install
-npx expo start          # then a for Android, i for iOS, w for web
+npx expo start          # scan the QR with Expo Go, or press w for web
 ```
 
 Typecheck before you commit:
@@ -80,9 +80,18 @@ Typecheck before you commit:
 npx tsc --noEmit
 ```
 
-Web works and is the fastest way to click through the flow, but it is not the
-target. The target is a mid-range Android phone in daylight — check anything
-that touches storage or the camera on a real device.
+The project stays on **SDK 54** so it opens in Expo Go. Expo Go carries one SDK
+at a time, so bumping the SDK means every phone has to update Expo Go, and
+every other project on the old SDK stops opening. Keep it here until there is
+a reason to leave, and see [`AGENTS.md`](AGENTS.md).
+
+Expo Go stops being enough the moment a native module that is not already
+inside it lands — the on-device model at day 7 is the one to watch. That is
+when a development build (`npx expo run:android`) becomes necessary.
+
+Web is the fastest way to click through the flow, but it is not the target. The
+target is a mid-range Android phone in daylight — check anything that touches
+storage or the camera on a real device.
 
 ## Layout
 
@@ -151,8 +160,8 @@ that does not betray the first rule.
 
 ## Working on this
 
-Expo moves fast and this project tracks SDK 57. Read the versioned docs at
-<https://docs.expo.dev/versions/v57.0.0/> before writing code against an Expo
+Expo moves fast and this project tracks SDK 54. Read the versioned docs at
+<https://docs.expo.dev/versions/v54.0.0/> before writing code against an Expo
 API — the current docs will lie to you about older and newer releases alike.
 
 Typed routes and the React Compiler are both switched on in
