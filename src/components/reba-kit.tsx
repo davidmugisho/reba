@@ -1,17 +1,26 @@
 import { Pressable, ScrollView, StyleSheet, Text, View, type ViewStyle } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, type Edge } from 'react-native-safe-area-context';
 import { color, radius, space, TAP, type } from '../theme';
 
-/** Page shell. Scrolls, keeps the primary action pinned to the bottom. */
+/**
+ * Page shell. Scrolls, keeps the primary action pinned to the bottom.
+ *
+ * Only the bottom edge is inset by default, because every screen in the
+ * flow sits under a navigator header that has already cleared the status
+ * bar. A screen with `headerShown: false` has nothing above it and must
+ * ask for the top edge itself, or its first block runs into the clock.
+ */
 export function Screen({
   children,
   footer,
+  edges = ['bottom'],
 }: {
   children: React.ReactNode;
   footer?: React.ReactNode;
+  edges?: readonly Edge[];
 }) {
   return (
-    <SafeAreaView style={s.safe} edges={['bottom']}>
+    <SafeAreaView style={s.safe} edges={edges}>
       <ScrollView
         style={s.scroll}
         contentContainerStyle={s.scrollContent}

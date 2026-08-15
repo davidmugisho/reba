@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { useFocusEffect } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { Button, Screen } from '../components/reba-kit';
 import { useScreening } from '../context/ScreeningContext';
 import { listScreenings } from '../storage/screenings';
@@ -30,6 +30,7 @@ export default function Home() {
 
   return (
     <Screen
+      edges={['top', 'bottom']}
       footer={
         <>
           <Button label="Start a screening" onPress={startScreening} />
@@ -50,6 +51,14 @@ export default function Home() {
           A guided check for signs of avoidable sight loss. Five minutes, no internet, nothing
           leaves this phone.
         </Text>
+
+        <Image
+          source={require('../../assets/images/hero-screening.png')}
+          style={s.heroArt}
+          resizeMode="contain"
+          accessible
+          accessibilityLabel="A health worker holding a phone up to a patient's eye"
+        />
       </View>
 
       <View style={s.tally}>
@@ -91,6 +100,14 @@ const s = StyleSheet.create({
     fontSize: 15,
     lineHeight: 23,
     color: color.onDarkMuted,
+  },
+  // Explicit height, not aspectRatio: on react-native-web the <img> keeps its
+  // intrinsic height and the ratio is ignored, which blows the hero open to
+  // full-screen and pushes the tally off the bottom.
+  heroArt: {
+    width: '100%',
+    height: 172,
+    marginTop: space.xs,
   },
   tally: {
     marginTop: space.sm,
