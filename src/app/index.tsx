@@ -1,4 +1,5 @@
 import { useRouter } from 'expo-router';
+import { resumeRoute } from '../resume';
 import { useCallback, useState } from 'react';
 import { useFocusEffect } from 'expo-router';
 import {
@@ -10,8 +11,8 @@ import {
   View,
   type ImageSourcePropType,
 } from 'react-native';
-import { Button, Screen } from '../components/reba-kit';
-import { useScreening } from '../context/ScreeningContext';
+import { Body, Button, Card, Screen } from '../components/reba-kit';
+import { useActiveScreeningIds, useScreening } from '../context/ScreeningContext';
 import { LOCALES, LOCALE_NAMES, useLocale, useT, type Locale } from '../i18n';
 import { sweepOrphanPhotos } from '../storage/photos';
 import { listScreenings } from '../storage/screenings';
@@ -24,7 +25,10 @@ import { color, radius, space, TAP, type } from '../theme';
  */
 export default function Home() {
   const router = useRouter();
-  const { reset } = useScreening();
+  const { reset, pending, resume, discardPending } = useScreening();
+  // The screening in progress owns photos too. Sparing it is what keeps the
+  // sweep below from deleting the pictures out from under a live screening.
+  const activeIds = useActiveScreeningIds();
   const t = useT();
   const [count, setCount] = useState<number | null>(null);
 
@@ -36,14 +40,22 @@ export default function Home() {
         // the patient they can stop at any point. Reconciling the photo folders
         // against the records that exist clears anything left behind, without
         // having to catch every way out of the flow.
-        sweepOrphanPhotos(all.map((s) => s.id));
+        sweepOrphanPhotos([...all.map((s) => s.id), ...activeIds]);
       });
-    }, []),
+    }, [activeIds]),
   );
 
   function startScreening() {
+    // Starting fresh with something unfinished on screen is a choice to drop
+    // it, and the card above made that visible.
+    if (pending) discardPending();
     reset();
     router.push('/screening/consent');
+  }
+
+  function carryOn() {
+    const restored = resume();
+    if (restored) router.push(resumeRoute(restored));
   }
 
   return (
@@ -76,6 +88,34 @@ export default function Home() {
           accessibilityLabel={t.home.artAlt}
         />
       </View>
+
+      {pending ? (
+        <Card style={s.pending}>
+          <Text style={s.pendingLabel}>{t.home.unfinishedLabel}</Text>
+          <Text style={s.pendingWho}>
+            {pending.patient.ageYears
+              ? t.history.years(pending.patient.ageYears)
+              : t.history.noAge}
+            {pending.patient.village ? ` · ${pending.patient.village}` : ''}
+          </Text>
+          <Body muted>
+            {t.home.unfinishedStarted(
+              new Date(pending.createdAt).toLocaleTimeString(undefined, {
+                hour: '2-digit',
+                minute: '2-digit',
+              }),
+            )}
+          </Body>
+          <View style={s.pendingActions}>
+            <View style={s.pendingAction}>
+              <Button label={t.home.resume} onPress={carryOn} />
+            </View>
+            <View style={s.pendingAction}>
+              <Button label={t.home.discard} variant="secondary" onPress={discardPending} />
+            </View>
+          </View>
+        </Card>
+      ) : null}
 
       <View style={s.tally}>
         <Text style={s.tallyNumber}>{count === null ? '—' : count}</Text>
@@ -213,6 +253,16 @@ const s = StyleSheet.create({
     alignItems: 'baseline',
     gap: space.sm + 2,
   },
+  pending: {
+    marginTop: space.sm,
+    gap: space.xs,
+    borderColor: color.accent,
+    backgroundColor: color.accentSoft,
+  },
+  pendingLabel: { ...type.label, color: color.accent },
+  pendingWho: { ...type.heading, color: color.ink },
+  pendingActions: { flexDirection: 'row', gap: space.sm, marginTop: space.sm },
+  pendingAction: { flex: 1 },
   tallyNumber: { ...type.title, fontSize: 24, color: color.ink },
   tallyLabel: { ...type.body, color: color.inkMuted },
 

@@ -49,6 +49,10 @@ export const rw: Strings = {
     start: 'Tangira isuzuma',
     past: 'Amasuzuma yashize',
     language: 'URURIMI',
+    unfinishedLabel: 'ISUZUMA RITARARANGIRA',
+    unfinishedStarted: (time: string): string => `Ryatangiye saa ${time}, ntiryabitswe.`,
+    resume: 'Komeza',
+    discard: 'Hanagura',
     artAlt: 'Umujyanama w’ubuzima afashe telefone imbere y’ijisho ry’umurwayi',
   },
 

@@ -45,6 +45,10 @@ export const en = {
     start: 'Start a screening',
     past: 'Past screenings',
     language: 'LANGUAGE',
+    unfinishedLabel: 'UNFINISHED SCREENING',
+    unfinishedStarted: (time: string): string => `Started at ${time}, not saved.`,
+    resume: 'Carry on',
+    discard: 'Discard',
     artAlt: "A health worker holding a phone up to a patient's eye",
   },
 

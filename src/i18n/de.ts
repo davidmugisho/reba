@@ -36,6 +36,10 @@ export const de: Strings = {
     start: 'Untersuchung beginnen',
     past: 'Frühere Untersuchungen',
     language: 'SPRACHE',
+    unfinishedLabel: 'UNFERTIGE UNTERSUCHUNG',
+    unfinishedStarted: (time: string): string => `Um ${time} begonnen, nicht gespeichert.`,
+    resume: 'Weitermachen',
+    discard: 'Verwerfen',
     artAlt: 'Eine Gesundheitsfachkraft hält ein Telefon vor das Auge einer Patientin',
   },
 

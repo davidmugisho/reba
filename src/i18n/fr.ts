@@ -35,6 +35,10 @@ export const fr: Strings = {
     start: 'Commencer un dépistage',
     past: 'Dépistages passés',
     language: 'LANGUE',
+    unfinishedLabel: 'DÉPISTAGE INACHEVÉ',
+    unfinishedStarted: (time: string): string => `Commencé à ${time}, non enregistré.`,
+    resume: 'Reprendre',
+    discard: 'Supprimer',
     artAlt: "Un agent de santé tenant un téléphone devant l'œil d'un patient",
   },
 

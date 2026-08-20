@@ -66,9 +66,9 @@ worth knowing which before you read the code and assume it is broken.
 | Result | Real. Says what decided the band and that the photos have not been read. *Explain this to me* opens a script to read to the family. |
 | Referral + saving | Real. Writes to disk, survives a restart, and tells you when it fails. |
 
-One more thing to know: the in-progress screening lives in memory only. If the
-OS kills the app mid-screening, that screening is gone. Only committed records
-survive.
+The screening in progress is written to the device as it goes, so an
+interruption that kills the app does not lose it — see **Unfinished
+screenings** below.
 
 ## Running it
 
@@ -250,6 +250,34 @@ negative can cost an eye.
 If neither eye could be measured, the module returns null and the result screen
 shows its empty state. An app that has measured nothing and still produces a
 band is the failure the whole file exists to avoid.
+
+## Unfinished screenings
+
+The flow promises a health worker can be interrupted and come back without
+losing the thread. That was only true while the app stayed in memory: Android
+kills backgrounded apps when it runs low, and the half-finished screening went
+with it. The draft is now written to the device as it goes.
+
+**What is found at startup is offered, never adopted.** Home shows a card
+naming the patient and when it was started, with *Carry on* and *Discard*.
+Resuming silently is how one patient's photos end up filed under another
+patient's name, and a health worker who did not know a draft was restored has
+no way to catch it.
+
+**A draft older than six hours is not offered at all.** Long enough to survive
+a real interruption inside one shift, short enough that it never spans a night.
+Anything unreadable, malformed or undated is discarded on the same reasoning:
+a draft that cannot be trusted is not one a health worker can tell apart from a
+good one.
+
+Where it resumes is derived from what the record holds, not from a stored step
+number — see [`src/resume.ts`](src/resume.ts). The data is the truth, and a
+step counter written at the wrong moment drops someone back into a screen they
+had already finished.
+
+Discarding takes the photos with it. And the photo sweep on home now spares the
+screening in progress, which would otherwise delete pictures out from under a
+live screening the moment the health worker stepped back to the home screen.
 
 ## Design
 
