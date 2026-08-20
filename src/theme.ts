@@ -62,16 +62,20 @@ export const radius = {
 } as const;
 
 /**
- * Deliberately few sizes, deliberately heavy at the top. A CHW reading this
- * at arm's length in the sun needs weight, not nuance. Nothing drops below
- * 13px anywhere in the app.
+ * Deliberately few sizes, and heavy where it counts. A CHW reads this at arm's
+ * length in the sun, so weight and contrast do the work rather than size —
+ * the scale is tighter than it was, but body text never drops below 15 and
+ * nothing anywhere drops below 12.
+ *
+ * Tighter tracking on the large sizes and looser on the small ones: big type
+ * set at default spacing looks slack, and small type set tight closes up.
  */
 export const type = {
-  display: { fontSize: 34, lineHeight: 38, fontWeight: '700' as const, letterSpacing: -0.5 },
-  title: { fontSize: 26, lineHeight: 31, fontWeight: '700' as const, letterSpacing: -0.4 },
-  heading: { fontSize: 20, lineHeight: 26, fontWeight: '600' as const },
-  body: { fontSize: 16, lineHeight: 24, fontWeight: '400' as const },
-  label: { fontSize: 13, lineHeight: 16, fontWeight: '700' as const, letterSpacing: 1 },
+  display: { fontSize: 29, lineHeight: 34, fontWeight: '700' as const, letterSpacing: -0.7 },
+  title: { fontSize: 22, lineHeight: 28, fontWeight: '700' as const, letterSpacing: -0.5 },
+  heading: { fontSize: 17, lineHeight: 23, fontWeight: '600' as const, letterSpacing: -0.2 },
+  body: { fontSize: 15, lineHeight: 23, fontWeight: '400' as const },
+  label: { fontSize: 12, lineHeight: 15, fontWeight: '700' as const, letterSpacing: 0.9 },
 };
 
 /** Minimum touch target. Do not go below this anywhere. */

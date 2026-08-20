@@ -81,7 +81,7 @@ const s = StyleSheet.create({
   },
   rowMain: { flex: 1, gap: 2 },
   rowTitle: { ...type.body, fontWeight: '600', color: color.ink },
-  rowDate: { ...type.body, fontSize: 14, color: color.inkMuted },
+  rowDate: { ...type.body, fontSize: 13, color: color.inkMuted },
   tag: { borderWidth: 1.5, borderRadius: radius.sm, paddingHorizontal: space.sm, paddingVertical: 4 },
   tagLabel: { ...type.label },
 });

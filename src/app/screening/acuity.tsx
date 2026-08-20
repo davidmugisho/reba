@@ -346,7 +346,7 @@ const s = StyleSheet.create({
   eyeRow: { flexDirection: 'row', alignItems: 'center', gap: space.md },
   eyeRowMain: { flex: 1, gap: 2 },
   eyeRowLabel: { ...type.label, color: color.inkMuted },
-  eyeRowValue: { ...type.title, fontSize: 22, color: color.ink },
+  eyeRowValue: { ...type.title, fontSize: 20, color: color.ink },
   redo: {
     minHeight: TAP,
     justifyContent: 'center',
@@ -355,5 +355,5 @@ const s = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: color.line,
   },
-  redoLabel: { ...type.body, fontSize: 14, fontWeight: '600', color: color.ink },
+  redoLabel: { ...type.body, fontSize: 13, fontWeight: '600', color: color.ink },
 });

@@ -27,6 +27,7 @@ export const rw: Strings = {
     analysing: 'Gusesengura',
     result: 'Igisubizo',
     referral: 'Kohereza',
+    explanation: 'Ibisobanuro',
     screenings: 'Isuzuma ryakozwe',
     screening: 'Isuzuma',
     back: 'Subira inyuma',
@@ -164,6 +165,37 @@ export const rw: Strings = {
     noneBody:
       'Iri suzuma ntirikiriho, nta kintu cyo gutanga. Ongera utangire isuzuma bundi bushya.',
     backToStart: 'Subira ku ntangiriro',
+  },
+
+  explain: {
+    title: 'Icyo ibi bisobanura',
+    lead: 'Soma ibi ubwire umurwayi n’umuryango. Koresha amagambo yabo niba bifasha.',
+    clearPoints: [
+      'Uyu munsi iri suzuma nta kintu ryabonye gisaba kujya ku ivuriro.',
+      'Ibyo ntibisobanura ko amaso ari mazima. Iri suzuma ntirishobora kubona byose.',
+      'Garuka niba kureba bihindutse, niba ijisho rimwe ritangiye kwerekera ku ruhande, cyangwa niba imboni igaragara yera ku ifoto.',
+    ],
+    monitorPoints: [
+      'Hari ikintu kitagaragaye neza uyu munsi. Si ibyihutirwa.',
+      'Ariko ntibigomba kwibagirana: tegura irindi suzuma nyuma y’amezi atatu.',
+      'Garuka hakiri kare niba kureba bigenda bigabanuka, cyangwa niba ijisho rimwe ritangiye kwerekera ku ruhande.',
+    ],
+    referPoints: [
+      'Iri suzuma ryabonye ikintu umuforomo cyangwa umuganga agomba kureba neza.',
+      'Si isuzuma rya muganga, kandi ntibisobanura ko kureba biri gutakara. Bisobanura ko umuntu ufite ibikoresho bikwiye agomba kureba.',
+      'Genda ubu aho kugenda ejo. Iyo ikintu gishobora kuvurwa, kukivura hakiri kare ni byo bikiza kureba.',
+    ],
+    readingLabel: 'IBIPIMO BY’AMASO',
+    readingLead: 'Icyo imibare iri ku rupapuro isobanura.',
+    readingFor: (eye: string, denominator: number | null, belowChart: boolean): string =>
+      belowChart
+        ? `${eye}: ntiryashoboye gusoma n’inyuguti nini kurusha izindi.`
+        : denominator === null
+          ? `${eye}: ntibyapimwe.`
+          : denominator === 6
+            ? `${eye}: 6/6, ni ukuvuga kureba gusanzwe.`
+            : `${eye}: kuri metero 6 ribona ibyo ijisho rireba neza ribona kuri ${denominator}. Byandikwa 6/${denominator}.`,
+    close: 'Subira ku gisubizo',
   },
 
   referral: {

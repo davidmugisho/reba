@@ -30,6 +30,7 @@ export default function ScreeningLayout() {
       />
       <Stack.Screen name="result" options={{ title: t.nav.result, headerBackVisible: false }} />
       <Stack.Screen name="referral" options={{ title: t.nav.referral }} />
+      <Stack.Screen name="explain" options={{ title: t.nav.explanation }} />
     </Stack>
   );
 }

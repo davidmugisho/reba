@@ -22,6 +22,7 @@ export const en = {
     analysing: 'Analysing',
     result: 'Result',
     referral: 'Referral',
+    explanation: 'Explanation',
     screenings: 'Screenings',
     screening: 'Screening',
     back: 'Back',
@@ -161,6 +162,37 @@ export const en = {
     noneBody:
       'This screening is not in progress any more, so there is nothing to report. Run the check again from the beginning.',
     backToStart: 'Back to start',
+  },
+
+  explain: {
+    title: 'What this means',
+    lead: 'Read this to the patient and the family. Use their own words if it helps.',
+    clearPoints: [
+      'Today this check found nothing that needs a clinic visit.',
+      'That is not the same as healthy eyes. This check cannot see everything.',
+      'Come back if vision changes, if one eye starts to turn, or if the pupil ever looks white in a photo.',
+    ],
+    monitorPoints: [
+      'Something was borderline today. It is not urgent.',
+      'It should not be forgotten either, so book another check in three months.',
+      'Come back sooner if vision gets worse, or if one eye starts to turn.',
+    ],
+    referPoints: [
+      'This check found something a nurse or doctor needs to look at properly.',
+      'It is not a diagnosis, and it does not mean sight is being lost. It means someone with the right equipment should look.',
+      'Go now rather than later. When something can be treated, treating it early is what saves sight.',
+    ],
+    readingLabel: 'THE VISION READING',
+    readingLead: 'What the numbers on the slip mean.',
+    readingFor: (eye: string, denominator: number | null, belowChart: boolean): string =>
+      belowChart
+        ? `${eye}: could not read even the largest letter.`
+        : denominator === null
+          ? `${eye}: not measured.`
+          : denominator === 6
+            ? `${eye}: 6/6, which is normal sight.`
+            : `${eye}: sees at 6 metres what clear sight sees at ${denominator}. Written 6/${denominator}.`,
+    close: 'Back to the result',
   },
 
   referral: {

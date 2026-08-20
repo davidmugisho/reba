@@ -45,7 +45,9 @@ without losing the thread.
 4. **Eye capture** — one photo per eye, flash on, in a darkened room if there
    is one.
 5. **Result** — a full-bleed colour band. This is the screen the product lives
-   or dies on, so every other screen stays quiet to let it shout.
+   or dies on, so every other screen stays quiet to let it shout. Behind it,
+   *Explain this to me* is the other half: a script to read to the family,
+   including what the 6/x number on the slip actually means.
 6. **Referral slip** — the outcome laid out to be shown to the family or copied
    onto the paper form, plus free-text notes. Saving happens here.
 
@@ -61,7 +63,7 @@ worth knowing which before you read the code and assume it is broken.
 | Visual acuity | Real. Card-on-screen calibration, randomised direction, decreasing lines, and a stop rule. An eye that was not measured is stored as `null`, never as a number. |
 | Eye capture | Real. `expo-camera`, flash on, one shot per eye. The photo is moved out of the cache into permanent storage and the record keeps that path. |
 | Analysis | **Partial.** The band comes from the acuity actually measured — see [`src/triage.ts`](src/triage.ts). Nothing reads the photos yet; that is the model at day 7. |
-| Result | Real. Says what decided the band and that the photos have not been read. The *Explain this to me* button does nothing yet. |
+| Result | Real. Says what decided the band and that the photos have not been read. *Explain this to me* opens a script to read to the family. |
 | Referral + saving | Real. Writes to disk, survives a restart, and tells you when it fails. |
 
 One more thing to know: the in-progress screening lives in memory only. If the
@@ -253,8 +255,9 @@ band is the failure the whole file exists to avoid.
 
 Tokens live in [`src/theme.ts`](src/theme.ts) and the reasoning is written down
 there. The short version: the app is used outdoors on cheap screens, so
-contrast is functional rather than decorative; touch targets never go below
-56dp and text never below 13px; and colour means status and nothing else, so
+contrast and weight do the work rather than size — body text never goes below
+15 and nothing anywhere below 12, and touch targets never below 56dp; and
+colour means status and nothing else, so
 the result band is the only saturated colour anywhere. The sky blue is from the
 Rwandan flag rather than the default medical palette, because this is built for
 Rwandan health workers first.

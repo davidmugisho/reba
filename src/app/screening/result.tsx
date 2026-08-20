@@ -57,7 +57,11 @@ export default function Result() {
             label={t.result.fillReferral}
             onPress={() => router.push('/screening/referral')}
           />
-          <Button label={t.result.explain} variant="secondary" onPress={() => {}} />
+          <Button
+            label={t.result.explain}
+            variant="secondary"
+            onPress={() => router.push('/screening/explain')}
+          />
         </>
       }
     >
@@ -94,5 +98,5 @@ const s = StyleSheet.create({
   bandTitle: { ...type.display },
   cardLabel: { ...type.label, color: color.inkMuted },
   reason: { ...type.body, fontWeight: '600', color: color.ink },
-  meta: { ...type.body, fontSize: 14, color: color.inkFaint },
+  meta: { ...type.body, fontSize: 13, lineHeight: 19, color: color.inkFaint },
 });

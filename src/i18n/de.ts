@@ -13,6 +13,7 @@ export const de: Strings = {
     analysing: 'Auswertung',
     result: 'Ergebnis',
     referral: 'Überweisung',
+    explanation: 'Erklärung',
     screenings: 'Untersuchungen',
     screening: 'Untersuchung',
     back: 'Zurück',
@@ -152,6 +153,37 @@ export const de: Strings = {
     noneBody:
       'Diese Untersuchung läuft nicht mehr, es gibt also nichts zu berichten. Führen Sie die Prüfung von vorne durch.',
     backToStart: 'Zurück zum Anfang',
+  },
+
+  explain: {
+    title: 'Was das bedeutet',
+    lead: 'Lesen Sie dies der Patientin und der Familie vor. Nutzen Sie eigene Worte, wenn es hilft.',
+    clearPoints: [
+      'Heute hat diese Untersuchung nichts gefunden, das einen Klinikbesuch nötig macht.',
+      'Das ist nicht dasselbe wie gesunde Augen. Diese Untersuchung kann nicht alles sehen.',
+      'Kommen Sie wieder, wenn sich das Sehen ändert, wenn ein Auge abzuweichen beginnt, oder wenn die Pupille auf einem Foto weiß aussieht.',
+    ],
+    monitorPoints: [
+      'Etwas war heute grenzwertig. Es ist nicht dringend.',
+      'Vergessen werden sollte es trotzdem nicht: Vereinbaren Sie in drei Monaten eine neue Kontrolle.',
+      'Kommen Sie früher, wenn das Sehen schlechter wird oder ein Auge abzuweichen beginnt.',
+    ],
+    referPoints: [
+      'Diese Untersuchung hat etwas gefunden, das eine Pflegekraft oder eine Ärztin genau ansehen muss.',
+      'Das ist keine Diagnose, und es heißt nicht, dass das Augenlicht verloren geht. Es heißt, dass jemand mit der richtigen Ausrüstung nachsehen sollte.',
+      'Gehen Sie jetzt und nicht später. Wenn sich etwas behandeln lässt, rettet die frühe Behandlung das Sehen.',
+    ],
+    readingLabel: 'DER SEHWERT',
+    readingLead: 'Was die Zahlen auf dem Schein bedeuten.',
+    readingFor: (eye: string, denominator: number | null, belowChart: boolean): string =>
+      belowChart
+        ? `${eye}: konnte nicht einmal den größten Buchstaben lesen.`
+        : denominator === null
+          ? `${eye}: nicht gemessen.`
+          : denominator === 6
+            ? `${eye}: 6/6, also normales Sehen.`
+            : `${eye}: sieht auf 6 Meter das, was klares Sehen auf ${denominator} sieht. Geschrieben 6/${denominator}.`,
+    close: 'Zurück zum Ergebnis',
   },
 
   referral: {

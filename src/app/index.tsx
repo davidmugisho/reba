@@ -177,23 +177,23 @@ const s = StyleSheet.create({
   },
   wordmark: {
     ...type.display,
-    fontSize: 42,
-    lineHeight: 44,
+    fontSize: 34,
+    lineHeight: 36,
     color: color.onDark,
     letterSpacing: -1.4,
   },
   dot: { color: color.accent },
   heroTitle: {
     ...type.heading,
-    fontSize: 21,
-    lineHeight: 27,
+    fontSize: 18,
+    lineHeight: 24,
     color: color.onDark,
     letterSpacing: -0.2,
   },
   heroBody: {
     ...type.body,
-    fontSize: 15,
-    lineHeight: 23,
+    fontSize: 14,
+    lineHeight: 21,
     color: color.onDarkMuted,
   },
   // Explicit height, not aspectRatio: on react-native-web the <img> keeps its
@@ -213,7 +213,7 @@ const s = StyleSheet.create({
     alignItems: 'baseline',
     gap: space.sm + 2,
   },
-  tallyNumber: { ...type.title, fontSize: 28, color: color.ink },
+  tallyNumber: { ...type.title, fontSize: 24, color: color.ink },
   tallyLabel: { ...type.body, color: color.inkMuted },
 
   // Collapsed control. Deliberately lighter than the two buttons above it.

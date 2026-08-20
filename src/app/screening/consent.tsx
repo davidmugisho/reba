@@ -71,6 +71,6 @@ const s = StyleSheet.create({
     justifyContent: 'center',
   },
   boxOn: { backgroundColor: color.ink, borderColor: color.ink },
-  tick: { color: color.onDark, fontSize: 18, fontWeight: '700' },
+  tick: { color: color.onDark, fontSize: 16, fontWeight: '700' },
   checkLabel: { ...type.body, color: color.ink, flex: 1 },
 });

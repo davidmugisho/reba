@@ -13,6 +13,7 @@ export const fr: Strings = {
     analysing: 'Analyse',
     result: 'Résultat',
     referral: 'Orientation',
+    explanation: 'Explication',
     screenings: 'Dépistages',
     screening: 'Dépistage',
     back: 'Retour',
@@ -149,6 +150,37 @@ export const fr: Strings = {
     noneBody:
       "Ce dépistage n'est plus en cours, il n'y a donc rien à rapporter. Refaites l'examen depuis le début.",
     backToStart: 'Retour au début',
+  },
+
+  explain: {
+    title: 'Ce que cela veut dire',
+    lead: 'Lisez ceci au patient et à la famille. Reformulez avec leurs mots si cela aide.',
+    clearPoints: [
+      "Aujourd'hui, cet examen n'a rien trouvé qui nécessite une visite en clinique.",
+      "Ce n'est pas la même chose que des yeux en bonne santé. Cet examen ne voit pas tout.",
+      "Revenez si la vue change, si un œil commence à dévier, ou si la pupille paraît blanche sur une photo.",
+    ],
+    monitorPoints: [
+      "Quelque chose était limite aujourd'hui. Ce n'est pas urgent.",
+      "Il ne faut pas l'oublier pour autant : fixez un nouvel examen dans trois mois.",
+      "Revenez plus tôt si la vue se dégrade, ou si un œil commence à dévier.",
+    ],
+    referPoints: [
+      "Cet examen a trouvé quelque chose qu'un infirmier ou un médecin doit examiner correctement.",
+      "Ce n'est pas un diagnostic, et cela ne veut pas dire que la vue se perd. Cela veut dire que quelqu'un avec le bon matériel doit regarder.",
+      "Allez-y maintenant plutôt que plus tard. Quand une chose peut se soigner, la soigner tôt est ce qui sauve la vue.",
+    ],
+    readingLabel: 'LA MESURE DE LA VUE',
+    readingLead: 'Ce que signifient les chiffres sur la fiche.',
+    readingFor: (eye: string, denominator: number | null, belowChart: boolean): string =>
+      belowChart
+        ? `${eye} : n'a pas pu lire même la plus grande lettre.`
+        : denominator === null
+          ? `${eye} : non mesuré.`
+          : denominator === 6
+            ? `${eye} : 6/6, soit une vue normale.`
+            : `${eye} : voit à 6 mètres ce qu'une vue nette voit à ${denominator}. Noté 6/${denominator}.`,
+    close: 'Retour au résultat',
   },
 
   referral: {
