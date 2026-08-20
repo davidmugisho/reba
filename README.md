@@ -279,6 +279,22 @@ Discarding takes the photos with it. And the photo sweep on home now spares the
 screening in progress, which would otherwise delete pictures out from under a
 live screening the moment the health worker stepped back to the home screen.
 
+## The saved record
+
+[`history/[id]`](src/app/history/) shows one screening in full, including the
+two eye photos. They are shown because until the model lands this is the only
+thing that looks at them: a nurse handed a referral can open the record and see
+the eyes that were photographed, which is worth something today with no model
+at all. A photo whose file has gone says so rather than rendering a broken
+frame.
+
+A screening can be deleted from there. The consent script promises the patient
+they can stop at any point, and that promise should not expire the moment the
+record is written. Deleting asks first, in place rather than through a system
+dialog so it reads the same on every platform, and takes the photos with it.
+The record goes first: a photo deleted while the record survived would leave a
+screening pointing at nothing.
+
 ## Design
 
 Tokens live in [`src/theme.ts`](src/theme.ts) and the reasoning is written down

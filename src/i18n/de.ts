@@ -219,5 +219,14 @@ export const de: Strings = {
     bandMonitor: 'Nachkontrolle',
     bandRefer: 'Überwiesen',
     notFound: 'Nicht gefunden',
+    photosLabel: 'FOTOS',
+    photoMissing: 'Dieses Foto ist nicht mehr auf dem Telefon.',
+    delete: 'Diese Untersuchung löschen',
+    deleteConfirmTitle: 'Endgültig löschen?',
+    deleteConfirmBody:
+      'Der Eintrag und beide Fotos werden von diesem Telefon entfernt. Das lässt sich nicht rückgängig machen.',
+    deleteYes: 'Ja, löschen',
+    deleteNo: 'Behalten',
+    deleteFailed: 'Löschen fehlgeschlagen. Versuchen Sie es erneut.',
   },
 };

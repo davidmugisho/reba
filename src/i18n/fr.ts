@@ -215,5 +215,14 @@ export const fr: Strings = {
     bandMonitor: 'À recontrôler',
     bandRefer: 'Orienté',
     notFound: 'Introuvable',
+    photosLabel: 'PHOTOS',
+    photoMissing: "Cette photo n'est plus sur le téléphone.",
+    delete: 'Supprimer ce dépistage',
+    deleteConfirmTitle: 'Supprimer définitivement ?',
+    deleteConfirmBody:
+      'Le dossier et les deux photos sont retirés de ce téléphone. Cela ne peut pas être annulé.',
+    deleteYes: 'Oui, supprimer',
+    deleteNo: 'Le garder',
+    deleteFailed: 'La suppression a échoué. Réessayez.',
   },
 };

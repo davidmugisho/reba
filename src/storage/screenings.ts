@@ -71,6 +71,20 @@ export async function saveScreening(screening: Screening): Promise<void> {
   await AsyncStorage.setItem(KEY, JSON.stringify(next));
 }
 
+/**
+ * Removes one screening.
+ *
+ * Reads through the throwing path on purpose: if the store cannot be read,
+ * this refuses rather than writing a list that quietly drops every other
+ * record along with the one being deleted.
+ *
+ * The photos are the caller's to remove — this module does not touch files.
+ */
+export async function deleteScreening(id: string): Promise<void> {
+  const all = await readAll();
+  await AsyncStorage.setItem(KEY, JSON.stringify(all.filter((s) => s.id !== id)));
+}
+
 export async function clearAll(): Promise<void> {
   await AsyncStorage.removeItem(KEY);
 }

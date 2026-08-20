@@ -227,6 +227,15 @@ export const en = {
     bandMonitor: 'Recheck',
     bandRefer: 'Referred',
     notFound: 'Not found',
+    photosLabel: 'PHOTOS',
+    photoMissing: 'This photo is no longer on the phone.',
+    delete: 'Delete this screening',
+    deleteConfirmTitle: 'Delete it permanently?',
+    deleteConfirmBody:
+      'The record and both photos are removed from this phone. This cannot be undone.',
+    deleteYes: 'Yes, delete',
+    deleteNo: 'Keep it',
+    deleteFailed: 'It could not be deleted. Try again.',
   },
 };
 

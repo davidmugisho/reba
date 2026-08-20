@@ -230,5 +230,14 @@ export const rw: Strings = {
     bandMonitor: 'Ongera urebe',
     bandRefer: 'Yoherejwe',
     notFound: 'Ntibyabonetse',
+    photosLabel: 'AMAFOTO',
+    photoMissing: 'Iyi foto ntikiri kuri iyi telefone.',
+    delete: 'Siba iri suzuma',
+    deleteConfirmTitle: 'Gusiba burundu?',
+    deleteConfirmBody:
+      'Dosiye n’amafoto yombi bizakurwa kuri iyi telefone. Ibi ntibishobora gusubizwa inyuma.',
+    deleteYes: 'Yego, siba',
+    deleteNo: 'Bigumeho',
+    deleteFailed: 'Ntibyashoboye gusibwa. Ongera ugerageze.',
   },
 };
