@@ -19,11 +19,17 @@ read at arm's length, outdoors, with a queue waiting.
 
 ## Two rules the whole app obeys
 
-**Nothing leaves the phone.** No account, no upload, no sync, no analytics.
+**Nothing leaves the phone by itself.** There is no backend, no account, no
+sync, no analytics, and no network code in the app at all — `grep` it.
 Screenings are written to on-device storage and stay there. This is not a
 feature to be traded away later — it is the reason a health worker can run the
 check on a child without asking a family to consent to anything leaving the
 room.
+
+The one way data can leave is a health worker deliberately exporting a
+spreadsheet and passing it on through the phone's own share sheet. That takes a
+tap and a chosen destination, it never happens on its own, and the photos are
+never in it. See **Getting records to the health centre**.
 
 **Reba never clears anyone.** There is no green band, no "healthy" result. The
 mildest outcome the app can give is *no signs today*, and it says in the same
@@ -295,6 +301,28 @@ dialog so it reads the same on every platform, and takes the photos with it.
 The record goes first: a photo deleted while the record survived would leave a
 screening pointing at nothing.
 
+## Getting records to the health centre
+
+A health worker builds up screenings that nobody at the health centre can see.
+The export is the answer, and it is deliberately small: a CSV, written on a tap,
+handed to the system share sheet. No account, no server, no upload path in the
+app.
+
+**The photos are not in it.** They are the most identifying thing Reba holds, a
+spreadsheet is no place for them, and a file that has left the phone can be
+forwarded anywhere. Whoever needs to see an eye opens the record on the device.
+The screen says so above the button rather than leaving it to be discovered.
+
+The file is written to the cache directory on purpose. It is a copy rather than
+the record, and the OS clearing it is exactly what should happen to a
+spreadsheet of patient data left lying around after it has been sent.
+
+Building the rows lives in [`src/export.ts`](src/export.ts), pure and tested,
+because the failure mode is quiet: a CSV that breaks on the first village name
+containing a comma arrives looking complete and is wrong. Values are quoted per
+RFC 4180 only when they need to be, an eye that was never measured is blank
+rather than invented, and one that failed the top line reads *worse than 6/60*.
+
 ## Design
 
 Tokens live in [`src/theme.ts`](src/theme.ts) and the reasoning is written down
@@ -310,8 +338,7 @@ Rwandan health workers first.
 
 - **Day 7** — real on-device TFLite inference in place of the timeout.
 
-Then: an explain screen for the result, and a way to get records off the phone
-that does not betray the first rule.
+Beyond that: whatever a real health worker asks for after using it.
 
 ## Working on this
 

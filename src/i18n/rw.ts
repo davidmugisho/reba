@@ -230,6 +230,11 @@ export const rw: Strings = {
     bandMonitor: 'Ongera urebe',
     bandRefer: 'Yoherejwe',
     notFound: 'Ntibyabonetse',
+    export: 'Sohora nk’imbonerahamwe',
+    exportNote:
+      'Amafoto ntabwo ari muri iyi dosiye. Ukeneye kureba ijisho afungura dosiye hano.',
+    exportUnavailable: 'Iyi telefone ntishobora gusangira dosiye.',
+    exportFailed: 'Dosiye ntiyashoboye gukorwa. Ongera ugerageze.',
     photosLabel: 'AMAFOTO',
     photoMissing: 'Iyi foto ntikiri kuri iyi telefone.',
     delete: 'Siba iri suzuma',

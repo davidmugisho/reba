@@ -215,6 +215,11 @@ export const fr: Strings = {
     bandMonitor: 'À recontrôler',
     bandRefer: 'Orienté',
     notFound: 'Introuvable',
+    export: 'Exporter en tableur',
+    exportNote:
+      "Les photos ne sont pas incluses. Qui a besoin de voir un œil ouvre le dossier ici.",
+    exportUnavailable: 'Ce téléphone ne peut pas partager de fichiers.',
+    exportFailed: "Le fichier n'a pas pu être créé. Réessayez.",
     photosLabel: 'PHOTOS',
     photoMissing: "Cette photo n'est plus sur le téléphone.",
     delete: 'Supprimer ce dépistage',

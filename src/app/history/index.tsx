@@ -1,7 +1,9 @@
 import { useFocusEffect, useRouter } from 'expo-router';
+import { exportFileName, toCsv } from '../../export';
+import { ShareUnavailable, shareText } from '../../storage/share';
 import { useCallback, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { Body, Screen, Title } from '../../components/reba-kit';
+import { Body, Button, Screen, Title } from '../../components/reba-kit';
 import { useT } from '../../i18n';
 import { listScreenings } from '../../storage/screenings';
 import type { RiskLevel, Screening } from '../../types/screening';
@@ -22,6 +24,20 @@ export default function History() {
     refer: t.history.bandRefer,
   };
   const [items, setItems] = useState<Screening[] | null>(null);
+  const [exportError, setExportError] = useState<string | null>(null);
+
+  async function exportAll() {
+    if (!items?.length) return;
+    setExportError(null);
+    try {
+      await shareText(exportFileName(new Date()), toCsv(items, t.result.reason));
+    } catch (cause) {
+      console.warn('[reba] could not export', cause);
+      setExportError(
+        cause instanceof ShareUnavailable ? t.history.exportUnavailable : t.history.exportFailed,
+      );
+    }
+  }
 
   useFocusEffect(
     useCallback(() => {
@@ -41,7 +57,15 @@ export default function History() {
   }
 
   return (
-    <Screen>
+    <Screen
+      footer={
+        <>
+          {exportError ? <Text style={s.exportError}>{exportError}</Text> : null}
+          <Text style={s.exportNote}>{t.history.exportNote}</Text>
+          <Button label={t.history.export} variant="secondary" onPress={exportAll} />
+        </>
+      }
+    >
       {items.map((item) => (
         <Pressable
           key={item.id}
@@ -84,4 +108,14 @@ const s = StyleSheet.create({
   rowDate: { ...type.body, fontSize: 13, color: color.inkMuted },
   tag: { borderWidth: 1.5, borderRadius: radius.sm, paddingHorizontal: space.sm, paddingVertical: 4 },
   tagLabel: { ...type.label },
+  exportNote: { ...type.body, fontSize: 13, color: color.inkMuted, textAlign: 'center' },
+  exportError: {
+    ...type.body,
+    color: color.refer,
+    fontWeight: '600',
+    borderWidth: 1.5,
+    borderColor: color.refer,
+    borderRadius: radius.md,
+    padding: space.md,
+  },
 });

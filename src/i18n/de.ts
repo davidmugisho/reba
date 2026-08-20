@@ -219,6 +219,11 @@ export const de: Strings = {
     bandMonitor: 'Nachkontrolle',
     bandRefer: 'Überwiesen',
     notFound: 'Nicht gefunden',
+    export: 'Als Tabelle exportieren',
+    exportNote:
+      'Die Fotos sind nicht enthalten. Wer ein Auge sehen muss, öffnet den Eintrag hier.',
+    exportUnavailable: 'Dieses Telefon kann keine Dateien teilen.',
+    exportFailed: 'Die Datei konnte nicht erstellt werden. Versuchen Sie es erneut.',
     photosLabel: 'FOTOS',
     photoMissing: 'Dieses Foto ist nicht mehr auf dem Telefon.',
     delete: 'Diese Untersuchung löschen',
