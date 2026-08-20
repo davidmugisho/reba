@@ -1,3 +1,4 @@
+import type { TriageReason } from '../types/screening';
 import type { Strings } from './en';
 
 export const fr: Strings = {
@@ -134,8 +135,16 @@ export const fr: Strings = {
       "Reba ne pose pas de diagnostic. Il signale les yeux qu'un infirmier ou un médecin devrait examiner. La décision leur revient toujours.",
     fillReferral: "Remplir l'orientation",
     explain: 'Expliquez-moi',
-    meta: (version: string) =>
-      `Modèle ${version} · réglé pour la sensibilité · les cas limites sont signalés volontairement`,
+    basis:
+      "Décidé par l'acuité mesurée aujourd'hui. Les photos restent sur ce téléphone mais rien ne les analyse encore.",
+    reason: (r: TriageReason): string =>
+      ({
+        belowChart: "Un œil n'a pas pu lire même la plus grande ligne.",
+        poorAcuity: "L'acuité est de 6/18 ou moins sur au moins un œil.",
+        eyesDiffer: 'Les deux yeux sont séparés de deux lignes ou plus.',
+        borderlineAcuity: "L'acuité est limite sur au moins un œil.",
+        noSignsOnAcuity: "Le test d'acuité n'a rien repéré.",
+      })[r],
     noneTitle: 'Aucun résultat à afficher',
     noneBody:
       "Ce dépistage n'est plus en cours, il n'y a donc rien à rapporter. Refaites l'examen depuis le début.",

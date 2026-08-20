@@ -60,8 +60,8 @@ worth knowing which before you read the code and assume it is broken.
 | Patient | Real |
 | Visual acuity | Real. Card-on-screen calibration, randomised direction, decreasing lines, and a stop rule. An eye that was not measured is stored as `null`, never as a number. |
 | Eye capture | Real. `expo-camera`, flash on, one shot per eye. The photo is moved out of the cache into permanent storage and the record keeps that path. |
-| Analysis | **Placeholder.** A 1.6s timeout and a hardcoded score of `0.72`, so every screening currently comes out as *refer*. |
-| Result | Real, on top of a stubbed score. The *Explain this to me* button does nothing yet. |
+| Analysis | **Partial.** The band comes from the acuity actually measured — see [`src/triage.ts`](src/triage.ts). Nothing reads the photos yet; that is the model at day 7. |
+| Result | Real. Says what decided the band and that the photos have not been read. The *Explain this to me* button does nothing yet. |
 | Referral + saving | Real. Writes to disk, survives a restart, and tells you when it fails. |
 
 One more thing to know: the in-progress screening lives in memory only. If the
@@ -224,6 +224,30 @@ deletes the orphans.
 On web there are no file URLs, so the data URI ends up in AsyncStorage after
 all. That is tolerated because web is for clicking through the flow, never for
 holding patient photos — a couple of real shots would fill the browser quota.
+
+## How the band is decided
+
+[`src/triage.ts`](src/triage.ts), a pure module like the acuity one, and for
+the same reason: this is a clinical output and it has to be right.
+
+Until the model lands, the only real signal Reba collects is the acuity from
+step 3, so that is what decides the band. The photos are taken and kept, but
+nothing reads them, and the result screen says so in as many words rather than
+letting a health worker assume a model looked.
+
+- Worse than 6/60 in either eye, or 6/18 or worse — refer.
+- Two lines or more between the eyes — refer. One eye quietly carrying the
+  other is how amblyopia goes unnoticed.
+- 6/12 in either eye, or only one eye testable — recheck.
+- Anything else — no signs today, which is not the same as healthy eyes.
+
+Referring at 6/18 is earlier than the WHO threshold for moderate impairment, on
+the app's stated bias: a false positive costs one consultation, a false
+negative can cost an eye.
+
+If neither eye could be measured, the module returns null and the result screen
+shows its empty state. An app that has measured nothing and still produces a
+band is the failure the whole file exists to avoid.
 
 ## Design
 

@@ -3,37 +3,37 @@ import { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { useScreening } from '../../context/ScreeningContext';
 import { useT } from '../../i18n';
-import type { RiskLevel } from '../../types/screening';
+import { triageFromAcuity } from '../../triage';
 import { color, space, type } from '../../theme';
 
 /**
- * Day 7 swaps the timeout for real TFLite inference. The threshold is
- * deliberately low: a false positive costs one consultation, a false
- * negative can cost an eye.
+ * Decides the band.
+ *
+ * Until the on-device model lands, the only real signal Reba has is the
+ * acuity measured at step 3, so that is what decides this — see src/triage.ts.
+ * The photos are taken and kept, but nothing reads them yet, and the result
+ * screen says so rather than implying a model looked.
+ *
+ * Day 7 adds TFLite inference over the captures and folds its score in
+ * alongside the acuity.
  */
-const THRESHOLD = 0.35;
-
-function bandFor(score: number): RiskLevel {
-  if (score >= 0.6) return 'refer';
-  if (score >= THRESHOLD) return 'monitor';
-  return 'clear';
-}
-
 export default function Analysis() {
   const router = useRouter();
-  const { update } = useScreening();
+  const { draft, update } = useScreening();
   const t = useT();
 
   useEffect(() => {
+    // The acuity is final by the time this screen mounts; the pause is a
+    // transition, not a computation pretending to take time.
     const timer = setTimeout(() => {
-      const score = 0.72; // placeholder until the model lands
-      update({
-        analysis: { score, threshold: THRESHOLD, modelVersion: 'stub-0' },
-        risk: bandFor(score),
-      });
+      const triage = triageFromAcuity(draft.acuity);
+      // No measurement means no band. The result screen shows an empty state
+      // rather than inventing one.
+      update({ risk: triage?.risk ?? null, triage: triage ?? null });
       router.replace('/screening/result');
-    }, 1600);
+    }, 900);
     return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

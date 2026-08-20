@@ -73,8 +73,11 @@ export default function Result() {
         <Body muted>{t.result.notBody}</Body>
       </Card>
 
-      {draft.analysis ? (
-        <Text style={s.meta}>{t.result.meta(draft.analysis.modelVersion)}</Text>
+      {draft.triage ? (
+        <>
+          <Text style={s.reason}>{t.result.reason(draft.triage.reason)}</Text>
+          <Text style={s.meta}>{t.result.basis}</Text>
+        </>
       ) : null}
     </Screen>
   );
@@ -90,5 +93,6 @@ const s = StyleSheet.create({
   bandLabel: { ...type.label },
   bandTitle: { ...type.display },
   cardLabel: { ...type.label, color: color.inkMuted },
+  reason: { ...type.body, fontWeight: '600', color: color.ink },
   meta: { ...type.body, fontSize: 14, color: color.inkFaint },
 });

@@ -1,3 +1,4 @@
+import type { TriageReason } from '../types/screening';
 import type { Strings } from './en';
 
 export const de: Strings = {
@@ -137,8 +138,16 @@ export const de: Strings = {
       'Reba stellt keine Diagnose. Es markiert Augen, die eine Pflegekraft oder eine Ärztin ansehen sollte. Die Entscheidung liegt immer bei ihnen.',
     fillReferral: 'Überweisung ausfüllen',
     explain: 'Erklären Sie mir das',
-    meta: (version: string) =>
-      `Modell ${version} · auf Sensitivität eingestellt · Grenzfälle werden absichtlich markiert`,
+    basis:
+      'Entschieden anhand der heute gemessenen Sehschärfe. Die Fotos bleiben auf diesem Telefon, aber noch liest sie nichts.',
+    reason: (r: TriageReason): string =>
+      ({
+        belowChart: 'Ein Auge konnte nicht einmal die größte Zeile lesen.',
+        poorAcuity: 'Die Sehschärfe beträgt auf mindestens einem Auge 6/18 oder schlechter.',
+        eyesDiffer: 'Die beiden Augen liegen zwei Zeilen oder mehr auseinander.',
+        borderlineAcuity: 'Die Sehschärfe ist auf mindestens einem Auge grenzwertig.',
+        noSignsOnAcuity: 'Der Sehschärfetest hat nichts gefunden.',
+      })[r],
     noneTitle: 'Kein Ergebnis vorhanden',
     noneBody:
       'Diese Untersuchung läuft nicht mehr, es gibt also nichts zu berichten. Führen Sie die Prüfung von vorne durch.',

@@ -1,3 +1,4 @@
+import type { TriageReason } from '../types/screening';
 import type { Strings } from './en';
 
 /**
@@ -149,8 +150,16 @@ export const rw: Strings = {
       'Reba ntisuzuma nka muganga. Yerekana amaso umuforomo cyangwa umuganga agomba kureba. Icyemezo ni icyabo buri gihe.',
     fillReferral: 'Uzuza urupapuro rwo kohereza',
     explain: 'Mbisobanurire',
-    meta: (version: string) =>
-      `Moderi ${version} · yateguwe kumenya byinshi · ibitagaragara neza byerekanwa ku bushake`,
+    basis:
+      'Byemejwe hashingiwe ku bushobozi bwo kureba bwapimwe uyu munsi. Amafoto asigara kuri iyi telefone ariko nta kintu kirayasoma.',
+    reason: (r: TriageReason): string =>
+      ({
+        belowChart: 'Ijisho rimwe ntiryashoboye gusoma n’umurongo munini kurusha iyindi.',
+        poorAcuity: 'Ubushobozi bwo kureba ni 6/18 cyangwa buri hasi ku ijisho nibura rimwe.',
+        eyesDiffer: 'Amaso yombi atandukanyijwe n’imirongo ibiri cyangwa irenga.',
+        borderlineAcuity: 'Ubushobozi bwo kureba ntiburagaragara neza ku ijisho nibura rimwe.',
+        noSignsOnAcuity: 'Ikizamini cy’ubushobozi bwo kureba nta kintu cyabonye.',
+      })[r],
     noneTitle: 'Nta gisubizo cyo kwerekana',
     noneBody:
       'Iri suzuma ntirikiriho, nta kintu cyo gutanga. Ongera utangire isuzuma bundi bushya.',

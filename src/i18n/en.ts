@@ -1,3 +1,5 @@
+import type { TriageReason } from '../types/screening';
+
 /**
  * English is the source language. Every other locale is typed against this
  * object, so a missing or misspelt key is a compile error rather than a blank
@@ -144,8 +146,17 @@ export const en = {
       'Reba does not diagnose. It flags eyes that a nurse or doctor should look at. The decision is always theirs.',
     fillReferral: 'Fill in referral',
     explain: 'Explain this to me',
-    meta: (version: string): string =>
-      `Model ${version} · tuned for sensitivity · borderline cases are flagged on purpose`,
+    /** What decided the band. It must never imply the photos were read. */
+    basis:
+      'Decided by the acuity measured today. The photos are kept on this phone but nothing reads them yet.',
+    reason: (r: TriageReason): string =>
+      ({
+        belowChart: 'One eye could not read even the largest line.',
+        poorAcuity: 'Acuity is 6/18 or worse in at least one eye.',
+        eyesDiffer: 'The two eyes are two lines apart or more.',
+        borderlineAcuity: 'Acuity is borderline in at least one eye.',
+        noSignsOnAcuity: 'The acuity test picked nothing up.',
+      })[r],
     noneTitle: 'No result to show',
     noneBody:
       'This screening is not in progress any more, so there is nothing to report. Run the check again from the beginning.',

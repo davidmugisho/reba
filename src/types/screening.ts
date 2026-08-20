@@ -31,6 +31,25 @@ export interface EyeCapture {
   capturedAt: string;
 }
 
+export type TriageReason =
+  /** Missed even the largest line: worse than 6/60. */
+  | 'belowChart'
+  /** 6/18 or worse in at least one eye. */
+  | 'poorAcuity'
+  /** Two lines or more between the eyes — the pattern amblyopia makes. */
+  | 'eyesDiffer'
+  /** 6/12 in at least one eye: not a referral, not nothing. */
+  | 'borderlineAcuity'
+  /** Nothing in the acuity to act on. Never a clean bill of health. */
+  | 'noSignsOnAcuity';
+
+/** Why a screening landed in the band it did, and what that was built from. */
+export interface Triage {
+  risk: RiskLevel;
+  reason: TriageReason;
+  basis: 'acuity';
+}
+
 export interface AnalysisResult {
   /** Model confidence that a referable sign is present, 0..1. */
   score: number;
@@ -48,6 +67,11 @@ export interface Screening {
   captures: EyeCapture[];
   analysis: AnalysisResult | null;
   risk: RiskLevel | null;
+  /**
+   * Why the band was chosen. Optional so records written before triage
+   * existed still parse.
+   */
+  triage?: Triage | null;
   referred: boolean;
   notes: string;
 }
