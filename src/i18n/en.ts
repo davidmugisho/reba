@@ -74,13 +74,32 @@ export const en = {
 
   acuity: {
     step: 'Step 3 of 6',
+
+    calibrateTitle: 'Match a bank card',
+    calibrateLead:
+      'Hold any bank or ID card flat against the screen and adjust the outline until it is exactly the width of the card. Every screen is a different size, and this is what makes the letters the right size on this one.',
+    narrower: 'Narrower',
+    wider: 'Wider',
+    calibrateDone: 'The card matches',
+
     title: 'Which way do the legs point?',
-    lead: 'Stand the patient three metres away. Cover the left eye first. Ask them to point.',
-    next: 'Continue to eye capture',
+    coverLeft: 'Cover the LEFT eye. Stand the patient three metres away and ask them to point.',
+    coverRight: 'Now cover the RIGHT eye. Ask again.',
+    rightEye: 'Right eye',
+    leftEye: 'Left eye',
+    lineOf: (d: number): string => `Line 6/${d}`,
+    cannotSee: 'Cannot see it',
     up: 'Up',
     down: 'Down',
     left: 'Left',
     right: 'Right',
+
+    resultTitle: 'Acuity measured',
+    redo: 'Test this eye again',
+    next: 'Continue to eye capture',
+    /** One eye's reading, for the slip and the saved record. */
+    eyeReading: (denominator: number | null, belowChart: boolean): string =>
+      belowChart ? 'worse than 6/60' : denominator !== null ? `6/${denominator}` : '—',
   },
 
   capture: {

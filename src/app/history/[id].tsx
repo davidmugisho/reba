@@ -2,6 +2,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Body, Card, Screen, Title } from '../../components/reba-kit';
+import { bothEyesLine } from '../../acuity';
 import { useT } from '../../i18n';
 import { getScreening } from '../../storage/screenings';
 import type { RiskLevel, Screening } from '../../types/screening';
@@ -36,11 +37,7 @@ export default function ScreeningDetail() {
         <Row label={t.referral.referTo} value={item.patient.facilityCode || t.common.none} />
         <Row
           label={t.referral.acuity}
-          value={
-            item.acuity.right
-              ? `R 6/${item.acuity.right} · L 6/${item.acuity.left}`
-              : t.common.none
-          }
+          value={bothEyesLine(item.acuity, t.acuity.eyeReading, t.common.none)}
         />
         <Row
           label={t.referral.outcome}

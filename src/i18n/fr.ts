@@ -65,13 +65,31 @@ export const fr: Strings = {
 
   acuity: {
     step: 'Étape 3 sur 6',
+
+    calibrateTitle: 'Ajustez à une carte bancaire',
+    calibrateLead:
+      "Posez une carte bancaire ou une carte d'identité à plat sur l'écran et ajustez le cadre jusqu'à ce qu'il fasse exactement sa largeur. Chaque écran a une taille différente, et c'est ce qui donne aux lettres la bonne taille sur celui-ci.",
+    narrower: 'Plus étroit',
+    wider: 'Plus large',
+    calibrateDone: 'La carte correspond',
+
     title: 'Dans quel sens pointent les branches ?',
-    lead: "Placez le patient à trois mètres. Couvrez l'œil gauche d'abord. Demandez-lui de pointer.",
-    next: 'Continuer vers la photo des yeux',
+    coverLeft: "Couvrez l'œil GAUCHE. Placez le patient à trois mètres et demandez-lui de pointer.",
+    coverRight: "Couvrez maintenant l'œil DROIT. Recommencez.",
+    rightEye: 'Œil droit',
+    leftEye: 'Œil gauche',
+    lineOf: (d: number): string => `Ligne 6/${d}`,
+    cannotSee: 'Ne voit pas',
     up: 'Haut',
     down: 'Bas',
     left: 'Gauche',
     right: 'Droite',
+
+    resultTitle: 'Acuité mesurée',
+    redo: 'Refaire cet œil',
+    next: 'Continuer vers la photo des yeux',
+    eyeReading: (denominator: number | null, belowChart: boolean): string =>
+      belowChart ? 'moins de 6/60' : denominator !== null ? `6/${denominator}` : '—',
   },
 
   capture: {

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { Body, Button, Card, Eyebrow, Screen, Title } from '../../components/reba-kit';
 import { useScreening } from '../../context/ScreeningContext';
+import { bothEyesLine } from '../../acuity';
 import { useT } from '../../i18n';
 import { saveScreening } from '../../storage/screenings';
 import { color, radius, space, type } from '../../theme';
@@ -65,11 +66,7 @@ export default function Referral() {
         <Row label={t.referral.referTo} value={draft.patient.facilityCode || t.common.none} />
         <Row
           label={t.referral.acuity}
-          value={
-            draft.acuity.right
-              ? `R 6/${draft.acuity.right} · L 6/${draft.acuity.left}`
-              : t.common.none
-          }
+          value={bothEyesLine(draft.acuity, t.acuity.eyeReading, t.common.none)}
         />
         <Row
           label={t.referral.outcome}

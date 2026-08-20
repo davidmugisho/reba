@@ -79,13 +79,32 @@ export const rw: Strings = {
 
   acuity: {
     step: 'Intambwe ya 3 kuri 6',
+
+    calibrateTitle: 'Gereranya n’ikarita ya banki',
+    calibrateLead:
+      'Shyira ikarita ya banki cyangwa indangamuntu kuri ecran, uhindure kugeza ubugari bw’agasanduku bungana n’ubw’ikarita. Buri telefone ifite ecran itandukanye, ni yo mpamvu ibi bituma inyuguti zigira ingano ikwiye kuri iyi.',
+    narrower: 'Gabanya',
+    wider: 'Ongera',
+    calibrateDone: 'Ikarita irahuye',
+
     title: 'Amaguru yerekeye he?',
-    lead: 'Shyira umurwayi ku ntera ya metero eshatu. Banza upfuke ijisho ry’ibumoso. Umusabe kwerekana.',
-    next: 'Komeza ku mafoto y’amaso',
+    coverLeft:
+      'Pfuka ijisho ry’IBUMOSO. Shyira umurwayi ku ntera ya metero eshatu umusabe kwerekana.',
+    coverRight: 'Ubu pfuka ijisho ry’IBURYO. Ongera.',
+    rightEye: 'Ijisho ry’iburyo',
+    leftEye: 'Ijisho ry’ibumoso',
+    lineOf: (d: number): string => `Umurongo 6/${d}`,
+    cannotSee: 'Ntabibona',
     up: 'Hejuru',
     down: 'Hasi',
     left: 'Ibumoso',
     right: 'Iburyo',
+
+    resultTitle: 'Ubushobozi bwo kureba bwapimwe',
+    redo: 'Ongera upime iri jisho',
+    next: 'Komeza ku mafoto y’amaso',
+    eyeReading: (denominator: number | null, belowChart: boolean): string =>
+      belowChart ? 'munsi ya 6/60' : denominator !== null ? `6/${denominator}` : '—',
   },
 
   capture: {

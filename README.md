@@ -38,9 +38,10 @@ a crying child, a queue — so every step is somewhere you can come back to
 without losing the thread.
 
 1. **Consent** — a script to read aloud, and a checkbox for a spoken yes.
-2. **Patient** — age and sex are required, village and facility code are not.
-3. **Visual acuity** — a tumbling E. The patient points which way the legs face,
-   so it works for children and for adults who do not read.
+2. **Patient** — age and sex are required, village and referral destination are not.
+3. **Visual acuity** — a tumbling E, one eye at a time, after a bank card
+   calibrates the screen. The patient points which way the legs face, so it
+   works for children and for adults who do not read.
 4. **Eye capture** — one photo per eye, flash on, in a darkened room if there
    is one.
 5. **Result** — a full-bleed colour band. This is the screen the product lives
@@ -57,7 +58,7 @@ worth knowing which before you read the code and assume it is broken.
 | --- | --- |
 | Consent | Real |
 | Patient | Real |
-| Visual acuity | **Placeholder.** The E never rotates and answers are not scored. Pressing continue records whichever line is showing, for both eyes. |
+| Visual acuity | Real. Card-on-screen calibration, randomised direction, decreasing lines, and a stop rule. An eye that was not measured is stored as `null`, never as a number. |
 | Eye capture | **Placeholder.** No camera. Each capture stores `uri: 'placeholder'`. |
 | Analysis | **Placeholder.** A 1.6s timeout and a hardcoded score of `0.72`, so every screening currently comes out as *refer*. |
 | Result | Real, on top of a stubbed score. The *Explain this to me* button does nothing yet. |
@@ -168,6 +169,33 @@ languages are Kinyarwanda, English, French and Swahili — if these screens are
 ever used near the eastern border, Swahili will earn its place before German
 does.
 
+## The acuity test
+
+[`src/acuity.ts`](src/acuity.ts) holds the measurement and knows nothing about
+the screen. It is separate because this is the part that has to be right: a
+wrong optotype size or a wrong stop rule produces a number that looks clinical
+and is not.
+
+A 6/6 optotype subtends five arcminutes, which is 8.73 mm at six metres, and
+the height scales with both the viewing distance and the 6/x denominator. At
+the three metres this test uses, the 6/60 line is 43.65 mm tall. Turning
+millimetres into pixels needs to know how big the screen is, which is what the
+bank-card step is for — every bank and national ID card is 85.6 mm wide
+(ISO/IEC 7810 ID-1), so matching an outline to one calibrates the phone.
+
+Three optotypes per line, direction randomised each time, two misses on a line
+ends the test. The result is the smallest line the patient actually passed.
+
+The E is drawn from rectangles on a five-by-five grid rather than set in a
+font. A font renders "E" at some fraction of the point size that varies by
+typeface and platform, which would quietly make the test wrong.
+
+Two outcomes that must not be confused, and are kept apart all the way into
+storage: an eye that was never measured is `null`, and an eye that missed even
+the largest line is `null` with `belowChart` set. The second is a finding —
+vision worse than 6/60 — and it reaches the referral slip as words rather than
+as a blank.
+
 ## Design
 
 Tokens live in [`src/theme.ts`](src/theme.ts) and the reasoning is written down
@@ -180,8 +208,6 @@ Rwandan health workers first.
 
 ## Where it is going
 
-- **Day 3** — real acuity: card-on-screen calibration, randomised direction,
-  decreasing sizes, a stop rule after two misses on a line.
 - **Day 4** — `expo-camera`: forced flash, alignment ring, one shot per eye at
   a fixed distance.
 - **Day 7** — real on-device TFLite inference in place of the timeout.

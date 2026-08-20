@@ -66,13 +66,32 @@ export const de: Strings = {
 
   acuity: {
     step: 'Schritt 3 von 6',
+
+    calibrateTitle: 'An eine Bankkarte anpassen',
+    calibrateLead:
+      'Halten Sie eine Bank- oder Ausweiskarte flach an den Bildschirm und passen Sie den Rahmen an, bis er genau so breit ist wie die Karte. Jeder Bildschirm ist anders groß, und das gibt den Buchstaben auf diesem Gerät die richtige Größe.',
+    narrower: 'Schmaler',
+    wider: 'Breiter',
+    calibrateDone: 'Die Karte passt',
+
     title: 'In welche Richtung zeigen die Balken?',
-    lead: 'Stellen Sie die Patientin drei Meter entfernt auf. Decken Sie zuerst das linke Auge ab. Bitten Sie sie zu zeigen.',
-    next: 'Weiter zur Augenaufnahme',
+    coverLeft:
+      'Decken Sie das LINKE Auge ab. Stellen Sie die Patientin drei Meter entfernt auf und bitten Sie sie zu zeigen.',
+    coverRight: 'Decken Sie jetzt das RECHTE Auge ab. Noch einmal.',
+    rightEye: 'Rechtes Auge',
+    leftEye: 'Linkes Auge',
+    lineOf: (d: number): string => `Zeile 6/${d}`,
+    cannotSee: 'Sieht es nicht',
     up: 'Oben',
     down: 'Unten',
     left: 'Links',
     right: 'Rechts',
+
+    resultTitle: 'Sehschärfe gemessen',
+    redo: 'Dieses Auge erneut prüfen',
+    next: 'Weiter zur Augenaufnahme',
+    eyeReading: (denominator: number | null, belowChart: boolean): string =>
+      belowChart ? 'schlechter als 6/60' : denominator !== null ? `6/${denominator}` : '—',
   },
 
   capture: {

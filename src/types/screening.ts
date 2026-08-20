@@ -10,9 +10,17 @@ export interface PatientInfo {
 }
 
 export interface AcuityResult {
-  /** Denominator of the 6/x notation. 12 means 6/12. */
+  /** Denominator of the 6/x notation. 12 means 6/12. Null when not measured. */
   left: number | null;
   right: number | null;
+  /**
+   * Set when the patient missed even the largest line, which means vision is
+   * worse than 6/60 — a finding in itself, and not the same as "not measured".
+   *
+   * Optional so that records written before the real test still parse.
+   */
+  leftBelowChart?: boolean;
+  rightBelowChart?: boolean;
   /** Screen calibration, px per mm, from the card-on-screen step. */
   pxPerMm: number | null;
 }
