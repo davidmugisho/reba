@@ -1,0 +1,259 @@
+<!doctype html>
+<!--
+  Note technique Reba — source du PDF envoyé aux partenaires.
+
+  Le PDF lui-même n'est pas suivi par git : c'est un binaire généré qui
+  dérive en silence dès que le projet bouge. Cette source-ci se relit en
+  diff et se régénère à la demande.
+
+  Pour produire le PDF, ouvrir ce fichier dans un navigateur et imprimer
+  vers PDF en A4, arrière-plans activés. La mise en page est déjà réglée
+  pour l'impression (@page A4, marges 18/16 mm).
+
+  À revoir quand change : la pile technique (section 2), les clés de
+  stockage (section 4), ou l'état du modèle (section 6).
+-->
+<html lang="fr"><head><meta charset="utf-8"><title>Reba — note technique</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: #07203C;
+         font-size: 10.5pt; line-height: 1.55; margin: 0; }
+  h1 { font-size: 26pt; letter-spacing: -0.9pt; margin: 0 0 2mm; }
+  h1 .dot { color: #00A1DE; }
+  .sub { font-size: 12pt; color: #0E3A63; margin: 0 0 1mm; font-weight: 600; }
+  .meta { font-size: 9pt; color: #5B738C; margin: 0 0 8mm; }
+  h2 { font-size: 13pt; margin: 9mm 0 2.5mm; padding-bottom: 1.5mm;
+       border-bottom: 1.5pt solid #D5E2ED; letter-spacing: -0.3pt; }
+  h3 { font-size: 11pt; margin: 5mm 0 1.5mm; }
+  p { margin: 0 0 2.5mm; }
+  ul { margin: 0 0 2.5mm; padding-left: 5mm; }
+  li { margin-bottom: 1.2mm; }
+  strong { color: #07203C; }
+  .lede { background: #F2F9FD; border-left: 3pt solid #00A1DE;
+          padding: 3.5mm 4mm; margin: 0 0 5mm; }
+  .warn { background: #FBE9E9; border-left: 3pt solid #BE2A2A;
+          padding: 3.5mm 4mm; margin: 3mm 0; }
+  .ok { background: #E3F2EF; border-left: 3pt solid #0E7C6B;
+        padding: 3.5mm 4mm; margin: 3mm 0; }
+  table { width: 100%; border-collapse: collapse; margin: 2mm 0 3mm; font-size: 9.5pt; }
+  th { text-align: left; font-size: 8pt; letter-spacing: 0.6pt; text-transform: uppercase;
+       color: #5B738C; border-bottom: 1pt solid #D5E2ED; padding: 1.5mm 2mm 1.5mm 0; }
+  td { padding: 1.8mm 2mm 1.8mm 0; border-bottom: 0.5pt solid #E8EFF5; vertical-align: top; }
+  td.k { font-weight: 600; width: 42mm; }
+  code { font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 9pt;
+         background: #F2F9FD; padding: 0.3mm 1mm; border-radius: 1mm; }
+  .fig { margin: 4mm 0; text-align: center; }
+  .cap { font-size: 8.5pt; color: #5B738C; margin-top: 1.5mm; }
+  .avoid { page-break-inside: avoid; }
+  .newpage { page-break-before: always; }
+  footer { margin-top: 9mm; padding-top: 2.5mm; border-top: 1pt solid #D5E2ED;
+           font-size: 8.5pt; color: #5B738C; }
+</style></head><body>
+
+<h1>Reba<span class="dot">.</span></h1>
+<p class="sub">Dépistage visuel pour agents de santé communautaires — note technique</p>
+<p class="meta">Application Android · hors ligne · aucune donnée ne quitte le téléphone d'elle-même</p>
+
+<div class="lede">
+  <p style="margin:0"><strong>Reba ne pose pas de diagnostic.</strong> C'est un outil de tri : il
+  signale les yeux qu'un infirmier ou un médecin devrait examiner. L'agent de santé
+  communautaire (ASC) mène l'examen ; la décision clinique revient toujours au soignant.</p>
+</div>
+
+<h2>1. Ce que fait l'application</h2>
+<p>Un examen guidé en six étapes, environ cinq minutes, sans connexion :</p>
+<ul>
+  <li><strong>Consentement</strong> — un texte lu à voix haute au patient, et un accord verbal explicite.</li>
+  <li><strong>Patient</strong> — âge, sexe, village, structure de référence.</li>
+  <li><strong>Acuité visuelle</strong> — test du « E tournant », un œil à la fois, à trois mètres.</li>
+  <li><strong>Photos des yeux</strong> — une photo par œil, flash activé.</li>
+  <li><strong>Résultat</strong> — une bande de couleur : orienter, recontrôler, ou aucun signe.</li>
+  <li><strong>Fiche d'orientation</strong> — à montrer à la famille ou recopier sur le formulaire papier.</li>
+</ul>
+<p>Interface en <strong>kinyarwanda, anglais, français et allemand</strong>.</p>
+
+<h2>2. Technologies utilisées</h2>
+<table>
+  <tr><th>Élément</th><th>Choix</th><th>Pourquoi</th></tr>
+  <tr><td class="k">Langage</td><td>TypeScript 5.9</td>
+      <td>Typage strict : une erreur de données est refusée à la compilation, pas découverte devant un patient.</td></tr>
+  <tr><td class="k">Cadre applicatif</td><td>React Native 0.81</td>
+      <td>Une seule base de code, application Android native.</td></tr>
+  <tr><td class="k">Plateforme</td><td>Expo SDK 54</td>
+      <td>Version volontairement figée : c'est celle que porte Expo Go, l'outil de test sur téléphone.</td></tr>
+  <tr><td class="k">Navigation</td><td>expo-router 6</td>
+      <td>Parcours linéaire, une étape par écran.</td></tr>
+  <tr><td class="k">Appareil photo</td><td>expo-camera 17</td>
+      <td>Prise de vue avec flash forcé.</td></tr>
+  <tr><td class="k">Stockage</td><td>AsyncStorage 2.2 + système de fichiers</td>
+      <td>Dossiers en base clé-valeur, photos en fichiers.</td></tr>
+  <tr><td class="k">Serveur</td><td><strong>Aucun</strong></td>
+      <td>Voir section 3.</td></tr>
+</table>
+<p>Environ <strong>4 000 lignes</strong> de code applicatif. La logique clinique — mesure de
+l'acuité, règle de décision, export — est isolée dans des modules purs, testés indépendamment
+de l'interface.</p>
+
+<h2>3. Il n'y a pas de serveur</h2>
+<div class="ok">
+  <p style="margin:0">L'application ne contient <strong>aucun code réseau</strong>. Pas de compte,
+  pas de serveur, pas de synchronisation, pas de statistiques d'usage. Vérifiable :
+  aucune occurrence de <code>fetch</code>, <code>axios</code> ou d'URL distante dans le code source.</p>
+</div>
+<p>Ce n'est pas une simplification temporaire, c'est le principe fondateur. C'est ce qui permet à
+un ASC d'examiner un enfant sans demander à la famille d'accepter que quoi que ce soit sorte de
+la pièce. Et c'est ce qui permet à l'application de fonctionner là où il n'y a pas de réseau —
+c'est-à-dire là où elle sert.</p>
+
+<h2>4. Où vivent les données, et ce qui les protège</h2>
+<table>
+  <tr><th>Donnée</th><th>Emplacement</th></tr>
+  <tr><td class="k">Dossiers de dépistage</td><td>AsyncStorage, clé <code>reba:screenings:v1</code></td></tr>
+  <tr><td class="k">Dépistage en cours</td><td>AsyncStorage, clé <code>reba:draft:v1</code></td></tr>
+  <tr><td class="k">Photos des yeux</td><td>Fichiers, un dossier par dépistage</td></tr>
+  <tr><td class="k">Langue choisie</td><td>AsyncStorage, clé <code>reba:locale:v1</code></td></tr>
+</table>
+
+<h3>Ce qui protège ces données</h3>
+<ul>
+  <li><strong>Le bac à sable Android.</strong> Tout est écrit dans l'espace privé de l'application
+      (<code>com.david_mugisho.reba</code>). Aucune autre application du téléphone ne peut y accéder.</li>
+  <li><strong>Le chiffrement du téléphone.</strong> Android chiffre le stockage par défaut : téléphone
+      éteint ou verrouillé, les données sont illisibles sans le code de l'utilisateur.</li>
+  <li><strong>Aucune transmission.</strong> Rien ne part sur un réseau, donc rien ne peut être
+      intercepté en chemin.</li>
+  <li><strong>Effacement volontaire.</strong> Un dépistage peut être supprimé du dossier, photos
+      comprises. Un dépistage abandonné en cours de route est nettoyé automatiquement.</li>
+</ul>
+
+<div class="warn">
+  <p style="margin:0 0 1.5mm"><strong>Ce qui n'est pas protégé, en toute transparence</strong></p>
+  <p style="margin:0">L'application <strong>n'ajoute pas son propre chiffrement</strong>. Quiconque
+  dispose du téléphone déverrouillé, ou d'un téléphone débridé (<em>rooté</em>), peut lire les
+  dossiers. La protection actuelle est celle du système Android, pas une couche supplémentaire.
+  Pour un déploiement réel, la mesure suivante serait de chiffrer les dossiers avec une clé
+  conservée dans le coffre matériel du téléphone.</p>
+</div>
+
+<h3>Sortir les données</h3>
+<p>Un ASC peut exporter ses dépistages en tableur (CSV) et le transmettre via le téléphone. Cela
+demande <strong>une action volontaire et une destination choisie</strong> ; rien ne part
+automatiquement. <strong>Les photos ne sont jamais dans ce fichier</strong> : ce sont les données
+les plus identifiantes, et un fichier sorti du téléphone peut être retransmis n'importe où. Qui
+doit voir un œil ouvre le dossier sur l'appareil.</p>
+
+<div class="newpage"></div>
+
+<h2>5. Le cœur du projet : comment une photo peut révéler un problème</h2>
+<p>C'est la bonne question, et la réponse repose sur un phénomène physique simple, utilisé depuis
+longtemps en médecine : <strong>le reflet rétinien</strong>.</p>
+
+<p>Quand le flash éclaire un œil, la lumière traverse la pupille, frappe la rétine au fond de
+l'œil, et ressort. La rétine est richement vascularisée : la lumière qui revient est
+<strong>rouge orangé</strong>. C'est l'effet « yeux rouges » des photos de famille — un signe de
+bonne santé, pas un défaut.</p>
+
+<div class="fig avoid">
+<svg viewBox="0 0 660 200" width="620" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke="#07203C" stroke-width="4" stroke-linecap="round">
+    <!-- A : normal -->
+    <path d="M20 90 C55 45, 145 45, 180 90 C145 135, 55 135, 20 90 Z"/>
+    <circle cx="100" cy="90" r="30" fill="#3A1414" stroke="#07203C" stroke-width="3"/>
+    <circle cx="100" cy="90" r="24" fill="#C0392B" stroke="none"/>
+    <circle cx="100" cy="90" r="10" fill="#5B1A12" stroke="none"/>
+    <circle cx="112" cy="79" r="5" fill="#FFFFFF" stroke="none"/>
+    <!-- B : leucocorie -->
+    <path d="M240 90 C275 45, 365 45, 400 90 C365 135, 275 135, 240 90 Z"/>
+    <circle cx="320" cy="90" r="30" fill="#3A1414" stroke="#07203C" stroke-width="3"/>
+    <circle cx="320" cy="90" r="24" fill="#F4F6F7" stroke="none"/>
+    <circle cx="320" cy="90" r="10" fill="#DDE3E6" stroke="none"/>
+    <circle cx="332" cy="79" r="5" fill="#FFFFFF" stroke="none"/>
+    <!-- C : strabisme -->
+    <path d="M460 90 C495 45, 585 45, 620 90 C585 135, 495 135, 460 90 Z"/>
+    <circle cx="540" cy="90" r="30" fill="#3A1414" stroke="#07203C" stroke-width="3"/>
+    <circle cx="540" cy="90" r="24" fill="#C0392B" stroke="none"/>
+    <circle cx="540" cy="90" r="10" fill="#5B1A12" stroke="none"/>
+    <circle cx="562" cy="97" r="5" fill="#FFFFFF" stroke="none"/>
+  </g>
+  <g font-family="Helvetica" font-size="13" fill="#07203C" text-anchor="middle" font-weight="bold">
+    <text x="100" y="168">A — reflet rouge</text>
+    <text x="320" y="168">B — reflet blanc</text>
+    <text x="540" y="168">C — reflet décentré</text>
+  </g>
+  <g font-family="Helvetica" font-size="11.5" fill="#5B738C" text-anchor="middle">
+    <text x="100" y="187">attendu</text>
+    <text x="320" y="187">leucocorie</text>
+    <text x="540" y="187">strabisme</text>
+  </g>
+</svg>
+<p class="cap">Le point blanc est le reflet du flash sur la cornée. En C, il est décentré :
+les deux yeux ne pointent pas au même endroit.</p>
+</div>
+
+<h3>Ce que le signal peut dire</h3>
+<ul>
+  <li><strong>Reflet blanc au lieu de rouge (leucocorie).</strong> La lumière rebondit sur quelque
+      chose placé devant la rétine. Causes possibles : cataracte, décollement de rétine, ou
+      <strong>rétinoblastome</strong> — un cancer de l'œil de l'enfant, mortel s'il passe inaperçu,
+      largement curable s'il est pris tôt.</li>
+  <li><strong>Asymétrie entre les deux yeux.</strong> Un reflet plus terne ou d'une autre couleur
+      d'un seul côté suggère que cet œil-là est différent : trouble de réfraction, opacité.</li>
+  <li><strong>Reflet cornéen décentré.</strong> Si le point du flash est au centre d'une pupille et
+      sur le côté dans l'autre, les yeux ne sont pas alignés — strabisme, qui mène à l'amblyopie
+      si rien n'est fait.</li>
+</ul>
+<p><strong>Quel œil ?</strong> L'application prend une photo par œil séparément. Un score par
+photo désigne donc directement l'œil concerné.</p>
+
+<h3>Comment un modèle apprendrait à les reconnaître</h3>
+<p>Un modèle d'apprentissage automatique n'est pas programmé avec des règles : il apprend par
+l'exemple. Il faut lui montrer <strong>des milliers de photos d'yeux, chacune accompagnée du
+verdict d'un ophtalmologue</strong> — « celle-ci, reflet normal », « celle-ci, leucocorie »,
+« celle-ci, strabisme ». Il apprend seul la correspondance entre les pixels et le verdict, puis
+sait produire une probabilité sur une photo qu'il n'a jamais vue.</p>
+<p>Ce modèle serait ensuite converti au format <strong>TensorFlow Lite</strong>, assez léger pour
+tourner sur le téléphone lui-même — donc hors ligne, et sans que la photo sorte de l'appareil.</p>
+
+<h2>6. Où en est ce cœur aujourd'hui — en toute franchise</h2>
+<div class="warn">
+  <p style="margin:0"><strong>Le modèle n'existe pas encore.</strong> Les photos sont prises et
+  conservées, mais <strong>rien ne les analyse</strong>. L'application l'affiche explicitement sur
+  l'écran de résultat plutôt que de laisser croire qu'un modèle a regardé.</p>
+</div>
+<p>Ce qui manque n'est pas du code : c'est <strong>le jeu de photos annotées par des
+ophtalmologues</strong>. Sans lui, il n'y a rien à apprendre. Un modèle entraîné sur d'autres
+données — images de fond d'œil prises en hôpital avec un appareil dédié, par exemple —
+ne fonctionnerait pas sur des photos prises au téléphone dans un village.</p>
+
+<h3>Ce que l'application fait à la place, et qui est réel</h3>
+<ul>
+  <li><strong>L'acuité visuelle est réellement mesurée.</strong> Écran calibré sur une carte
+      d'identité, E tournant dans une direction aléatoire, arrêt après deux erreurs sur une ligne.
+      Un œil non mesuré est enregistré comme tel — jamais remplacé par un chiffre inventé.</li>
+  <li><strong>La décision découle de cette mesure.</strong> Orientation si l'acuité est de 6/18 ou
+      moins, ou si les deux yeux diffèrent de deux lignes — signe d'amblyopie. Seuil délibérément
+      plus précoce que celui de l'OMS : un faux positif coûte une consultation, un faux négatif
+      peut coûter un œil.</li>
+  <li><strong>Les photos sont consultables.</strong> Un infirmier ouvre le dossier et regarde
+      lui-même les yeux photographiés. L'humain dans la boucle, à la place du modèle.</li>
+</ul>
+
+<h2>7. Ce qu'il faudrait pour achever le cœur</h2>
+<ul>
+  <li><strong>Un partenariat clinique</strong> pour constituer et annoter un jeu de photos prises
+      dans les conditions réelles d'usage — au téléphone, en village.</li>
+  <li><strong>L'entraînement et la validation</strong> du modèle, avec mesure de la sensibilité :
+      combien de cas réels il rate, la seule métrique qui compte ici.</li>
+  <li><strong>Un build applicatif dédié</strong>, le moteur TensorFlow Lite n'étant pas inclus dans
+      l'outil de test actuel.</li>
+  <li><strong>Une relecture du kinyarwanda</strong> par un locuteur natif : les textes ont été
+      rédigés, pas traduits, et le texte de consentement est lu à voix haute aux patients.</li>
+</ul>
+
+<footer>
+  Reba — <em>reba</em> signifie « regarde » en kinyarwanda. Application hors ligne, sans serveur,
+  sans compte. Reba ne pose pas de diagnostic : elle signale les yeux qu'un soignant devrait examiner.
+</footer>
+
+</body></html>

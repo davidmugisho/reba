@@ -41,3 +41,6 @@ example
 # generated native folders
 /ios
 /android
+
+# generated document, regenerate from docs/note-technique.html
+/Reba-note-technique.pdf
