@@ -100,12 +100,20 @@ export const de: Strings = {
     titleLeft: 'Linkes Auge aufnehmen',
     bothDone: 'Beide Augen aufgenommen',
     lead: 'Verdunkeln Sie den Raum, wenn möglich. Halten Sie das Telefon einen Meter entfernt, Blitz an, und füllen Sie den Ring mit dem Auge.',
-    placeholder: 'Kamera — Tag 4',
     rightEye: 'Rechtes Auge',
     leftEye: 'Linkes Auge',
     captureRight: 'Rechtes Auge aufnehmen',
     captureLeft: 'Linkes Auge aufnehmen',
     analyse: 'Auswerten',
+    permissionTitle: 'Reba braucht die Kamera',
+    permissionBody:
+      'Es werden zwei Fotos der Augen gemacht. Sie bleiben auf diesem Telefon, und es wird nichts hochgeladen.',
+    permissionGrant: 'Kamera erlauben',
+    permissionDenied:
+      'Die Kamera ist für Reba gesperrt. Öffnen Sie die Telefoneinstellungen, erlauben Sie die Kamera, und kommen Sie dann auf diesen Bildschirm zurück.',
+    retake: 'Noch einmal aufnehmen',
+    saveFailed:
+      'Dieses Foto konnte nicht auf dem Telefon gespeichert werden. Nehmen Sie es noch einmal auf.',
   },
 
   analysis: {

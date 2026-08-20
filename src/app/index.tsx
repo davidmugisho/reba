@@ -13,6 +13,7 @@ import {
 import { Button, Screen } from '../components/reba-kit';
 import { useScreening } from '../context/ScreeningContext';
 import { LOCALES, LOCALE_NAMES, useLocale, useT, type Locale } from '../i18n';
+import { sweepOrphanPhotos } from '../storage/photos';
 import { listScreenings } from '../storage/screenings';
 import { color, radius, space, TAP, type } from '../theme';
 
@@ -29,7 +30,14 @@ export default function Home() {
 
   useFocusEffect(
     useCallback(() => {
-      listScreenings().then((all) => setCount(all.length));
+      listScreenings().then((all) => {
+        setCount(all.length);
+        // A screening can be abandoned halfway, and the consent script promises
+        // the patient they can stop at any point. Reconciling the photo folders
+        // against the records that exist clears anything left behind, without
+        // having to catch every way out of the flow.
+        sweepOrphanPhotos(all.map((s) => s.id));
+      });
     }, []),
   );
 

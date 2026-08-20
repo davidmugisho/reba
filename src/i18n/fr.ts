@@ -98,12 +98,19 @@ export const fr: Strings = {
     titleLeft: "Photographiez l'œil gauche",
     bothDone: 'Les deux yeux sont photographiés',
     lead: "Assombrissez la pièce si possible. Tenez le téléphone à un mètre, flash allumé, et remplissez le cercle avec l'œil.",
-    placeholder: 'Caméra — jour 4',
     rightEye: 'Œil droit',
     leftEye: 'Œil gauche',
     captureRight: "Photographier l'œil droit",
     captureLeft: "Photographier l'œil gauche",
     analyse: 'Analyser',
+    permissionTitle: 'Reba a besoin de la caméra',
+    permissionBody:
+      "Deux photos des yeux sont prises. Elles restent sur ce téléphone et rien n'est envoyé.",
+    permissionGrant: 'Autoriser la caméra',
+    permissionDenied:
+      "La caméra est bloquée pour Reba. Ouvrez les réglages du téléphone, autorisez la caméra, puis revenez sur cet écran.",
+    retake: 'Reprendre la photo',
+    saveFailed: "Cette photo n'a pas pu être enregistrée sur ce téléphone. Reprenez-la.",
   },
 
   analysis: {

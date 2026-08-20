@@ -28,6 +28,12 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 150
         }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Reba uses the camera to take one photo of each eye. The photos stay on this phone."
+        }
       ]
     ],
     "experiments": {

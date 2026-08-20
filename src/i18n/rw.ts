@@ -113,12 +113,19 @@ export const rw: Strings = {
     titleLeft: 'Fata ifoto y’ijisho ry’ibumoso',
     bothDone: 'Amaso yombi yafashwe',
     lead: 'Niba bishoboka, gabanya urumuri mu cyumba. Fata telefone ku ntera ya metero imwe, ucane itara, wuzuze uruziga n’ijisho.',
-    placeholder: 'Kamera — umunsi wa 4',
     rightEye: 'Ijisho ry’iburyo',
     leftEye: 'Ijisho ry’ibumoso',
     captureRight: 'Fata ijisho ry’iburyo',
     captureLeft: 'Fata ijisho ry’ibumoso',
     analyse: 'Sesengura',
+    permissionTitle: 'Reba ikeneye kamera',
+    permissionBody:
+      'Hafatwa amafoto abiri y’amaso. Asigara kuri iyi telefone, nta kintu koherezwa.',
+    permissionGrant: 'Emerera kamera',
+    permissionDenied:
+      'Kamera yafunzwe kuri Reba. Fungura igenamiterere rya telefone, wemerere kamera, hanyuma ugaruke kuri iyi paji.',
+    retake: 'Ongera ufate ifoto',
+    saveFailed: 'Iyi foto ntiyashoboye kubikwa kuri iyi telefone. Ongera uyifate.',
   },
 
   analysis: {

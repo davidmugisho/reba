@@ -108,12 +108,19 @@ export const en = {
     titleLeft: 'Capture the left eye',
     bothDone: 'Both eyes captured',
     lead: 'Darken the room if you can. Hold the phone one metre away, flash on, and fill the ring with the eye.',
-    placeholder: 'Camera — day 4',
     rightEye: 'Right eye',
     leftEye: 'Left eye',
     captureRight: 'Capture right eye',
     captureLeft: 'Capture left eye',
     analyse: 'Analyse',
+    permissionTitle: 'Reba needs the camera',
+    permissionBody:
+      'Two photos of the eyes are taken. They stay on this phone and nothing is uploaded.',
+    permissionGrant: 'Allow the camera',
+    permissionDenied:
+      'The camera is blocked for Reba. Open the phone settings, allow the camera, then come back to this screen.',
+    retake: 'Take it again',
+    saveFailed: 'That photo could not be saved to this phone. Take it again.',
   },
 
   analysis: {

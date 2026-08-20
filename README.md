@@ -59,7 +59,7 @@ worth knowing which before you read the code and assume it is broken.
 | Consent | Real |
 | Patient | Real |
 | Visual acuity | Real. Card-on-screen calibration, randomised direction, decreasing lines, and a stop rule. An eye that was not measured is stored as `null`, never as a number. |
-| Eye capture | **Placeholder.** No camera. Each capture stores `uri: 'placeholder'`. |
+| Eye capture | Real. `expo-camera`, flash on, one shot per eye. The photo is moved out of the cache into permanent storage and the record keeps that path. |
 | Analysis | **Placeholder.** A 1.6s timeout and a hardcoded score of `0.72`, so every screening currently comes out as *refer*. |
 | Result | Real, on top of a stubbed score. The *Explain this to me* button does nothing yet. |
 | Referral + saving | Real. Writes to disk, survives a restart, and tells you when it fails. |
@@ -196,6 +196,35 @@ the largest line is `null` with `belowChart` set. The second is a finding —
 vision worse than 6/60 — and it reaches the referral slip as words rather than
 as a blank.
 
+## Photos
+
+Eye photos never go into AsyncStorage. It is a key-value store with tight
+per-value limits on Android, and a couple of images per screening would blow it
+apart after a handful of patients — landing as exactly the record loss the
+storage module works to prevent. The image goes to the filesystem and only its
+path goes into the record.
+
+The move out of the cache is the point of
+[`src/storage/photos.ts`](src/storage/photos.ts). `takePictureAsync()` writes
+to the cache directory, which the OS is free to empty whenever the phone runs
+low on space, so a record pointing at a cache path is a record that silently
+loses its photos. One folder per screening under the document directory, named
+by record id.
+
+A capture that fails to save is not recorded: the eye stays unticked and the
+health worker is told. A record listing two photos that are not on the phone is
+worse than one that admits it has none.
+
+**Abandoned screenings are swept.** The consent script promises the patient
+they can stop at any point, and photos of a stranger's eyes should not outlive
+the visit. Rather than trying to catch every way out of the flow, home
+reconciles the photo folders against the records that actually exist and
+deletes the orphans.
+
+On web there are no file URLs, so the data URI ends up in AsyncStorage after
+all. That is tolerated because web is for clicking through the flow, never for
+holding patient photos — a couple of real shots would fill the browser quota.
+
 ## Design
 
 Tokens live in [`src/theme.ts`](src/theme.ts) and the reasoning is written down
@@ -208,8 +237,6 @@ Rwandan health workers first.
 
 ## Where it is going
 
-- **Day 4** — `expo-camera`: forced flash, alignment ring, one shot per eye at
-  a fixed distance.
 - **Day 7** — real on-device TFLite inference in place of the timeout.
 
 Then: an explain screen for the result, and a way to get records off the phone
