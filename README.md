@@ -45,7 +45,7 @@ without losing the thread.
 
 1. **Consent** — a script to read aloud, and a checkbox for a spoken yes.
 2. **Patient** — age and sex are required, village and referral destination are not.
-3. **Visual acuity** — a tumbling E, one eye at a time, after a bank card
+3. **Visual acuity** — a tumbling E, one eye at a time, after an ID card
    calibrates the screen. The patient points which way the legs face, so it
    works for children and for adults who do not read.
 4. **Eye capture** — one photo per eye, flash on, in a darkened room if there
@@ -188,8 +188,13 @@ A 6/6 optotype subtends five arcminutes, which is 8.73 mm at six metres, and
 the height scales with both the viewing distance and the 6/x denominator. At
 the three metres this test uses, the 6/60 line is 43.65 mm tall. Turning
 millimetres into pixels needs to know how big the screen is, which is what the
-bank-card step is for — every bank and national ID card is 85.6 mm wide
-(ISO/IEC 7810 ID-1), so matching an outline to one calibrates the phone.
+card step is for. ISO/IEC 7810 ID-1 is 85.6 mm wide, and every national ID
+card, bank card and driving licence in the world is that size, so matching an
+outline to one calibrates the phone.
+
+The copy leads with the national ID rather than a bank card: every adult
+Rwandan has one and far fewer carry a bank card, and a health worker in a
+village needs a ruler that is already in their pocket.
 
 Three optotypes per line, direction randomised each time, two misses on a line
 ends the test. The result is the smallest line the patient actually passed.
