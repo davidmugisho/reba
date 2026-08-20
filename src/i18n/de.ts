@@ -73,9 +73,9 @@ export const de: Strings = {
   acuity: {
     step: 'Schritt 3 von 6',
 
-    calibrateTitle: 'An eine Bankkarte anpassen',
+    calibrateTitle: 'An einen Ausweis anpassen',
     calibrateLead:
-      'Halten Sie eine Bank- oder Ausweiskarte flach an den Bildschirm und passen Sie den Rahmen an, bis er genau so breit ist wie die Karte. Jeder Bildschirm ist anders groß, und das gibt den Buchstaben auf diesem Gerät die richtige Größe.',
+      'Halten Sie einen Personalausweis flach an den Bildschirm und passen Sie den Rahmen an, bis er genau so breit ist wie die Karte. Eine Bankkarte oder ein Führerschein hat dieselbe Größe und geht auch. Jeder Bildschirm ist anders groß, und das gibt den Buchstaben auf diesem Gerät die richtige Größe.',
     narrower: 'Schmaler',
     wider: 'Breiter',
     calibrateDone: 'Die Karte passt',

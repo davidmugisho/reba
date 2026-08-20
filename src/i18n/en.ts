@@ -82,9 +82,9 @@ export const en = {
   acuity: {
     step: 'Step 3 of 6',
 
-    calibrateTitle: 'Match a bank card',
+    calibrateTitle: 'Match an ID card',
     calibrateLead:
-      'Hold any bank or ID card flat against the screen and adjust the outline until it is exactly the width of the card. Every screen is a different size, and this is what makes the letters the right size on this one.',
+      'Hold a national ID card flat against the screen and adjust the outline until it is exactly the width of the card. A bank card or driving licence is the same size and works too. Every screen is a different size, and this is what makes the letters the right size on this one.',
     narrower: 'Narrower',
     wider: 'Wider',
     calibrateDone: 'The card matches',

@@ -72,9 +72,9 @@ export const fr: Strings = {
   acuity: {
     step: 'Étape 3 sur 6',
 
-    calibrateTitle: 'Ajustez à une carte bancaire',
+    calibrateTitle: "Ajustez à une carte d'identité",
     calibrateLead:
-      "Posez une carte bancaire ou une carte d'identité à plat sur l'écran et ajustez le cadre jusqu'à ce qu'il fasse exactement sa largeur. Chaque écran a une taille différente, et c'est ce qui donne aux lettres la bonne taille sur celui-ci.",
+      "Posez une carte d'identité nationale à plat sur l'écran et ajustez le cadre jusqu'à ce qu'il fasse exactement sa largeur. Une carte bancaire ou un permis de conduire fait la même taille et convient aussi. Chaque écran a une taille différente, et c'est ce qui donne aux lettres la bonne taille sur celui-ci.",
     narrower: 'Plus étroit',
     wider: 'Plus large',
     calibrateDone: 'La carte correspond',

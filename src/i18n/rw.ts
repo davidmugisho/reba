@@ -86,9 +86,9 @@ export const rw: Strings = {
   acuity: {
     step: 'Intambwe ya 3 kuri 6',
 
-    calibrateTitle: 'Gereranya n’ikarita ya banki',
+    calibrateTitle: 'Gereranya n’indangamuntu',
     calibrateLead:
-      'Shyira ikarita ya banki cyangwa indangamuntu kuri ecran, uhindure kugeza ubugari bw’agasanduku bungana n’ubw’ikarita. Buri telefone ifite ecran itandukanye, ni yo mpamvu ibi bituma inyuguti zigira ingano ikwiye kuri iyi.',
+      'Shyira indangamuntu kuri ecran, uhindure kugeza ubugari bw’agasanduku bungana n’ubw’ikarita. Ikarita ya banki cyangwa uruhushya rwo gutwara ibinyabiziga bifite ingano imwe, na byo birakora. Buri telefone ifite ecran itandukanye, ni yo mpamvu ibi bituma inyuguti zigira ingano ikwiye kuri iyi.',
     narrower: 'Gabanya',
     wider: 'Ongera',
     calibrateDone: 'Ikarita irahuye',
