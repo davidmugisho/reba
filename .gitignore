@@ -44,3 +44,8 @@ example
 
 # generated document, regenerate from docs/note-technique.html
 /Reba-note-technique.pdf
+
+# evaluation photographs — never commit anything identifiable
+/photos/*
+!/photos/README.md
+!/photos/labels.csv

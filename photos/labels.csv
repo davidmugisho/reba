@@ -1,0 +1,7 @@
+# One line per photograph. truth is "normal" or the finding.
+# Crop each image to a single eye, roughly centred on the pupil.
+#
+# file,truth
+# eye-001.jpg,normal
+# eye-002.jpg,leukocoria
+file,truth
