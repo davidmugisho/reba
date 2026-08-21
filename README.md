@@ -68,7 +68,7 @@ worth knowing which before you read the code and assume it is broken.
 | Patient | Real |
 | Visual acuity | Real. Card-on-screen calibration, randomised direction, decreasing lines, and a stop rule. An eye that was not measured is stored as `null`, never as a number. |
 | Eye capture | Real. `expo-camera`, flash on, one shot per eye. The photo is moved out of the cache into permanent storage and the record keeps that path. |
-| Analysis | **Partial.** The band comes from the acuity actually measured — see [`src/triage.ts`](src/triage.ts). Nothing reads the photos yet; that is the model at day 7. |
+| Analysis | **Partial.** Two measured signals: the acuity, and the red reflex read off the photographs — see [`src/triage.ts`](src/triage.ts) and [`src/reflex.ts`](src/reflex.ts). Still no model. |
 | Result | Real. Says what decided the band and that the photos have not been read. *Explain this to me* opens a script to read to the family. |
 | Referral + saving | Real. Writes to disk, survives a restart, and tells you when it fails. |
 
@@ -327,6 +327,46 @@ because the failure mode is quiet: a CSV that breaks on the first village name
 containing a comma arrives looking complete and is wrong. Values are quoted per
 RFC 4180 only when they need to be, an eye that was never measured is blank
 rather than invented, and one that failed the top line reads *worse than 6/60*.
+
+## Reading the photographs
+
+[`src/reflex.ts`](src/reflex.ts) — arithmetic on pixels, with no model in it.
+
+Flash light reaching the retina comes back red, because the retina is full of
+blood vessels. That is the "red eye" of family photographs, and it is a sign of
+health. A reflex that comes back white means the light bounced off something in
+front of the retina — a cataract, a detachment, a retinoblastoma. A reflex
+clearly duller on one side says that eye differs from its neighbour.
+
+Measured on synthetic eyes, round-tripped through real JPEG encoding:
+
+| Pupil | Redness |
+| --- | --- |
+| Healthy red reflex | 0.702 |
+| White — leukocoria | 0.343 |
+| Not an eye at all | ~0.15 |
+
+Two thresholds sit between them. Below **0.42** is pale enough to flag. Below
+**0.20** is not a pale pupil but a bad frame — whatever ails a pupil, its
+reflex does not come back green — so that reads as unreadable rather than
+sending a family to a clinic because the phone was held crooked.
+
+The sturdier signal is the difference *between* the eyes, because the patient
+is their own control: both photographs come from the same phone, the same
+flash, seconds apart, so skin tone, ambient light and lens all cancel. Across
+deep, mid and light surrounds the gap between two healthy eyes measures 0.0000,
+and a white pupil is still caught.
+
+**The photo check may only raise the band, never lower it.** Its thresholds
+were set on synthetic images and have never met a real eye. Until they do, a
+wrong flag costs a consultation and a wrong reassurance could cost an eye, so
+only the first is allowed. A pale pupil refers; a difference between reflexes
+asks for a recheck; unreadable changes nothing and is recorded as unread.
+Proven over all 32 combinations of acuity and finding: none softens a band.
+
+This is not the model, and the result screen does not pretend otherwise. It
+cannot see a squint and it cannot name a disease. It is a measurement, held to
+the same rule as the acuity.
 
 ## Design
 

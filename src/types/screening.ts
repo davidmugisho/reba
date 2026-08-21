@@ -1,3 +1,5 @@
+import type { ReflexComparison } from '../reflex';
+
 export type RiskLevel = 'clear' | 'monitor' | 'refer';
 
 export type Eye = 'left' | 'right';
@@ -32,6 +34,10 @@ export interface EyeCapture {
 }
 
 export type TriageReason =
+  /** A pupil reflex close to white rather than red. The most serious photo sign. */
+  | 'palePupil'
+  /** One reflex clearly less red than the other. */
+  | 'reflexDiffers'
   /** Missed even the largest line: worse than 6/60. */
   | 'belowChart'
   /** 6/18 or worse in at least one eye. */
@@ -47,7 +53,8 @@ export type TriageReason =
 export interface Triage {
   risk: RiskLevel;
   reason: TriageReason;
-  basis: 'acuity';
+  /** What raised the band. The photo check can only ever add to the acuity. */
+  basis: 'acuity' | 'reflex';
 }
 
 export interface AnalysisResult {
@@ -65,6 +72,12 @@ export interface Screening {
   patient: PatientInfo;
   acuity: AcuityResult;
   captures: EyeCapture[];
+  /**
+   * What the flash photographs showed. Null when the photos were never read —
+   * on records written before the reflex check existed, or when they were too
+   * dark to measure.
+   */
+  reflex?: ReflexComparison | null;
   analysis: AnalysisResult | null;
   risk: RiskLevel | null;
   /**

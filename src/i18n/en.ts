@@ -153,9 +153,12 @@ export const en = {
     explain: 'Explain this to me',
     /** What decided the band. It must never imply the photos were read. */
     basis:
-      'Decided by the acuity measured today. The photos are kept on this phone but nothing reads them yet.',
+      'Decided on this phone, from the acuity measured today and the light the pupils reflected. No model has looked at the photographs.',
     reason: (r: TriageReason): string =>
       ({
+        palePupil:
+          'One pupil reflected white rather than red in the photograph.',
+        reflexDiffers: 'The two pupils reflected the light differently.',
         belowChart: 'One eye could not read even the largest line.',
         poorAcuity: 'Acuity is 6/18 or worse in at least one eye.',
         eyesDiffer: 'The two eyes are two lines apart or more.',

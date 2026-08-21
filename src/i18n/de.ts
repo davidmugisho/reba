@@ -144,9 +144,12 @@ export const de: Strings = {
     fillReferral: 'Überweisung ausfüllen',
     explain: 'Erklären Sie mir das',
     basis:
-      'Entschieden anhand der heute gemessenen Sehschärfe. Die Fotos bleiben auf diesem Telefon, aber noch liest sie nichts.',
+      'Auf diesem Telefon entschieden, aus der heute gemessenen Sehschärfe und dem Licht, das die Pupillen zurückwarfen. Kein Modell hat die Fotos angesehen.',
     reason: (r: TriageReason): string =>
       ({
+        palePupil:
+          'Eine Pupille hat auf dem Foto weiß statt rot zurückgeworfen.',
+        reflexDiffers: 'Die beiden Pupillen haben das Licht unterschiedlich zurückgeworfen.',
         belowChart: 'Ein Auge konnte nicht einmal die größte Zeile lesen.',
         poorAcuity: 'Die Sehschärfe beträgt auf mindestens einem Auge 6/18 oder schlechter.',
         eyesDiffer: 'Die beiden Augen liegen zwei Zeilen oder mehr auseinander.',

@@ -156,9 +156,12 @@ export const rw: Strings = {
     fillReferral: 'Uzuza urupapuro rwo kohereza',
     explain: 'Mbisobanurire',
     basis:
-      'Byemejwe hashingiwe ku bushobozi bwo kureba bwapimwe uyu munsi. Amafoto asigara kuri iyi telefone ariko nta kintu kirayasoma.',
+      'Byemejwe kuri iyi telefone, hashingiwe ku bushobozi bwo kureba bwapimwe uyu munsi no ku rumuri imboni zagaragaje. Nta moderi yarebye amafoto.',
     reason: (r: TriageReason): string =>
       ({
+        palePupil:
+          'Imboni imwe yagaragaye yera aho kuba umutuku ku ifoto.',
+        reflexDiffers: 'Imboni zombi zagaragaje urumuri mu buryo butandukanye.',
         belowChart: 'Ijisho rimwe ntiryashoboye gusoma n’umurongo munini kurusha iyindi.',
         poorAcuity: 'Ubushobozi bwo kureba ni 6/18 cyangwa buri hasi ku ijisho nibura rimwe.',
         eyesDiffer: 'Amaso yombi atandukanyijwe n’imirongo ibiri cyangwa irenga.',

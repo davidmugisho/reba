@@ -141,9 +141,12 @@ export const fr: Strings = {
     fillReferral: "Remplir l'orientation",
     explain: 'Expliquez-moi',
     basis:
-      "Décidé par l'acuité mesurée aujourd'hui. Les photos restent sur ce téléphone mais rien ne les analyse encore.",
+      "Décidé sur ce téléphone, à partir de l'acuité mesurée aujourd'hui et de la lumière renvoyée par les pupilles. Aucun modèle n'a examiné les photos.",
     reason: (r: TriageReason): string =>
       ({
+        palePupil:
+          "Une pupille a renvoyé du blanc au lieu du rouge sur la photo.",
+        reflexDiffers: 'Les deux pupilles ont renvoyé la lumière différemment.',
         belowChart: "Un œil n'a pas pu lire même la plus grande ligne.",
         poorAcuity: "L'acuité est de 6/18 ou moins sur au moins un œil.",
         eyesDiffer: 'Les deux yeux sont séparés de deux lignes ou plus.',
