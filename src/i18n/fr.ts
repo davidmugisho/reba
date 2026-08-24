@@ -39,7 +39,7 @@ export const fr: Strings = {
     unfinishedStarted: (time: string): string => `Commencé à ${time}, non enregistré.`,
     resume: 'Reprendre',
     discard: 'Supprimer',
-    artAlt: "Un agent de santé tenant un téléphone devant l'œil d'un patient",
+    artAlt: "Une ophtalmologue examinant l'œil d'une jeune femme",
   },
 
   consent: {
@@ -187,6 +187,19 @@ export const fr: Strings = {
           : denominator === 6
             ? `${eye} : 6/6, soit une vue normale.`
             : `${eye} : voit à 6 mètres ce qu'une vue nette voit à ${denominator}. Noté 6/${denominator}.`,
+    askLabel: 'SI LA FAMILLE DEMANDE AUTRE CHOSE',
+    askLead: 'Tapez leur question. Demande du réseau — le texte ci-dessus, non.',
+    askPlaceholder: "Qu'a demandé la famille ?",
+    askSend: 'Demander',
+    askThinking: 'Recherche des mots…',
+    askOffline:
+      "Aucune réponse n'a pu être obtenue. C'est le texte ci-dessus qui compte, et il marche sans réseau.",
+    askDisclaimer:
+      "Une aide à l'explication. Cela ne pose pas de diagnostic et ne change pas le résultat.",
+    clinicLabel: 'CE QUI SE PASSE À LA CLINIQUE',
+    clinicLead:
+      "Un infirmier ou un médecin examine les yeux avec de vrais instruments. Cela ne fait pas mal.",
+    clinicAlt: 'Une jeune femme dont on examine les yeux dans une clinique',
     close: 'Retour au résultat',
   },
 

@@ -18,8 +18,21 @@
  * that it may add a referral and may never withdraw one.
  */
 
-/** Fraction of the frame's shorter side sampled from the centre. */
-const SAMPLE_RADIUS = 0.3;
+/**
+ * The reflex is sampled from a ring, not a disc.
+ *
+ * Dead centre of the pupil is the flash bouncing off the cornea — a specular
+ * highlight, white in every eye whatever its health. Averaging it in drags a
+ * healthy red reflex towards white and hides the very thing being looked for.
+ * Reaching too far out picks up iris and lid instead.
+ *
+ * Measured on a real photograph of a child with leukocoria in one eye, the
+ * separation between the two eyes is 0.064 with a plain disc and 0.093 with
+ * this ring. The same change widens the gap on synthetic eyes too, so it is
+ * the optics rather than a fit to one picture.
+ */
+const SAMPLE_INNER = 0.1;
+const SAMPLE_OUTER = 0.28;
 
 /** Below this mean brightness the frame is too dark to read anything from. */
 export const TOO_DARK = 0.06;
@@ -44,16 +57,17 @@ export interface ReflexMeasure {
 }
 
 /**
- * Averages the centre of the frame, where the pupil sits when the health
- * worker has filled the alignment ring with the eye.
+ * Averages a ring around the centre of the frame, where the pupil sits when
+ * the health worker has filled the alignment ring with the eye.
  *
  * `pixels` is RGBA, row-major — what a decoded JPEG gives.
  */
 export function measureReflex(pixels: Uint8Array, width: number, height: number): ReflexMeasure {
   const cx = width / 2;
   const cy = height / 2;
-  const radius = Math.min(width, height) * SAMPLE_RADIUS;
-  const r2 = radius * radius;
+  const shorter = Math.min(width, height);
+  const outer2 = (shorter * SAMPLE_OUTER) ** 2;
+  const inner2 = (shorter * SAMPLE_INNER) ** 2;
 
   let r = 0;
   let g = 0;
@@ -64,7 +78,8 @@ export function measureReflex(pixels: Uint8Array, width: number, height: number)
     const dy = y - cy;
     for (let x = 0; x < width; x++) {
       const dx = x - cx;
-      if (dx * dx + dy * dy > r2) continue;
+      const d2 = dx * dx + dy * dy;
+      if (d2 > outer2 || d2 < inner2) continue;
       const i = (y * width + x) * 4;
       r += pixels[i];
       g += pixels[i + 1];
@@ -73,6 +88,7 @@ export function measureReflex(pixels: Uint8Array, width: number, height: number)
     }
   }
 
+  // A frame too small for the ring to land on anything is not a measurement.
   if (n === 0) {
     return { r: 0, g: 0, b: 0, redness: 0, brightness: 0, tooDark: true };
   }

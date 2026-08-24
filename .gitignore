@@ -49,3 +49,7 @@ example
 /photos/*
 !/photos/README.md
 !/photos/labels.csv
+
+# API credentials — never commit
+.env
+!.env.example

@@ -40,7 +40,7 @@ export const de: Strings = {
     unfinishedStarted: (time: string): string => `Um ${time} begonnen, nicht gespeichert.`,
     resume: 'Weitermachen',
     discard: 'Verwerfen',
-    artAlt: 'Eine Gesundheitsfachkraft hält ein Telefon vor das Auge einer Patientin',
+    artAlt: 'Eine Augenärztin untersucht das Auge einer jungen Frau',
   },
 
   consent: {
@@ -190,6 +190,19 @@ export const de: Strings = {
           : denominator === 6
             ? `${eye}: 6/6, also normales Sehen.`
             : `${eye}: sieht auf 6 Meter das, was klares Sehen auf ${denominator} sieht. Geschrieben 6/${denominator}.`,
+    askLabel: 'WENN DIE FAMILIE ETWAS ANDERES FRAGT',
+    askLead: 'Tippen Sie ihre Frage ein. Braucht Empfang — der Text oben nicht.',
+    askPlaceholder: 'Was hat die Familie gefragt?',
+    askSend: 'Fragen',
+    askThinking: 'Suche nach den Worten…',
+    askOffline:
+      'Es konnte keine Antwort geholt werden. Entscheidend ist der Text oben, und der funktioniert ohne Empfang.',
+    askDisclaimer:
+      'Eine Hilfe beim Erklären. Sie stellt keine Diagnose und ändert das Ergebnis nicht.',
+    clinicLabel: 'WAS IN DER KLINIK PASSIERT',
+    clinicLead:
+      'Eine Pflegekraft oder eine Ärztin sieht sich die Augen mit richtigen Instrumenten an. Es tut nicht weh.',
+    clinicAlt: 'Einer jungen Frau werden in einer Klinik die Augen untersucht',
     close: 'Zurück zum Ergebnis',
   },
 

@@ -49,7 +49,7 @@ export const en = {
     unfinishedStarted: (time: string): string => `Started at ${time}, not saved.`,
     resume: 'Carry on',
     discard: 'Discard',
-    artAlt: "A health worker holding a phone up to a patient's eye",
+    artAlt: "An eye specialist examining a young woman's eye",
   },
 
   consent: {
@@ -199,6 +199,17 @@ export const en = {
           : denominator === 6
             ? `${eye}: 6/6, which is normal sight.`
             : `${eye}: sees at 6 metres what clear sight sees at ${denominator}. Written 6/${denominator}.`,
+    askLabel: 'IF THE FAMILY ASKS SOMETHING ELSE',
+    askLead: 'Type their question. Needs a signal — the script above does not.',
+    askPlaceholder: 'What did the family ask?',
+    askSend: 'Ask',
+    askThinking: 'Finding the words…',
+    askOffline:
+      'No answer could be fetched. The script above is what matters, and it works without a signal.',
+    askDisclaimer: 'An aid to explaining. It does not diagnose, and it cannot change the result.',
+    clinicLabel: 'WHAT HAPPENS AT THE CLINIC',
+    clinicLead: 'A nurse or doctor looks at the eyes with proper instruments. It does not hurt.',
+    clinicAlt: 'A young woman having her eyes examined at a clinic',
     close: 'Back to the result',
   },
 

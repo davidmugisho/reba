@@ -1,7 +1,16 @@
 # One line per photograph. truth is "normal" or the finding.
 # Crop each image to a single eye, roughly centred on the pupil.
 #
-# file,truth
-# eye-001.jpg,normal
-# eye-002.jpg,leukocoria
+# Source: Wikimedia Commons, File:Rb whiteeye.PNG, public domain,
+# J Morley-Smith. A child with leukocoria from retinoblastoma in the
+# left eye. Both eyes come from the same photograph, so they are a true
+# pair: same camera, same flash, same instant.
+#
+# Second pair (rb2-*): Wikimedia Commons, public domain,
+# File:A child with a white eye reflection as a result of retinoblastoma.jpg
+# Also both eyes from one photograph.
 file,truth
+rb-right-eye-normal.jpg,normal
+rb-left-eye-leukocoria.jpg,leukocoria
+rb2-right-eye-normal.jpg,normal
+rb2-left-eye-leukocoria.jpg,leukocoria

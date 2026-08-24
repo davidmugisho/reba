@@ -53,7 +53,7 @@ export const rw: Strings = {
     unfinishedStarted: (time: string): string => `Ryatangiye saa ${time}, ntiryabitswe.`,
     resume: 'Komeza',
     discard: 'Hanagura',
-    artAlt: 'Umujyanama w’ubuzima afashe telefone imbere y’ijisho ry’umurwayi',
+    artAlt: 'Umuganga w’amaso asuzuma ijisho ry’umukobwa',
   },
 
   consent: {
@@ -202,6 +202,19 @@ export const rw: Strings = {
           : denominator === 6
             ? `${eye}: 6/6, ni ukuvuga kureba gusanzwe.`
             : `${eye}: kuri metero 6 ribona ibyo ijisho rireba neza ribona kuri ${denominator}. Byandikwa 6/${denominator}.`,
+    askLabel: 'NIBA UMURYANGO UBAJIJE IKINDI',
+    askLead: 'Andika ikibazo cyabo. Bisaba umurongo — inyandiko yo hejuru ntibiwukeneye.',
+    askPlaceholder: 'Umuryango wabajije iki?',
+    askSend: 'Baza',
+    askThinking: 'Gushaka amagambo…',
+    askOffline:
+      'Nta gisubizo cyabonetse. Icy’ingenzi ni inyandiko yo hejuru, kandi ikora nta murongo.',
+    askDisclaimer:
+      'Ni ubufasha mu gusobanura. Ntisuzuma nka muganga kandi ntihindura igisubizo.',
+    clinicLabel: 'IBIBERA KU IVURIRO',
+    clinicLead:
+      'Umuforomo cyangwa umuganga areba amaso akoresheje ibikoresho bikwiye. Ntibibabaza.',
+    clinicAlt: 'Umukobwa arimo asuzumwa amaso ku ivuriro',
     close: 'Subira ku gisubizo',
   },
 

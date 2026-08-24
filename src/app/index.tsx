@@ -11,6 +11,7 @@ import {
   View,
   type ImageSourcePropType,
 } from 'react-native';
+import { FadeIn } from '../components/fade-in';
 import { Body, Button, Card, Screen } from '../components/reba-kit';
 import { useActiveScreeningIds, useScreening } from '../context/ScreeningContext';
 import { LOCALES, LOCALE_NAMES, useLocale, useT, type Locale } from '../i18n';
@@ -80,13 +81,15 @@ export default function Home() {
         <Text style={s.heroTitle}>{t.home.tagline}</Text>
         <Text style={s.heroBody}>{t.home.blurb}</Text>
 
-        <Image
-          source={require('../../assets/images/hero-screening.png')}
-          style={s.heroArt}
-          resizeMode="contain"
-          accessible
-          accessibilityLabel={t.home.artAlt}
-        />
+        <FadeIn delay={120}>
+          <Image
+            source={require('../../assets/images/hero-exam.jpg')}
+            style={s.heroArt}
+            resizeMode="cover"
+            accessible
+            accessibilityLabel={t.home.artAlt}
+          />
+        </FadeIn>
       </View>
 
       {pending ? (
@@ -241,8 +244,13 @@ const s = StyleSheet.create({
   // full-screen and pushes the tally off the bottom.
   heroArt: {
     width: '100%',
-    height: 172,
-    marginTop: space.xs,
+    height: 190,
+    marginTop: space.sm,
+    borderRadius: radius.md,
+    // The photograph is bright and clinical; a rounded edge and a hairline keep
+    // it reading as an inset image rather than a hole punched in the navy.
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: color.inkMid,
   },
   tally: {
     marginTop: space.sm,
