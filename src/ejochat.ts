@@ -18,20 +18,30 @@ import type { Screening } from './types/screening';
 /**
  * Credentials come from the environment at build time.
  *
- * Put them in a .env file at the project root (it is gitignored):
+ * Put the key in a .env file at the project root (it is gitignored):
  *
- *   EXPO_PUBLIC_EJOCHAT_URL=https://...
- *   EXPO_PUBLIC_EJOCHAT_KEY=...
+ *   EXPO_PUBLIC_EJOCHAT_KEY=ejochat_...
+ *
+ * The endpoint below is the one the Ejo Labs console documents, so only the
+ * key is normally needed. EXPO_PUBLIC_EJOCHAT_URL overrides it if that ever
+ * changes.
  *
  * Note that EXPO_PUBLIC_ values are baked into the bundle and can be read out
  * of a shipped app. That is acceptable for a hackathon key. A real deployment
  * would put a small proxy in front so the secret never leaves a server.
  */
-const URL = process.env.EXPO_PUBLIC_EJOCHAT_URL ?? '';
+const DEFAULT_URL = 'https://api.ejolabs.com/api/v1/subiza';
+
+const URL = process.env.EXPO_PUBLIC_EJOCHAT_URL || DEFAULT_URL;
 const KEY = process.env.EXPO_PUBLIC_EJOCHAT_KEY ?? '';
 
-/** The screen hides the whole feature when this is false. */
-export const isConfigured = (): boolean => URL.length > 0;
+/**
+ * The screen hides the whole feature when this is false.
+ *
+ * Keyed on the credential rather than the endpoint: the endpoint is known and
+ * has a default, so an unconfigured build is one without a key.
+ */
+export const isConfigured = (): boolean => KEY.length > 0;
 
 const LANGUAGE_NAME: Record<Locale, string> = {
   rw: 'Kinyarwanda',
@@ -110,19 +120,18 @@ export async function askEjoChat(
 ): Promise<string> {
   if (!isConfigured()) throw new EjoChatUnavailable('EjoChat is not configured');
 
-  const body = {
-    // ---------------------------------------------------------------------
-    // ADJUST HERE once the EjoChat API documentation arrives. Everything else
-    // in this file stays as it is.
-    // ---------------------------------------------------------------------
-    messages: [
-      { role: 'system', content: systemPrompt(locale) },
-      {
-        role: 'user',
-        content: `Screening just completed:\n${screeningContext(screening)}\n\nThe family asks: ${question}`,
-      },
-    ],
-  };
+  // The console's example shows a single user message, so the instructions
+  // travel inside it rather than in a system role that may not be supported.
+  const content = [
+    systemPrompt(locale),
+    '',
+    'Screening just completed:',
+    screeningContext(screening),
+    '',
+    `The family asks: ${question}`,
+  ].join('\n');
+
+  const body = { messages: [{ role: 'user', content }] };
 
   let response: Response;
   try {
@@ -130,7 +139,8 @@ export async function askEjoChat(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        ...(KEY ? { Authorization: `Bearer ${KEY}` } : {}),
+        // The console documents X-API-Key, not a bearer token.
+        'X-API-Key': KEY,
       },
       body: JSON.stringify(body),
       signal,
