@@ -237,6 +237,9 @@ export const fr: Strings = {
     exportUnavailable: 'Ce téléphone ne peut pas partager de fichiers.',
     exportFailed: "Le fichier n'a pas pu être créé. Réessayez.",
     photosLabel: 'PHOTOS',
+    reflexLabel: 'REFLET DES PUPILLES',
+    reflexReading: (right: number, left: number, finding: string): string =>
+      `droit ${right.toFixed(3)} · gauche ${left.toFixed(3)} · ${finding}`,
     photoMissing: "Cette photo n'est plus sur le téléphone.",
     delete: 'Supprimer ce dépistage',
     deleteConfirmTitle: 'Supprimer définitivement ?',

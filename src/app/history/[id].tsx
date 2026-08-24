@@ -92,6 +92,21 @@ export default function ScreeningDetail() {
         </>
       ) : null}
 
+      {/* The measured numbers, not just the verdict. A threshold set on a
+          handful of photographs needs to be checkable against every new one. */}
+      {item.reflex ? (
+        <>
+          <Text style={s.label}>{t.history.reflexLabel}</Text>
+          <Text style={s.reflexReading}>
+            {t.history.reflexReading(
+              item.reflex.right.redness,
+              item.reflex.left.redness,
+              item.reflex.finding,
+            )}
+          </Text>
+        </>
+      ) : null}
+
       {item.notes ? (
         <>
           <Text style={s.label}>{t.common.notes}</Text>
@@ -173,6 +188,7 @@ const s = StyleSheet.create({
   rowLabel: { ...type.label, color: color.inkMuted },
   rowValue: { ...type.body, fontWeight: '600', color: color.ink, flexShrink: 1, textAlign: 'right' },
   reason: { ...type.body, fontWeight: '600', color: color.ink },
+  reflexReading: { ...type.body, fontSize: 13, color: color.inkMuted },
   label: { ...type.label, color: color.inkMuted, marginTop: space.sm },
 
   photos: { flexDirection: 'row', gap: space.sm },

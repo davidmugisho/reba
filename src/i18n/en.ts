@@ -246,6 +246,9 @@ export const en = {
     exportUnavailable: 'This phone cannot share files. Try from the app on a phone.',
     exportFailed: 'The file could not be made. Try again.',
     photosLabel: 'PHOTOS',
+    reflexLabel: 'PUPIL REFLEX',
+    reflexReading: (right: number, left: number, finding: string): string =>
+      `right ${right.toFixed(3)} · left ${left.toFixed(3)} · ${finding}`,
     photoMissing: 'This photo is no longer on the phone.',
     delete: 'Delete this screening',
     deleteConfirmTitle: 'Delete it permanently?',

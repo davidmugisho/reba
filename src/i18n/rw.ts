@@ -252,6 +252,9 @@ export const rw: Strings = {
     exportUnavailable: 'Iyi telefone ntishobora gusangira dosiye.',
     exportFailed: 'Dosiye ntiyashoboye gukorwa. Ongera ugerageze.',
     photosLabel: 'AMAFOTO',
+    reflexLabel: 'URUMURI RW’IMBONI',
+    reflexReading: (right: number, left: number, finding: string): string =>
+      `iburyo ${right.toFixed(3)} · ibumoso ${left.toFixed(3)} · ${finding}`,
     photoMissing: 'Iyi foto ntikiri kuri iyi telefone.',
     delete: 'Siba iri suzuma',
     deleteConfirmTitle: 'Gusiba burundu?',

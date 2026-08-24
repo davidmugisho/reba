@@ -241,6 +241,9 @@ export const de: Strings = {
     exportUnavailable: 'Dieses Telefon kann keine Dateien teilen.',
     exportFailed: 'Die Datei konnte nicht erstellt werden. Versuchen Sie es erneut.',
     photosLabel: 'FOTOS',
+    reflexLabel: 'PUPILLENREFLEX',
+    reflexReading: (right: number, left: number, finding: string): string =>
+      `rechts ${right.toFixed(3)} · links ${left.toFixed(3)} · ${finding}`,
     photoMissing: 'Dieses Foto ist nicht mehr auf dem Telefon.',
     delete: 'Diese Untersuchung löschen',
     deleteConfirmTitle: 'Endgültig löschen?',
