@@ -42,8 +42,9 @@ example
 /ios
 /android
 
-# generated document, regenerate from docs/note-technique.html
+# generated documents, regenerate from the sources in docs/
 /Reba-note-technique.pdf
+/Reba-business-proposal.pdf
 
 # evaluation photographs — never commit anything identifiable
 /photos/*

@@ -1,0 +1,127 @@
+<!doctype html>
+<!--
+  Business proposal for the STP'26 submission. Source of the PDF.
+
+  Kept to a page and a half on purpose: a judge reads many of these. Every
+  claim here is checkable in the repository — the numbers come from
+  tools/evaluate-reflex.mjs run against real clinical photographs.
+
+  To regenerate the PDF: open in a browser, print to PDF, A4, backgrounds on.
+-->
+<html lang="en"><head><meta charset="utf-8"><title>Reba — business proposal</title>
+<style>
+  @page { size: A4; margin: 16mm 15mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: #07203C;
+         font-size: 10pt; line-height: 1.5; margin: 0; }
+  h1 { font-size: 24pt; letter-spacing: -0.9pt; margin: 0 0 1mm; }
+  h1 .dot { color: #00A1DE; }
+  .sub { font-size: 11pt; color: #0E3A63; font-weight: 600; margin: 0 0 1mm; }
+  .meta { font-size: 8.5pt; color: #5B738C; margin: 0 0 6mm; }
+  h2 { font-size: 11.5pt; margin: 6mm 0 1.5mm; padding-bottom: 1mm;
+       border-bottom: 1.2pt solid #D5E2ED; letter-spacing: -0.2pt; }
+  p { margin: 0 0 2mm; }
+  ul { margin: 0 0 2mm; padding-left: 4.5mm; }
+  li { margin-bottom: 1mm; }
+  .lede { background: #F2F9FD; border-left: 3pt solid #00A1DE;
+          padding: 3mm 3.5mm; margin: 0 0 5mm; }
+  .proof { background: #E3F2EF; border-left: 3pt solid #0E7C6B;
+           padding: 3mm 3.5mm; margin: 2.5mm 0; }
+  table { width: 100%; border-collapse: collapse; margin: 1.5mm 0 2.5mm; font-size: 9.5pt; }
+  th { text-align: left; font-size: 7.5pt; letter-spacing: 0.5pt; text-transform: uppercase;
+       color: #5B738C; border-bottom: 1pt solid #D5E2ED; padding: 1mm 2mm 1mm 0; }
+  td { padding: 1.4mm 2mm 1.4mm 0; border-bottom: 0.4pt solid #E8EFF5; vertical-align: top; }
+  td.n { font-weight: 700; width: 26mm; }
+  code { font-family: Menlo, Consolas, monospace; font-size: 8.5pt;
+         background: #F2F9FD; padding: 0.2mm 0.8mm; border-radius: 0.8mm; }
+  footer { margin-top: 6mm; padding-top: 2mm; border-top: 1pt solid #D5E2ED;
+           font-size: 8pt; color: #5B738C; }
+</style></head><body>
+
+<h1>Reba<span class="dot">.</span></h1>
+<p class="sub">Vision screening for community health workers in Rwanda</p>
+<p class="meta">STP'26 Hackathon · Ejo Labs · github.com/davidmugisho/reba</p>
+
+<div class="lede">
+  <p style="margin:0">A five-minute eye check that runs on a cheap Android phone, offline, and
+  tells a community health worker which patients need a clinic. <strong>Reba does not
+  diagnose.</strong> It triages, and it says plainly what it does not know.</p>
+</div>
+
+<h2>The problem</h2>
+<p>Most blindness in Rwanda is avoidable — <em>if</em> someone catches it early. Retinoblastoma
+kills a child when it is missed and is largely curable when it is caught. Amblyopia becomes
+permanent by about age seven. The window is narrow and it closes quietly.</p>
+<p>But the nearest ophthalmologist is hours away, and the person who sees the child first — a
+community health worker — has no way to tell a lazy eye from a tired one. There is no tool
+between "the family noticed something" and "a specialist finally looked". So nobody catches it.</p>
+
+<h2>Who it is for</h2>
+<p>Rwanda's community health workers. They live in the villages they serve, they already visit
+families, and they are trusted. They carry mid-range Android phones and work where there is
+often no network. What they lack is an instrument.</p>
+
+<h2>The solution</h2>
+<p>A guided six-step check, about five minutes, entirely on the phone:</p>
+<ul>
+  <li><strong>Visual acuity</strong> — a tumbling E at three metres, one eye at a time. The screen
+      is calibrated against a national ID card, so the letters are the correct physical size on
+      any phone. Every adult Rwandan carries that ruler already.</li>
+  <li><strong>Two flash photographs</strong>, one per eye.</li>
+  <li><strong>A result</strong> readable at arm's length outdoors: refer, recheck, or no signs
+      today — with a script to read aloud to the family in their own language.</li>
+</ul>
+<p>Interface in Kinyarwanda, English, French and German. <strong>Nothing leaves the phone by
+itself</strong> — no account, no server, no sync, no analytics. A health worker can export a
+spreadsheet deliberately; photographs are never in it.</p>
+
+<h2>How AI and STP'26 tools were applied</h2>
+<table>
+  <tr><th>What</th><th>How</th></tr>
+  <tr><td class="n">Computer vision, on the device</td>
+      <td>Flash light reaching the retina returns red. White means it bounced off something in
+      front of it — a cataract, a detachment, a retinoblastoma. Reba measures that reflex in each
+      photograph and compares the two eyes. No network, no model file, no cost per patient.</td></tr>
+  <tr><td class="n">EjoChat API</td>
+      <td>After a screening the worker must explain the result to a worried parent. They type the
+      family's question and get an answer in Kinyarwanda, grounded in the screening. It is
+      constrained not to diagnose, not to predict anyone's sight, and to send every clinical
+      question back to the clinician. The written script still works with no signal.</td></tr>
+  <tr><td class="n">GitHub</td>
+      <td>Full history, with the reasoning for each clinical decision recorded in the code.</td></tr>
+</table>
+
+<div class="proof">
+  <p style="margin:0 0 1mm"><strong>Measured, not claimed.</strong> Run against real clinical
+  photographs of children with retinoblastoma (Wikimedia, public domain):</p>
+  <p style="margin:0">Healthy reflex <strong>0.475</strong> and <strong>0.476</strong> · leukocoria
+  <strong>0.381</strong> and <strong>0.375</strong> — two different children, two different
+  cameras. <strong>Both cases caught, none missed, no healthy eye flagged.</strong> Reproduce it
+  with <code>node tools/evaluate-reflex.mjs</code>.</p>
+</div>
+
+<p><strong>What we did not do.</strong> There is no trained model yet, and the app says so on the
+result screen rather than implying one looked. A model needs thousands of eye photographs labelled
+by ophthalmologists, taken on phones in villages — images nobody has, because nobody had the tool
+to collect them. Reba is that tool. Every screening already captures them.</p>
+
+<h2>Value and impact</h2>
+<ul>
+  <li><strong>It works where the need is.</strong> Offline, on hardware health workers already
+      own. No connectivity, no per-patient cost, no equipment to buy.</li>
+  <li><strong>It refuses to invent.</strong> An eye that was not measured is stored as nothing, never
+      as a number. Photographs too dark to read are recorded as unread. The photo check may add a
+      referral and may never withdraw one — a false positive costs one consultation, a false
+      negative can cost an eye.</li>
+  <li><strong>It builds the dataset it needs.</strong> Each screening collects a labelled-ready
+      pair of eye photographs in real field conditions. The asset compounds with use.</li>
+</ul>
+<p><strong>Next:</strong> a clinical partnership to annotate the images, a validated model measured
+on the same bench, and Kinyarwanda reviewed by a native speaker before any real patient.</p>
+
+<footer>
+  <em>Reba</em> means <em>look</em> in Kinyarwanda. Reba does not diagnose — it flags the eyes a
+  nurse or doctor should examine. The decision is always theirs.
+</footer>
+
+</body></html>
