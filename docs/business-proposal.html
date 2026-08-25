@@ -2,8 +2,11 @@
 <!--
   Business proposal for the STP'26 submission. Source of the PDF.
 
-  Kept to a page and a half on purpose: a judge reads many of these. Every
-  claim here is checkable in the repository — the numbers come from
+  Two pages, which is what a judge will actually read. It is built around a
+  walkthrough of one screening, because a reader who is not a clinician needs
+  to see how the check works before any claim about it means anything.
+
+  Every number is checkable in the repository — they come from
   tools/evaluate-reflex.mjs run against real clinical photographs.
 
   To regenerate the PDF: open in a browser, print to PDF, A4, backgrounds on.
@@ -49,31 +52,71 @@
 </div>
 
 <h2>The problem</h2>
-<p>Most blindness in Rwanda is avoidable — <em>if</em> someone catches it early. Retinoblastoma
-kills a child when it is missed and is largely curable when it is caught. Amblyopia becomes
-permanent by about age seven. The window is narrow and it closes quietly.</p>
-<p>But the nearest ophthalmologist is hours away, and the person who sees the child first — a
-community health worker — has no way to tell a lazy eye from a tired one. There is no tool
-between "the family noticed something" and "a specialist finally looked". So nobody catches it.</p>
+<p>Two things take a child's sight in Rwanda, and both are treatable if they are found in time.</p>
+<p><strong>Retinoblastoma</strong> is a cancer of the eye. It appears in the first years of life.
+Found early it is largely curable. Missed, it kills the child.</p>
+<p><strong>Amblyopia</strong> is an eye that never learns to see. One eye is weaker, the brain
+quietly stops using it, and by about age seven the loss is permanent. The child never complains,
+because they have never known anything else.</p>
+<p>Neither announces itself. Both are found by looking — and the nearest ophthalmologist is hours
+away. The person who sees the child first is a community health worker visiting the family, and
+they have nothing to look with. Between <em>a mother notices something in a photograph</em> and
+<em>a specialist finally examines the child</em>, there is no step at all. So the window closes
+quietly.</p>
 
 <h2>Who it is for</h2>
 <p>Rwanda's community health workers. They live in the villages they serve, they already visit
 families, and they are trusted. They carry mid-range Android phones and work where there is
 often no network. What they lack is an instrument.</p>
 
-<h2>The solution</h2>
-<p>A guided six-step check, about five minutes, entirely on the phone:</p>
+<h2>What a screening actually looks like</h2>
+<p>A health worker is visiting a family. The mother mentions that her three-year-old sits very
+close to the television. The worker opens Reba. There is no network in the village, and none is
+needed.</p>
+<p><strong>1 · Consent.</strong> A short script appears, to be read aloud. It says what the check
+looks for, that it is not a diagnosis, that two photographs will be taken and will stay on this
+phone, and that the family may stop at any point. The mother agrees out loud.</p>
+<p><strong>2 · The vision test.</strong> The worker holds a national ID card flat against the
+screen and adjusts an outline until the two match. Every ID card in the world is 85.6&nbsp;mm wide,
+so this tells the app how large a millimetre is on <em>this</em> screen — and the letters that
+follow are a true physical size rather than an approximation.</p>
+<p>The child stands three metres away with one eye covered. A large letter E appears, turned a
+random way. The child points which way its legs face; the worker taps the matching arrow. Three
+letters per line, and each line the child reads correctly the next one is smaller. Two mistakes on
+a line ends that eye. What comes out is a measurement — 6/12, 6/18 — not an impression.</p>
+<p><strong>3 · The photographs.</strong> In the darkest corner of the room, flash on, one
+photograph of each eye at arm's length.</p>
+<p><strong>4 · The result.</strong> One of three bands, large enough to read outdoors: refer,
+recheck, or no signs today. Behind it, a script to read to the family, and a referral slip to hand
+over or copy onto the paper form. Five minutes from start to finish.</p>
+
+<h2>Why the result can be trusted</h2>
+<p>Everyone has seen the red-eye effect in family photographs. That red is the flash reflecting off
+the retina at the back of the eye, which is full of blood vessels — and it is a sign that the path
+from the front of the eye to the back is clear.</p>
+<p>When something sits in that path — a cataract, a detached retina, a tumour — the light bounces
+off it instead, and the pupil comes back white. Doctors call it leukocoria, and it is the sign that
+most often brings a retinoblastoma to attention. Usually it is a parent who spots it in a
+photograph, by chance, too late.</p>
+<p>Reba measures it deliberately. It averages the colour inside each pupil and compares the two
+eyes. That comparison is the strong part: both photographs come from the same phone, the same
+flash, seconds apart, so skin tone and lighting cancel out. <strong>The patient is their own
+control.</strong></p>
+<p>We tested it against clinical photographs of two different children with retinoblastoma, taken
+on two different cameras and published in the public domain. Their healthy eyes measured
+<strong>0.475</strong> and <strong>0.476</strong>. Their affected eyes measured <strong>0.381</strong>
+and <strong>0.375</strong>. Both were flagged, neither healthy eye was. The check is in our
+repository and anyone can run it.</p>
+<p>Three rules keep it honest, and they are enforced in the code rather than promised:</p>
 <ul>
-  <li><strong>Visual acuity</strong> — a tumbling E at three metres, one eye at a time. The screen
-      is calibrated against a national ID card, so the letters are the correct physical size on
-      any phone. Every adult Rwandan carries that ruler already.</li>
-  <li><strong>Two flash photographs</strong>, one per eye.</li>
-  <li><strong>A result</strong> readable at arm's length outdoors: refer, recheck, or no signs
-      today — with a script to read aloud to the family in their own language.</li>
+  <li><strong>It never invents.</strong> An eye that was not measured is stored as nothing, never
+      as a number. A photograph too dark to read is recorded as unread.</li>
+  <li><strong>The photograph may only raise the level of concern, never lower it.</strong> Its
+      thresholds have met few real eyes so far, so it is allowed to add a referral and never to
+      withdraw one — a false alarm costs one consultation, a missed case can cost an eye.</li>
+  <li><strong>It never clears anyone.</strong> The mildest thing Reba can say is <em>no signs
+      today</em>, and it says in the same breath that this is not the same as healthy eyes.</li>
 </ul>
-<p>Interface in Kinyarwanda, English, French and German. <strong>Nothing leaves the phone by
-itself</strong> — no account, no server, no sync, no analytics. A health worker can export a
-spreadsheet deliberately; photographs are never in it.</p>
 
 <h2>How AI and STP'26 tools were applied</h2>
 <table>
@@ -91,28 +134,23 @@ spreadsheet deliberately; photographs are never in it.</p>
       <td>Full history, with the reasoning for each clinical decision recorded in the code.</td></tr>
 </table>
 
-<div class="proof">
-  <p style="margin:0 0 1mm"><strong>Measured, not claimed.</strong> Run against real clinical
-  photographs of children with retinoblastoma (Wikimedia, public domain):</p>
-  <p style="margin:0">Healthy reflex <strong>0.475</strong> and <strong>0.476</strong> · leukocoria
-  <strong>0.381</strong> and <strong>0.375</strong> — two different children, two different
-  cameras. <strong>Both cases caught, none missed, no healthy eye flagged.</strong> Reproduce it
-  with <code>node tools/evaluate-reflex.mjs</code>.</p>
-</div>
-
 <p><strong>What we did not do.</strong> There is no trained model yet, and the app says so on the
 result screen rather than implying one looked. A model needs thousands of eye photographs labelled
-by ophthalmologists, taken on phones in villages — images nobody has, because nobody had the tool
-to collect them. Reba is that tool. Every screening already captures them.</p>
+by ophthalmologists, taken on phones in villages — and no such dataset exists for this setting,
+because nobody had the tool to collect it. Reba is that tool. Every screening already captures a
+pair.</p>
 
 <h2>Value and impact</h2>
 <ul>
   <li><strong>It works where the need is.</strong> Offline, on hardware health workers already
       own. No connectivity, no per-patient cost, no equipment to buy.</li>
-  <li><strong>It refuses to invent.</strong> An eye that was not measured is stored as nothing, never
-      as a number. Photographs too dark to read are recorded as unread. The photo check may add a
-      referral and may never withdraw one — a false positive costs one consultation, a false
-      negative can cost an eye.</li>
+  <li><strong>Nothing leaves the phone by itself.</strong> No account, no server, no sync, no
+      analytics — there is no network code in the app at all. A worker can deliberately export a
+      spreadsheet for the health centre; the photographs are never in it. That is what lets a
+      family agree to a check on their child without agreeing to anything leaving the room.</li>
+  <li><strong>It speaks to the people using it.</strong> Kinyarwanda, English, French and German,
+      chosen once at the start of a shift. The consent script and the explanation for the family
+      are read aloud in the language they actually speak.</li>
   <li><strong>It builds the dataset it needs.</strong> Each screening collects a labelled-ready
       pair of eye photographs in real field conditions. The asset compounds with use.</li>
 </ul>
