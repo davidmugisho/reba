@@ -1,396 +1,92 @@
 # Reba
 
-Vision screening for community health workers in Rwanda. It runs on a cheap
-Android phone, offline, in about five minutes, and it never sends anything
-anywhere.
+Vision screening for community health workers in Rwanda. Five minutes, on a
+cheap Android phone, offline.
 
 *Reba* is Kinyarwanda for *look*.
 
-## The problem it exists for
+**Reba does not diagnose.** It flags the eyes a nurse or doctor should examine,
+and it says plainly what it does not know.
 
-Most avoidable blindness is avoidable because someone could have caught it
-early. In practice nobody catches it, because the nearest ophthalmologist is
-hours away and a community health worker has no way to tell a lazy eye from a
-tired one.
+## Two rules
 
-Reba does not diagnose. It is a triage tool: it flags the eyes a nurse or
-doctor should look at properly, and it says so in language a health worker can
-read at arm's length, outdoors, with a queue waiting.
+**Nothing leaves the phone by itself.** No backend, no account, no sync, no
+analytics. The one way data can leave is a health worker deliberately exporting
+a spreadsheet; the photographs are never in it.
 
-## Two rules the whole app obeys
+**Reba never clears anyone.** The mildest result is *no signs today*, and it
+says in the same breath that this is not the same as healthy eyes. Thresholds
+are tuned for sensitivity: a false positive costs one consultation, a false
+negative can cost an eye.
 
-**Nothing leaves the phone by itself.** There is no backend, no account, no
-sync, no analytics, and no network code in the app at all — `grep` it.
-Screenings are written to on-device storage and stay there. This is not a
-feature to be traded away later — it is the reason a health worker can run the
-check on a child without asking a family to consent to anything leaving the
-room.
+## What it does
 
-The one way data can leave is a health worker deliberately exporting a
-spreadsheet and passing it on through the phone's own share sheet. That takes a
-tap and a chosen destination, it never happens on its own, and the photos are
-never in it. See **Getting records to the health centre**.
+1. **Consent** — a script read aloud, and a spoken yes.
+2. **Patient** — age and sex.
+3. **Visual acuity** — a tumbling E at three metres, one eye at a time. An ID
+   card calibrates the screen so the letters are a true physical size.
+4. **Eye photographs** — one per eye, flash on.
+5. **Result** — refer, recheck, or no signs today, plus a script to read to the
+   family.
+6. **Referral slip** — to show or copy onto the paper form.
 
-**Reba never clears anyone.** There is no green band, no "healthy" result. The
-mildest outcome the app can give is *no signs today*, and it says in the same
-breath that this is not the same as healthy eyes. The model threshold is tuned
-for sensitivity rather than accuracy on purpose: a false positive costs one
-consultation, a false negative can cost an eye.
-
-## The screening flow
-
-Six steps, strictly linear, one screen each. A health worker gets interrupted —
-a crying child, a queue — so every step is somewhere you can come back to
-without losing the thread.
-
-1. **Consent** — a script to read aloud, and a checkbox for a spoken yes.
-2. **Patient** — age and sex are required, village and referral destination are not.
-3. **Visual acuity** — a tumbling E, one eye at a time, after an ID card
-   calibrates the screen. The patient points which way the legs face, so it
-   works for children and for adults who do not read.
-4. **Eye capture** — one photo per eye, flash on, in a darkened room if there
-   is one.
-5. **Result** — a full-bleed colour band. This is the screen the product lives
-   or dies on, so every other screen stays quiet to let it shout. Behind it,
-   *Explain this to me* is the other half: a script to read to the family,
-   including what the 6/x number on the slip actually means.
-6. **Referral slip** — the outcome laid out to be shown to the family or copied
-   onto the paper form, plus free-text notes. Saving happens here.
+Kinyarwanda, English, French and German.
 
 ## What is real, and what is not
 
-This is an early build. Several steps are deliberate placeholders, and it is
-worth knowing which before you read the code and assume it is broken.
-
 | Step | State |
 | --- | --- |
-| Consent | Real |
-| Patient | Real |
-| Visual acuity | Real. Card-on-screen calibration, randomised direction, decreasing lines, and a stop rule. An eye that was not measured is stored as `null`, never as a number. |
-| Eye capture | Real. `expo-camera`, flash on, one shot per eye. The photo is moved out of the cache into permanent storage and the record keeps that path. |
-| Analysis | **Partial.** Two measured signals: the acuity, and the red reflex read off the photographs — see [`src/triage.ts`](src/triage.ts) and [`src/reflex.ts`](src/reflex.ts). Still no model. |
-| Result | Real. Says what decided the band and that the photos have not been read. *Explain this to me* opens a script to read to the family. |
-| Referral + saving | Real. Writes to disk, survives a restart, and tells you when it fails. |
+| Consent, patient, referral, saving | Real |
+| Visual acuity | Real. Calibrated, randomised, with a stop rule. An eye that was not measured is stored as `null`, never as a number. |
+| Eye photographs | Real. Moved out of the cache into permanent storage; the record keeps that path. |
+| Analysis | **Partial.** The band comes from the acuity and the red reflex, both measured on the device. **There is no trained model**, and the result screen says so. |
 
-The screening in progress is written to the device as it goes, so an
-interruption that kills the app does not lose it — see **Unfinished
-screenings** below.
+The model is the next phase. It needs thousands of eye photographs labelled by
+ophthalmologists and taken on phones in villages — a dataset that does not exist
+for this setting, because nobody had the tool to collect it. Reba is that tool,
+and every screening already captures a pair.
 
 ## Running it
 
 ```bash
 npm install
 npx expo start          # scan the QR with Expo Go, or press w for web
+npx tsc --noEmit        # before committing
 ```
 
-Typecheck before you commit:
+The project stays on **Expo SDK 54** so it opens in Expo Go. See
+[`AGENTS.md`](AGENTS.md).
 
-```bash
-npx tsc --noEmit
-```
+EjoChat is optional: copy `.env.example` to `.env` and add a key. Without one,
+that feature hides itself and everything else works.
 
-The project stays on **SDK 54** so it opens in Expo Go. Expo Go carries one SDK
-at a time, so bumping the SDK means every phone has to update Expo Go, and
-every other project on the old SDK stops opening. Keep it here until there is
-a reason to leave, and see [`AGENTS.md`](AGENTS.md).
-
-Expo Go stops being enough the moment a native module that is not already
-inside it lands — the on-device model at day 7 is the one to watch. That is
-when a development build (`npx expo run:android`) becomes necessary.
-
-Web is the fastest way to click through the flow, but it is not the target. The
-target is a mid-range Android phone in daylight — check anything that touches
-storage or the camera on a real device.
-
-## Layout
+## Where things are
 
 ```
 src/
-  app/                    # expo-router routes; the file tree IS the navigation
-    index.tsx             # home: the tally and the two buttons
-    screening/            # the six-step flow, its own stack
-    history/              # list, and [id] for one record
-  components/reba-kit.tsx # Screen, Button, Card, Title, Body, StepDots
-  context/                # the screening being carried out right now
-  i18n/                   # en is the source; fr, de, rw are typed against it
-  storage/                # the only module that touches the disk
-  theme.ts                # design tokens
-  types/screening.ts      # the record shape
+  app/          expo-router routes; the file tree is the navigation
+  acuity.ts     the tumbling E measurement, no UI in it
+  reflex.ts     reading the red reflex off a photograph
+  triage.ts     which band a screening lands in, and why
+  i18n/         en is the source; fr, de, rw are typed against it
+  storage/      the only modules that touch the disk
+tools/          benches: measure the reflex against known cases, check EjoChat
 ```
 
-The routes depend on `reba-kit`, `ScreeningContext`, `storage/screenings`,
-`theme.ts` and `types/screening`, and on nothing else. Anything else still
-sitting in `src/components`, `src/hooks` or `src/constants` is leftover from
-the Expo template and is not wired to anything — ignore it, or delete it.
+The clinical logic lives in the three pure modules at the top of `src/`, apart
+from the screens, because those are the parts that have to be right.
 
-## Storage
+## More
 
-One module, [`src/storage/screenings.ts`](src/storage/screenings.ts), owns the
-disk. Records live in AsyncStorage under the key `reba:screenings:v1`.
+- [`docs/design-notes.md`](docs/design-notes.md) — why each decision was made,
+  and the failure it was made against. Read this before changing anything
+  clinical.
+- [`docs/business-proposal.html`](docs/business-proposal.html) — the STP'26
+  submission.
 
-Stay on the version Expo pins — `npx expo install --check` is the authority,
-not npm's latest. AsyncStorage's v3 line has a nicer API, but its native module
-is not in Expo Go for this SDK, so a v3 build cannot be tested on a phone
-without a custom dev client.
+## Before this meets a patient
 
-Two behaviours there are deliberate and should survive refactoring:
-
-- **A failed read is not an empty list.** The read path degrades to `[]` so a
-  screen still renders, but the write path throws instead. Treating an
-  unreadable store as empty means the next save writes a one-record list over
-  the top of every screening the device is holding.
-- **A corrupt payload is quarantined, not overwritten.** It moves to
-  `screenings:v1:corrupt:<timestamp>` so the records can still be pulled off
-  the device, and the app carries on.
-
-If a save fails, the referral screen says so, keeps the slip on screen to be
-copied onto paper, and offers a retry. An app that claims to have saved a
-screening and hasn't is worse than no app at all.
-
-## Language
-
-Kinyarwanda, English, French and German. The picker sits on home under the two
-buttons, collapsed to the current language until tapped — a health worker sets
-it once at the start of a shift, so it should not read as a fourth decision to
-make before starting. The choice is stored on the device.
-
-Flags are drawn PNGs in [`assets/images/flags/`](assets/images/flags), not flag
-emoji. Emoji flags degrade to bare letters on a lot of cheap Android builds,
-which is the hardware this is for.
-
-[`src/i18n/en.ts`](src/i18n/en.ts) is the source. Every other locale is typed
-against it, so a missing key is a compile error rather than a blank label in
-front of a patient. Values that vary with data are functions rather than
-template strings glued together at the call site, because word order moves
-between languages and a sentence assembled from fragments cannot follow it.
-
-**The Kinyarwanda has not been checked by a native speaker.** It was drafted,
-not translated, and it must be read by one before the app meets a real patient.
-The consent screen is why: a health worker reads it aloud, and it is where the
-patient is told this is *not* a diagnosis. If that sentence lands wrong,
-someone walks away believing their eyes have been examined when they have not.
-The result bands carry the same weight. The warning is repeated at the top of
-[`src/i18n/rw.ts`](src/i18n/rw.ts) so it cannot be missed while editing.
-
-German is in because it was asked for. Worth knowing that Rwanda's official
-languages are Kinyarwanda, English, French and Swahili — if these screens are
-ever used near the eastern border, Swahili will earn its place before German
-does.
-
-## The acuity test
-
-[`src/acuity.ts`](src/acuity.ts) holds the measurement and knows nothing about
-the screen. It is separate because this is the part that has to be right: a
-wrong optotype size or a wrong stop rule produces a number that looks clinical
-and is not.
-
-A 6/6 optotype subtends five arcminutes, which is 8.73 mm at six metres, and
-the height scales with both the viewing distance and the 6/x denominator. At
-the three metres this test uses, the 6/60 line is 43.65 mm tall. Turning
-millimetres into pixels needs to know how big the screen is, which is what the
-card step is for. ISO/IEC 7810 ID-1 is 85.6 mm wide, and every national ID
-card, bank card and driving licence in the world is that size, so matching an
-outline to one calibrates the phone.
-
-The copy leads with the national ID rather than a bank card: every adult
-Rwandan has one and far fewer carry a bank card, and a health worker in a
-village needs a ruler that is already in their pocket.
-
-Three optotypes per line, direction randomised each time, two misses on a line
-ends the test. The result is the smallest line the patient actually passed.
-
-The E is drawn from rectangles on a five-by-five grid rather than set in a
-font. A font renders "E" at some fraction of the point size that varies by
-typeface and platform, which would quietly make the test wrong.
-
-Two outcomes that must not be confused, and are kept apart all the way into
-storage: an eye that was never measured is `null`, and an eye that missed even
-the largest line is `null` with `belowChart` set. The second is a finding —
-vision worse than 6/60 — and it reaches the referral slip as words rather than
-as a blank.
-
-## Photos
-
-Eye photos never go into AsyncStorage. It is a key-value store with tight
-per-value limits on Android, and a couple of images per screening would blow it
-apart after a handful of patients — landing as exactly the record loss the
-storage module works to prevent. The image goes to the filesystem and only its
-path goes into the record.
-
-The move out of the cache is the point of
-[`src/storage/photos.ts`](src/storage/photos.ts). `takePictureAsync()` writes
-to the cache directory, which the OS is free to empty whenever the phone runs
-low on space, so a record pointing at a cache path is a record that silently
-loses its photos. One folder per screening under the document directory, named
-by record id.
-
-A capture that fails to save is not recorded: the eye stays unticked and the
-health worker is told. A record listing two photos that are not on the phone is
-worse than one that admits it has none.
-
-**Abandoned screenings are swept.** The consent script promises the patient
-they can stop at any point, and photos of a stranger's eyes should not outlive
-the visit. Rather than trying to catch every way out of the flow, home
-reconciles the photo folders against the records that actually exist and
-deletes the orphans.
-
-On web there are no file URLs, so the data URI ends up in AsyncStorage after
-all. That is tolerated because web is for clicking through the flow, never for
-holding patient photos — a couple of real shots would fill the browser quota.
-
-## How the band is decided
-
-[`src/triage.ts`](src/triage.ts), a pure module like the acuity one, and for
-the same reason: this is a clinical output and it has to be right.
-
-Until the model lands, the only real signal Reba collects is the acuity from
-step 3, so that is what decides the band. The photos are taken and kept, but
-nothing reads them, and the result screen says so in as many words rather than
-letting a health worker assume a model looked.
-
-- Worse than 6/60 in either eye, or 6/18 or worse — refer.
-- Two lines or more between the eyes — refer. One eye quietly carrying the
-  other is how amblyopia goes unnoticed.
-- 6/12 in either eye, or only one eye testable — recheck.
-- Anything else — no signs today, which is not the same as healthy eyes.
-
-Referring at 6/18 is earlier than the WHO threshold for moderate impairment, on
-the app's stated bias: a false positive costs one consultation, a false
-negative can cost an eye.
-
-If neither eye could be measured, the module returns null and the result screen
-shows its empty state. An app that has measured nothing and still produces a
-band is the failure the whole file exists to avoid.
-
-## Unfinished screenings
-
-The flow promises a health worker can be interrupted and come back without
-losing the thread. That was only true while the app stayed in memory: Android
-kills backgrounded apps when it runs low, and the half-finished screening went
-with it. The draft is now written to the device as it goes.
-
-**What is found at startup is offered, never adopted.** Home shows a card
-naming the patient and when it was started, with *Carry on* and *Discard*.
-Resuming silently is how one patient's photos end up filed under another
-patient's name, and a health worker who did not know a draft was restored has
-no way to catch it.
-
-**A draft older than six hours is not offered at all.** Long enough to survive
-a real interruption inside one shift, short enough that it never spans a night.
-Anything unreadable, malformed or undated is discarded on the same reasoning:
-a draft that cannot be trusted is not one a health worker can tell apart from a
-good one.
-
-Where it resumes is derived from what the record holds, not from a stored step
-number — see [`src/resume.ts`](src/resume.ts). The data is the truth, and a
-step counter written at the wrong moment drops someone back into a screen they
-had already finished.
-
-Discarding takes the photos with it. And the photo sweep on home now spares the
-screening in progress, which would otherwise delete pictures out from under a
-live screening the moment the health worker stepped back to the home screen.
-
-## The saved record
-
-[`history/[id]`](src/app/history/) shows one screening in full, including the
-two eye photos. They are shown because until the model lands this is the only
-thing that looks at them: a nurse handed a referral can open the record and see
-the eyes that were photographed, which is worth something today with no model
-at all. A photo whose file has gone says so rather than rendering a broken
-frame.
-
-A screening can be deleted from there. The consent script promises the patient
-they can stop at any point, and that promise should not expire the moment the
-record is written. Deleting asks first, in place rather than through a system
-dialog so it reads the same on every platform, and takes the photos with it.
-The record goes first: a photo deleted while the record survived would leave a
-screening pointing at nothing.
-
-## Getting records to the health centre
-
-A health worker builds up screenings that nobody at the health centre can see.
-The export is the answer, and it is deliberately small: a CSV, written on a tap,
-handed to the system share sheet. No account, no server, no upload path in the
-app.
-
-**The photos are not in it.** They are the most identifying thing Reba holds, a
-spreadsheet is no place for them, and a file that has left the phone can be
-forwarded anywhere. Whoever needs to see an eye opens the record on the device.
-The screen says so above the button rather than leaving it to be discovered.
-
-The file is written to the cache directory on purpose. It is a copy rather than
-the record, and the OS clearing it is exactly what should happen to a
-spreadsheet of patient data left lying around after it has been sent.
-
-Building the rows lives in [`src/export.ts`](src/export.ts), pure and tested,
-because the failure mode is quiet: a CSV that breaks on the first village name
-containing a comma arrives looking complete and is wrong. Values are quoted per
-RFC 4180 only when they need to be, an eye that was never measured is blank
-rather than invented, and one that failed the top line reads *worse than 6/60*.
-
-## Reading the photographs
-
-[`src/reflex.ts`](src/reflex.ts) — arithmetic on pixels, with no model in it.
-
-Flash light reaching the retina comes back red, because the retina is full of
-blood vessels. That is the "red eye" of family photographs, and it is a sign of
-health. A reflex that comes back white means the light bounced off something in
-front of the retina — a cataract, a detachment, a retinoblastoma. A reflex
-clearly duller on one side says that eye differs from its neighbour.
-
-Measured on synthetic eyes, round-tripped through real JPEG encoding:
-
-| Pupil | Redness |
-| --- | --- |
-| Healthy red reflex | 0.702 |
-| White — leukocoria | 0.343 |
-| Not an eye at all | ~0.15 |
-
-Two thresholds sit between them. Below **0.42** is pale enough to flag. Below
-**0.20** is not a pale pupil but a bad frame — whatever ails a pupil, its
-reflex does not come back green — so that reads as unreadable rather than
-sending a family to a clinic because the phone was held crooked.
-
-The sturdier signal is the difference *between* the eyes, because the patient
-is their own control: both photographs come from the same phone, the same
-flash, seconds apart, so skin tone, ambient light and lens all cancel. Across
-deep, mid and light surrounds the gap between two healthy eyes measures 0.0000,
-and a white pupil is still caught.
-
-**The photo check may only raise the band, never lower it.** Its thresholds
-were set on synthetic images and have never met a real eye. Until they do, a
-wrong flag costs a consultation and a wrong reassurance could cost an eye, so
-only the first is allowed. A pale pupil refers; a difference between reflexes
-asks for a recheck; unreadable changes nothing and is recorded as unread.
-Proven over all 32 combinations of acuity and finding: none softens a band.
-
-This is not the model, and the result screen does not pretend otherwise. It
-cannot see a squint and it cannot name a disease. It is a measurement, held to
-the same rule as the acuity.
-
-## Design
-
-Tokens live in [`src/theme.ts`](src/theme.ts) and the reasoning is written down
-there. The short version: the app is used outdoors on cheap screens, so
-contrast and weight do the work rather than size — body text never goes below
-15 and nothing anywhere below 12, and touch targets never below 56dp; and
-colour means status and nothing else, so
-the result band is the only saturated colour anywhere. The sky blue is from the
-Rwandan flag rather than the default medical palette, because this is built for
-Rwandan health workers first.
-
-## Where it is going
-
-- **Day 7** — real on-device TFLite inference in place of the timeout.
-
-Beyond that: whatever a real health worker asks for after using it.
-
-## Working on this
-
-Expo moves fast and this project tracks SDK 54. Read the versioned docs at
-<https://docs.expo.dev/versions/v54.0.0/> before writing code against an Expo
-API — the current docs will lie to you about older and newer releases alike.
-
-Typed routes and the React Compiler are both switched on in
-[`app.json`](app.json), so a bad `href` is a typecheck failure rather than a
-runtime surprise.
+- The Kinyarwanda was drafted, not translated. A native speaker must read it —
+  the consent script is read aloud to patients.
+- The reflex thresholds have met very few real eyes and have already produced
+  one false positive. They need real photographs before anyone trusts them.
