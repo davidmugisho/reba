@@ -75,10 +75,14 @@ export const de: Strings = {
 
     calibrateTitle: 'An einen Ausweis anpassen',
     calibrateLead:
-      'Halten Sie einen Personalausweis flach an den Bildschirm und passen Sie den Rahmen an, bis er genau so breit ist wie die Karte. Eine Bankkarte oder ein Führerschein hat dieselbe Größe und geht auch. Jeder Bildschirm ist anders groß, und das gibt den Buchstaben auf diesem Gerät die richtige Größe.',
+      'Stellen Sie einen Personalausweis hochkant an den Bildschirm, die kurze Kante quer, und passen Sie an, bis beide Seiten mit dem Rahmen übereinstimmen. Eine Bankkarte oder ein Führerschein hat dieselbe Größe. Der untere Teil der Karte ragt über den Bildschirm hinaus, das ist so gewollt: angepasst wird nur die Breite. Jeder Bildschirm ist anders groß, und das gibt den Buchstaben auf diesem Gerät die richtige Größe.',
     narrower: 'Schmaler',
     wider: 'Breiter',
     calibrateDone: 'Die Karte passt',
+    recalibrate: 'Karte erneut anpassen',
+    tooBigTitle: 'Die Karte wurde nicht angepasst',
+    tooBigBody:
+      'Die dafür nötigen Buchstaben wären breiter als dieser Bildschirm. Das heißt, der Rahmen blieb zu breit für die Karte. Gehen Sie zurück und passen Sie ihn genau an die kurze Kante der Karte an. Es wurde nichts gespeichert.',
 
     title: 'In welche Richtung zeigen die Balken?',
     coverLeft:

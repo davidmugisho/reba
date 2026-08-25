@@ -74,10 +74,14 @@ export const fr: Strings = {
 
     calibrateTitle: "Ajustez à une carte d'identité",
     calibrateLead:
-      "Posez une carte d'identité nationale à plat sur l'écran et ajustez le cadre jusqu'à ce qu'il fasse exactement sa largeur. Une carte bancaire ou un permis de conduire fait la même taille et convient aussi. Chaque écran a une taille différente, et c'est ce qui donne aux lettres la bonne taille sur celui-ci.",
+      "Posez une carte d'identité nationale debout contre l'écran, le petit côté en largeur, et ajustez jusqu'à ce que les deux bords coïncident avec le cadre. Une carte bancaire ou un permis de conduire fait la même taille. Le bas de la carte dépasse de l'écran, c'est normal : seule la largeur est ajustée. Chaque écran a une taille différente, et c'est ce qui donne aux lettres la bonne taille sur celui-ci.",
     narrower: 'Plus étroit',
     wider: 'Plus large',
     calibrateDone: 'La carte correspond',
+    recalibrate: 'Réajuster la carte',
+    tooBigTitle: "La carte n'a pas été ajustée",
+    tooBigBody:
+      "Les lettres demandées seraient plus larges que cet écran, ce qui veut dire que le cadre est resté trop large pour la carte. Revenez en arrière et faites-le correspondre exactement au petit côté de la carte. Rien n'a été enregistré.",
 
     title: 'Dans quel sens pointent les branches ?',
     coverLeft: "Couvrez l'œil GAUCHE. Placez le patient à trois mètres et demandez-lui de pointer.",

@@ -1,15 +1,18 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import {
   answerOptotype,
   currentLevel,
   DIRECTIONS,
+  CARD_LONG_MM,
+  CARD_SHORT_MM,
   optotypeHeightPx,
-  pxPerMmFromCardWidth,
+  pxPerMmFromCardShortEdge,
   resultOf,
   ROTATION,
   startEyeTest,
+  widestOptotypePx,
   type Direction,
   type EyeResult,
   type EyeTest,
@@ -33,8 +36,36 @@ import { color, radius, space, TAP, type } from '../../theme';
  * that was not measured must not be able to look like one that was.
  */
 
-/** ISO/IEC 7810 ID-1, the shape of every bank and national ID card. */
-const CARD_ASPECT = 85.6 / 53.98;
+/**
+ * The card is drawn standing up, short edge across, and that is the whole
+ * point of this step.
+ *
+ * A phone screen is around 65 mm wide and the card's long edge is 85.6 mm, so
+ * a card drawn lying down is wider than the glass it is drawn on. The examiner
+ * would be asked to line up an edge that is not on the screen, and whatever
+ * they settled on would silently become the scale for every letter after it.
+ * Standing the card up puts the matched edge at 53.98 mm, which fits on every
+ * phone this app is meant to run on.
+ *
+ * The bottom of the card runs off the screen and that is fine: only the width
+ * is being matched, and the copy says so.
+ */
+const CARD_ASPECT = CARD_LONG_MM / CARD_SHORT_MM;
+
+/** Padding either side of a Screen. The chart lives inside it. */
+const SCREEN_PADDING = space.lg * 2;
+
+/**
+ * The outline breaks out of that padding and runs almost to the glass.
+ *
+ * On the smallest phone we target the card's short edge needs 346 units and
+ * the padded column only offers 327, so obeying the layout here would put us
+ * straight back to an edge that cannot be matched.
+ */
+const STAGE_BLEED = space.sm * 2;
+
+/** Finger-sized steps would be coarser than the measurement deserves. */
+const NUDGE = 2;
 
 const randomDirection = (avoid?: Direction): Direction => {
   const pool = avoid ? DIRECTIONS.filter((d) => d !== avoid) : DIRECTIONS;
@@ -48,14 +79,23 @@ export default function Acuity() {
   const { update } = useScreening();
   const t = useT();
 
+  // The outline may never be wider than the glass. A card edge that is off the
+  // screen cannot be matched, and the scale it produces would still look like
+  // a measurement in the record.
+  const { width: windowWidth } = useWindowDimensions();
+  const maxEdge = Math.max(120, Math.round(windowWidth - STAGE_BLEED));
+  // Most phones land near 6 screen units per millimetre, so this opens close
+  // to right and the examiner nudges from there rather than hunting.
+  const [cardEdge, setCardEdge] = useState(() => Math.min(maxEdge, Math.round(CARD_SHORT_MM * 6)));
+
   const [phase, setPhase] = useState<Phase>('calibrate');
-  const [cardWidth, setCardWidth] = useState(300);
   const [eye, setEye] = useState<Eye>('right');
   const [test, setTest] = useState<EyeTest>(startEyeTest);
   const [direction, setDirection] = useState<Direction>(randomDirection);
   const [results, setResults] = useState<Partial<Record<Eye, EyeResult>>>({});
 
-  const pxPerMm = pxPerMmFromCardWidth(cardWidth);
+  const edge = Math.min(cardEdge, maxEdge);
+  const pxPerMm = pxPerMmFromCardShortEdge(edge);
 
   function commit(all: Partial<Record<Eye, EyeResult>>) {
     update({
@@ -112,17 +152,18 @@ export default function Acuity() {
         <Title>{t.acuity.calibrateTitle}</Title>
         <Body muted>{t.acuity.calibrateLead}</Body>
 
+        {/* Clipped to the room that is left, because the card is taller than
+            the screen once it is standing up. Only the width is matched, so
+            the open bottom edge is honest rather than broken. */}
         <View style={s.cardStage}>
-          <View
-            style={[s.cardOutline, { width: cardWidth, height: cardWidth / CARD_ASPECT }]}
-          />
+          <View style={[s.cardOutline, { width: edge, height: edge * CARD_ASPECT }]} />
         </View>
 
         <View style={s.sizeRow}>
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={t.acuity.narrower}
-            onPress={() => setCardWidth((w) => Math.max(160, w - 4))}
+            onPress={() => setCardEdge((w) => Math.max(120, w - NUDGE))}
             style={({ pressed }) => [s.sizeBtn, pressed && { backgroundColor: color.raised }]}
           >
             <Text style={s.sizeBtnLabel}>−</Text>
@@ -131,7 +172,7 @@ export default function Acuity() {
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={t.acuity.wider}
-            onPress={() => setCardWidth((w) => Math.min(520, w + 4))}
+            onPress={() => setCardEdge((w) => Math.min(maxEdge, w + NUDGE))}
             style={({ pressed }) => [s.sizeBtn, pressed && { backgroundColor: color.raised }]}
           >
             <Text style={s.sizeBtnLabel}>+</Text>
@@ -179,6 +220,27 @@ export default function Acuity() {
 
   // --------------------------------------------------------------------- test
   const size = optotypeHeightPx(currentLevel(test), pxPerMm);
+
+  // An optotype wider than its container is drawn clipped, which shows the
+  // patient a smaller letter than the one about to be recorded against them.
+  // With a sane calibration the largest E fits on every phone we target, so
+  // reaching this means the calibration is wrong, and saying so beats
+  // recording a failure the patient never earned.
+  const chartRoom = windowWidth - SCREEN_PADDING - space.md * 2;
+  const tooBigForScreen = widestOptotypePx(pxPerMm) > chartRoom;
+
+  if (tooBigForScreen) {
+    return (
+      <Screen
+        footer={<Button label={t.acuity.recalibrate} onPress={() => setPhase('calibrate')} />}
+      >
+        <StepDots current={2} total={6} />
+        <Eyebrow>{t.acuity.step}</Eyebrow>
+        <Title>{t.acuity.tooBigTitle}</Title>
+        <Body>{t.acuity.tooBigBody}</Body>
+      </Screen>
+    );
+  }
 
   return (
     <Screen>
@@ -292,14 +354,24 @@ function EyeRow({
 const s = StyleSheet.create({
   cardStage: {
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: space.lg,
+    // Cancels the Screen's padding so the outline can reach the full width.
+    marginHorizontal: -space.lg,
+    // The standing card is taller than the room below the heading, so it is
+    // cut off rather than allowed to shove the buttons off the screen.
+    maxHeight: 260,
+    overflow: 'hidden',
+    paddingTop: space.md,
+    marginBottom: space.md,
   },
   cardOutline: {
     borderWidth: 2.5,
     borderColor: color.accent,
-    borderRadius: radius.md,
+    borderTopLeftRadius: radius.md,
+    borderTopRightRadius: radius.md,
     backgroundColor: color.accentSoft,
+    // Left open: the bottom of the card is off the screen and the examiner
+    // is matching the two sides, not the corners.
+    borderBottomWidth: 0,
   },
   sizeRow: { flexDirection: 'row', alignItems: 'center', gap: space.md, justifyContent: 'center' },
   sizeBtn: {

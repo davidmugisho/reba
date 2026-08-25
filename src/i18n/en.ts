@@ -84,10 +84,14 @@ export const en = {
 
     calibrateTitle: 'Match an ID card',
     calibrateLead:
-      'Hold a national ID card flat against the screen and adjust the outline until it is exactly the width of the card. A bank card or driving licence is the same size and works too. Every screen is a different size, and this is what makes the letters the right size on this one.',
+      'Stand a national ID card up against the screen, short edge across, and adjust until both sides line up with the outline. A bank card or driving licence is the same size. The bottom of the card runs off the screen, which is expected: only the width is being matched. Every screen is a different size, and this is what makes the letters the right size on this one.',
     narrower: 'Narrower',
     wider: 'Wider',
     calibrateDone: 'The card matches',
+    recalibrate: 'Match the card again',
+    tooBigTitle: 'The card was not matched',
+    tooBigBody:
+      'The letters this calls for are wider than this screen, which means the outline was left too wide for the card. Go back and match it to the short edge of the card exactly. Nothing has been recorded.',
 
     title: 'Which way do the legs point?',
     coverLeft: 'Cover the LEFT eye. Stand the patient three metres away and ask them to point.',

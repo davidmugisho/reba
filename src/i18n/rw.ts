@@ -88,10 +88,14 @@ export const rw: Strings = {
 
     calibrateTitle: 'Gereranya n’indangamuntu',
     calibrateLead:
-      'Shyira indangamuntu kuri ecran, uhindure kugeza ubugari bw’agasanduku bungana n’ubw’ikarita. Ikarita ya banki cyangwa uruhushya rwo gutwara ibinyabiziga bifite ingano imwe, na byo birakora. Buri telefone ifite ecran itandukanye, ni yo mpamvu ibi bituma inyuguti zigira ingano ikwiye kuri iyi.',
+      'Hagarika indangamuntu kuri ecran, uruhande rugufi ruri mu bugari, uhindure kugeza impande zombi zihuye n’agasanduku. Ikarita ya banki cyangwa uruhushya rwo gutwara ibinyabiziga bifite ingano imwe. Hasi h’ikarita hasohoka hanze ya ecran, ni ibisanzwe: ubugari gusa ni bwo bugereranywa. Buri telefone ifite ecran itandukanye, ni yo mpamvu ibi bituma inyuguti zigira ingano ikwiye kuri iyi.',
     narrower: 'Gabanya',
     wider: 'Ongera',
     calibrateDone: 'Ikarita irahuye',
+    recalibrate: 'Ongera ugereranye ikarita',
+    tooBigTitle: 'Ikarita ntiyagereranyijwe',
+    tooBigBody:
+      'Inyuguti zisabwa zaba zigari kurusha iyi ecran, bivuze ko agasanduku kagumye kagari kurusha ikarita. Subira inyuma maze ukagereranye neza n’uruhande rugufi rw’ikarita. Nta kintu cyanditswe.',
 
     title: 'Amaguru yerekeye he?',
     coverLeft:

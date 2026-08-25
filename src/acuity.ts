@@ -22,8 +22,19 @@ export const PER_LINE = 3;
 /** Misses on one line that end the test. Two is the usual screening rule. */
 export const MISSES_TO_STOP = 2;
 
-/** ISO/IEC 7810 ID-1 — every bank and national ID card is this wide. */
-export const CARD_WIDTH_MM = 85.6;
+/**
+ * ISO/IEC 7810 ID-1 — the shape of every bank and national ID card.
+ *
+ * The SHORT edge is what we calibrate against, and that is not an aesthetic
+ * choice. A phone screen is about 65 mm wide. The card's long edge is 85.6 mm.
+ * The card is wider than the screen, so an outline drawn at the true long edge
+ * cannot fit and cannot be matched — the health worker would be asked to line
+ * up an edge that is off the glass. The short edge is 53.98 mm and fits on
+ * every phone this app targets, so it is the edge that can actually be
+ * measured rather than the one that is easier to talk about.
+ */
+export const CARD_LONG_MM = 85.6;
+export const CARD_SHORT_MM = 53.98;
 
 export type Direction = 'up' | 'right' | 'down' | 'left';
 
@@ -52,9 +63,27 @@ export function optotypeHeightPx(denominator: number, pxPerMm: number): number {
   return optotypeHeightMm(denominator) * pxPerMm;
 }
 
-/** A calibration is only as good as the card measurement it came from. */
-export function pxPerMmFromCardWidth(widthPx: number): number {
-  return widthPx / CARD_WIDTH_MM;
+/**
+ * Screen scale from the matched short edge of the card.
+ *
+ * A calibration is only as good as the card measurement it came from, which is
+ * why the caller must never let the outline exceed the screen: an edge the
+ * examiner cannot see is an edge they cannot match, and the number that comes
+ * out looks exactly as clinical as a real one.
+ */
+export function pxPerMmFromCardShortEdge(shortEdgePx: number): number {
+  return shortEdgePx / CARD_SHORT_MM;
+}
+
+/**
+ * Widest optotype the test will ask for, in screen units.
+ *
+ * The caller checks this against the space it actually has. An optotype
+ * clipped by its container is a smaller letter than the one being recorded,
+ * and the patient would be failed on a line that was never really shown.
+ */
+export function widestOptotypePx(pxPerMm: number): number {
+  return optotypeHeightPx(LEVELS[0], pxPerMm);
 }
 
 export interface EyeTest {
