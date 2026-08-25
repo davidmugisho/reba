@@ -74,7 +74,7 @@ export const fr: Strings = {
 
     calibrateTitle: "Ajustez à une carte d'identité",
     calibrateLead:
-      "Posez une carte d'identité nationale debout contre l'écran, le petit côté en largeur, et ajustez jusqu'à ce que les deux bords coïncident avec le cadre. Une carte bancaire ou un permis de conduire fait la même taille. Le bas de la carte dépasse de l'écran, c'est normal : seule la largeur est ajustée. Chaque écran a une taille différente, et c'est ce qui donne aux lettres la bonne taille sur celui-ci.",
+      "Posez une carte d'identité debout contre l'écran, le petit côté en largeur, et ajustez jusqu'à ce que les deux bords coïncident avec le cadre. Une carte bancaire fait la même taille. La carte dépasse en bas de l'écran, c'est normal : seule la largeur est ajustée. C'est ce qui donne aux lettres leur vraie taille sur cet écran.",
     narrower: 'Plus étroit',
     wider: 'Plus large',
     calibrateDone: 'La carte correspond',

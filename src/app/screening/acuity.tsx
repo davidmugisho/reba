@@ -67,6 +67,15 @@ const STAGE_BLEED = space.sm * 2;
 /** Finger-sized steps would be coarser than the measurement deserves. */
 const NUDGE = 2;
 
+/**
+ * How much of the standing card is drawn.
+ *
+ * At true scale the card is around 520 units tall, which is most of a phone.
+ * Only the two sides are being matched, so drawing the top of the card is
+ * enough and leaves the screen usable.
+ */
+const OUTLINE_MAX_H = 300;
+
 const randomDirection = (avoid?: Direction): Direction => {
   const pool = avoid ? DIRECTIONS.filter((d) => d !== avoid) : DIRECTIONS;
   return pool[Math.floor(Math.random() * pool.length)];
@@ -152,13 +161,6 @@ export default function Acuity() {
         <Title>{t.acuity.calibrateTitle}</Title>
         <Body muted>{t.acuity.calibrateLead}</Body>
 
-        {/* Clipped to the room that is left, because the card is taller than
-            the screen once it is standing up. Only the width is matched, so
-            the open bottom edge is honest rather than broken. */}
-        <View style={s.cardStage}>
-          <View style={[s.cardOutline, { width: edge, height: edge * CARD_ASPECT }]} />
-        </View>
-
         <View style={s.sizeRow}>
           <Pressable
             accessibilityRole="button"
@@ -178,6 +180,20 @@ export default function Acuity() {
             <Text style={s.sizeBtnLabel}>+</Text>
           </Pressable>
         </View>
+
+        {/* The outline sits below the buttons and not above them. A card
+            standing against the glass covers everything under its top edge,
+            so controls placed beneath it can only be reached by taking the
+            card off the screen, which loses the alignment being made. */}
+        <View style={s.cardStage}>
+          <View
+            style={[
+              s.cardOutline,
+              { width: edge, height: Math.min(edge * CARD_ASPECT, OUTLINE_MAX_H) },
+            ]}
+          />
+        </View>
+
       </Screen>
     );
   }
@@ -356,12 +372,7 @@ const s = StyleSheet.create({
     alignItems: 'center',
     // Cancels the Screen's padding so the outline can reach the full width.
     marginHorizontal: -space.lg,
-    // The standing card is taller than the room below the heading, so it is
-    // cut off rather than allowed to shove the buttons off the screen.
-    maxHeight: 260,
     overflow: 'hidden',
-    paddingTop: space.md,
-    marginBottom: space.md,
   },
   cardOutline: {
     borderWidth: 2.5,
