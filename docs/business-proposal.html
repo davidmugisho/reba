@@ -6,12 +6,12 @@
   walkthrough of one screening, because a reader who is not a clinician needs
   to see how the check works before any claim about it means anything.
 
-  Every number is checkable in the repository — they come from
+  Every number is checkable in the repository. They come from
   tools/evaluate-reflex.mjs run against real clinical photographs.
 
   To regenerate the PDF: open in a browser, print to PDF, A4, backgrounds on.
 -->
-<html lang="en"><head><meta charset="utf-8"><title>Reba — business proposal</title>
+<html lang="en"><head><meta charset="utf-8"><title>Reba: business proposal</title>
 <style>
   @page { size: A4; margin: 16mm 15mm; }
   * { box-sizing: border-box; }
@@ -58,7 +58,7 @@ Found early it is largely curable. Missed, it kills the child.</p>
 <p><strong>Amblyopia</strong> is an eye that never learns to see. One eye is weaker, the brain
 quietly stops using it, and by about age seven the loss is permanent. The child never complains,
 because they have never known anything else.</p>
-<p>Neither announces itself. Both are found by looking — and the nearest ophthalmologist is hours
+<p>Neither announces itself. Both are found by looking, and the nearest ophthalmologist is hours
 away. The person who sees the child first is a community health worker visiting the family, and
 they have nothing to look with. Between <em>a mother notices something in a photograph</em> and
 <em>a specialist finally examines the child</em>, there is no step at all. So the window closes
@@ -78,12 +78,12 @@ looks for, that it is not a diagnosis, that two photographs will be taken and wi
 phone, and that the family may stop at any point. The mother agrees out loud.</p>
 <p><strong>2 · The vision test.</strong> The worker holds a national ID card flat against the
 screen and adjusts an outline until the two match. Every ID card in the world is 85.6&nbsp;mm wide,
-so this tells the app how large a millimetre is on <em>this</em> screen — and the letters that
+so this tells the app how large a millimetre is on <em>this</em> screen, and the letters that
 follow are a true physical size rather than an approximation.</p>
 <p>The child stands three metres away with one eye covered. A large letter E appears, turned a
 random way. The child points which way its legs face; the worker taps the matching arrow. Three
 letters per line, and each line the child reads correctly the next one is smaller. Two mistakes on
-a line ends that eye. What comes out is a measurement — 6/12, 6/18 — not an impression.</p>
+a line ends that eye. What comes out is a measurement, 6/12 or 6/18, not an impression.</p>
 <p><strong>3 · The photographs.</strong> In the darkest corner of the room, flash on, one
 photograph of each eye at arm's length.</p>
 <p><strong>4 · The result.</strong> One of three bands, large enough to read outdoors: refer,
@@ -92,10 +92,10 @@ over or copy onto the paper form. Five minutes from start to finish.</p>
 
 <h2>Why the result can be trusted</h2>
 <p>Everyone has seen the red-eye effect in family photographs. That red is the flash reflecting off
-the retina at the back of the eye, which is full of blood vessels — and it is a sign that the path
+the retina at the back of the eye, which is full of blood vessels. It is a sign that the path
 from the front of the eye to the back is clear.</p>
-<p>When something sits in that path — a cataract, a detached retina, a tumour — the light bounces
-off it instead, and the pupil comes back white. Doctors call it leukocoria, and it is the sign that
+<p>When something sits in that path, such as a cataract, a detached retina or a tumour, the light
+bounces off it instead, and the pupil comes back white. Doctors call it leukocoria, and it is the sign that
 most often brings a retinoblastoma to attention. Usually it is a parent who spots it in a
 photograph, by chance, too late.</p>
 <p>Reba measures it deliberately. It averages the colour inside each pupil and compares the two
@@ -113,7 +113,7 @@ repository and anyone can run it.</p>
       as a number. A photograph too dark to read is recorded as unread.</li>
   <li><strong>The photograph may only raise the level of concern, never lower it.</strong> Its
       thresholds have met few real eyes so far, so it is allowed to add a referral and never to
-      withdraw one — a false alarm costs one consultation, a missed case can cost an eye.</li>
+      withdraw one. A false alarm costs one consultation; a missed case can cost an eye.</li>
   <li><strong>It never clears anyone.</strong> The mildest thing Reba can say is <em>no signs
       today</em>, and it says in the same breath that this is not the same as healthy eyes.</li>
 </ul>
@@ -123,7 +123,7 @@ repository and anyone can run it.</p>
   <tr><th>What</th><th>How</th></tr>
   <tr><td class="n">Computer vision, on the device</td>
       <td>Flash light reaching the retina returns red. White means it bounced off something in
-      front of it — a cataract, a detachment, a retinoblastoma. Reba measures that reflex in each
+      front of it: a cataract, a detachment, a retinoblastoma. Reba measures that reflex in each
       photograph and compares the two eyes. No network, no model file, no cost per patient.</td></tr>
   <tr><td class="n">EjoChat API</td>
       <td>After a screening the worker must explain the result to a worried parent. They type the
@@ -136,7 +136,7 @@ repository and anyone can run it.</p>
 
 <p><strong>What we did not do.</strong> There is no trained model yet, and the app says so on the
 result screen rather than implying one looked. A model needs thousands of eye photographs labelled
-by ophthalmologists, taken on phones in villages — and no such dataset exists for this setting,
+by ophthalmologists, taken on phones in villages, and no such dataset exists for this setting,
 because nobody had the tool to collect it. Reba is that tool. Every screening already captures a
 pair.</p>
 
@@ -145,7 +145,7 @@ pair.</p>
   <li><strong>It works where the need is.</strong> Offline, on hardware health workers already
       own. No connectivity, no per-patient cost, no equipment to buy.</li>
   <li><strong>Nothing leaves the phone by itself.</strong> No account, no server, no sync, no
-      analytics — there is no network code in the app at all. A worker can deliberately export a
+      analytics. There is no network code in the app at all. A worker can deliberately export a
       spreadsheet for the health centre; the photographs are never in it. That is what lets a
       family agree to a check on their child without agreeing to anything leaving the room.</li>
   <li><strong>It speaks to the people using it.</strong> Kinyarwanda, English, French and German,
@@ -158,7 +158,7 @@ pair.</p>
 on the same bench, and Kinyarwanda reviewed by a native speaker before any real patient.</p>
 
 <footer>
-  <em>Reba</em> means <em>look</em> in Kinyarwanda. Reba does not diagnose — it flags the eyes a
+  <em>Reba</em> means <em>look</em> in Kinyarwanda. Reba does not diagnose. It flags the eyes a
   nurse or doctor should examine. The decision is always theirs.
 </footer>
 
