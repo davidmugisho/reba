@@ -75,7 +75,7 @@ export const de: Strings = {
 
     calibrateTitle: 'An einen Ausweis anpassen',
     calibrateLead:
-      'Stellen Sie eine Bank- oder Ausweiskarte hochkant an den Bildschirm, mittig über das blaue Rechteck. Drücken Sie Plus, bis links und rechts der Karte Blau zu sehen ist, dann Minus, bis es gerade verschwindet. Die Karte ist höher als das Rechteck, das ist so gewollt.',
+      'Legen Sie eine Bank- oder Ausweiskarte flach an den Bildschirm, hochkant über das blaue Rechteck. Sie ragt unten über das Telefon hinaus, das ist in Ordnung. Drücken Sie Plus, bis links und rechts der Karte Blau zu sehen ist, dann Minus, bis es gerade verschwindet.',
     narrower: 'Schmaler',
     wider: 'Breiter',
     calibrateDone: 'Die Karte passt',

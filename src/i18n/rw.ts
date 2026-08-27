@@ -88,7 +88,7 @@ export const rw: Strings = {
 
     calibrateTitle: 'Gereranya n’indangamuntu',
     calibrateLead:
-      'Hagarika ikarita ya banki cyangwa indangamuntu kuri ecran, uruhande rugufi ruri mu bugari, uyipfutse akazu k’ubururu. Kanda kuri + kugeza ubururu bugaragara impande zombi z’ikarita, hanyuma ukande kuri − kugeza bushira. Ikarita ni ndende kurusha akazu, ni ibisanzwe.',
+      'Shyira ikarita ya banki cyangwa indangamuntu iryamye neza kuri ecran, uruhande rugufi ruri mu bugari, ipfutse akazu k’ubururu. Izasohoka hasi ya telefone, ni ibisanzwe. Kanda kuri + kugeza ubururu bugaragara impande zombi z’ikarita, hanyuma ukande kuri − kugeza bushira.',
     narrower: 'Gabanya',
     wider: 'Ongera',
     calibrateDone: 'Ikarita irahuye',
