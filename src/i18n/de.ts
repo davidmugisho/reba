@@ -75,7 +75,7 @@ export const de: Strings = {
 
     calibrateTitle: 'An einen Ausweis anpassen',
     calibrateLead:
-      'Stellen Sie einen Ausweis hochkant an den Bildschirm, die kurze Kante quer, und passen Sie an, bis beide Seiten mit dem Rahmen übereinstimmen. Eine Bankkarte hat dieselbe Größe. Die Karte ragt unten über den Bildschirm hinaus, das ist so gewollt: angepasst wird nur die Breite. Das gibt den Buchstaben auf diesem Bildschirm ihre wahre Größe.',
+      'Stellen Sie eine Bank- oder Ausweiskarte hochkant an den Bildschirm, die kurze Kante quer, und passen Sie an, bis beide Seiten mit dem Rahmen übereinstimmen. Nur die Breite zählt: die Karte ist höher als der Rahmen.',
     narrower: 'Schmaler',
     wider: 'Breiter',
     calibrateDone: 'Die Karte passt',

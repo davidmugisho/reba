@@ -70,11 +70,12 @@ const NUDGE = 2;
 /**
  * How much of the standing card is drawn.
  *
- * At true scale the card is around 520 units tall, which is most of a phone.
- * Only the two sides are being matched, so drawing the top of the card is
- * enough and leaves the screen usable.
+ * At true scale the card is around 520 units tall, which is more than a phone
+ * has to spare. Only the two sides are being matched, so the top of the card
+ * is enough, and stopping well clear of the footer keeps the open bottom edge
+ * reading as "this continues" rather than as a button that clipped it.
  */
-const OUTLINE_MAX_H = 300;
+const OUTLINE_MAX_H = 190;
 
 const randomDirection = (avoid?: Direction): Direction => {
   const pool = avoid ? DIRECTIONS.filter((d) => d !== avoid) : DIRECTIONS;

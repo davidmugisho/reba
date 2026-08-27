@@ -84,7 +84,7 @@ export const en = {
 
     calibrateTitle: 'Match an ID card',
     calibrateLead:
-      'Stand an ID card against the screen, short edge across, and adjust until both sides line up with the outline. A bank card or driving licence is the same size. The card runs off the bottom of the screen, which is expected: only the width is matched. This is what gives the letters their true size on this screen.',
+      'Stand a bank or ID card against the screen, short edge across, and adjust until both sides line up with the outline. Only the width is matched, so the card is taller than the outline.',
     narrower: 'Narrower',
     wider: 'Wider',
     calibrateDone: 'The card matches',
