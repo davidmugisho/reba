@@ -68,13 +68,22 @@ const STAGE_BLEED = space.sm * 2;
 const NUDGE = 2;
 
 /**
- * How tall the box is drawn.
- *
- * Nothing about the height is measured. It only has to be tall enough that a
- * sliver showing past the side of the card is easy to see, and short enough
- * to stay clear of the footer.
+ * Vertical room the rest of the step needs: header, heading, instruction,
+ * the nudge row, and the footer. What is left over is the box.
  */
-const OUTLINE_MAX_H = 190;
+const CHROME_H = 485;
+
+/**
+ * The box must never be drawn wider than it is tall.
+ *
+ * Nothing about the height is measured, but the shape is still the whole
+ * instruction. Capped short, the box came out wider than it was tall, which
+ * reads as a card lying down: the examiner turns the card to match it, and a
+ * card lying down is 85.6 mm against a 53.98 mm box, so it overhangs both
+ * sides and no amount of nudging can ever close the gap. The sentence saying
+ * "short edge across" does not win against the picture.
+ */
+const MIN_PORTRAIT_RATIO = 1.1;
 
 const randomDirection = (avoid?: Direction): Direction => {
   const pool = avoid ? DIRECTIONS.filter((d) => d !== avoid) : DIRECTIONS;
@@ -91,7 +100,7 @@ export default function Acuity() {
   // The outline may never be wider than the glass. A card edge that is off the
   // screen cannot be matched, and the scale it produces would still look like
   // a measurement in the record.
-  const { width: windowWidth } = useWindowDimensions();
+  const { width: windowWidth, height: windowHeight } = useWindowDimensions();
   const maxEdge = Math.max(120, Math.round(windowWidth - STAGE_BLEED));
   // Most phones land near 6 screen units per millimetre, so this opens close
   // to right and the examiner nudges from there rather than hunting.
@@ -105,6 +114,11 @@ export default function Acuity() {
 
   const edge = Math.min(cardEdge, maxEdge);
   const pxPerMm = pxPerMmFromCardShortEdge(edge);
+
+  const outlineHeight = Math.max(
+    edge * MIN_PORTRAIT_RATIO,
+    Math.min(edge * CARD_ASPECT, windowHeight - CHROME_H),
+  );
 
   function commit(all: Partial<Record<Eye, EyeResult>>) {
     update({
@@ -189,7 +203,7 @@ export default function Acuity() {
           <View
             style={[
               s.cardOutline,
-              { width: edge, height: Math.min(edge * CARD_ASPECT, OUTLINE_MAX_H) },
+              { width: edge, height: outlineHeight },
             ]}
           />
         </View>

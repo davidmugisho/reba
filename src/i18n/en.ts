@@ -84,7 +84,7 @@ export const en = {
 
     calibrateTitle: 'Match an ID card',
     calibrateLead:
-      'Stand a bank or ID card flat against the screen, short edge across, covering the blue box. It will hang past the bottom of the phone, which is fine. Press plus until blue shows on both sides of the card, then press minus until it just disappears.',
+      'Stand a card upright on the blue box. It will hang past the bottom of the phone, which is fine. Press plus until blue shows on both sides, then minus until it goes.',
     narrower: 'Narrower',
     wider: 'Wider',
     calibrateDone: 'The card matches',
