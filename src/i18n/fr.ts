@@ -74,7 +74,7 @@ export const fr: Strings = {
 
     calibrateTitle: "Ajustez à une carte d'identité",
     calibrateLead:
-      "Posez une carte bancaire ou d'identité debout contre l'écran, le petit côté en largeur, et ajustez jusqu'à ce que les deux bords coïncident avec le cadre. Seule la largeur compte : la carte est plus haute que le cadre.",
+      "Posez une carte bancaire ou d'identité debout contre l'écran, le petit côté en largeur, par-dessus le rectangle bleu. Appuyez sur + jusqu'à voir du bleu des deux côtés de la carte, puis sur − jusqu'à ce qu'il disparaisse tout juste. La carte est plus haute que le rectangle, c'est normal.",
     narrower: 'Plus étroit',
     wider: 'Plus large',
     calibrateDone: 'La carte correspond',

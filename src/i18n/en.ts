@@ -84,7 +84,7 @@ export const en = {
 
     calibrateTitle: 'Match an ID card',
     calibrateLead:
-      'Stand a bank or ID card against the screen, short edge across, and adjust until both sides line up with the outline. Only the width is matched, so the card is taller than the outline.',
+      'Stand a bank or ID card against the screen, short edge across, covering the blue box. Press plus until blue shows on both sides of the card, then press minus until it just disappears. The card is taller than the box, which is expected.',
     narrower: 'Narrower',
     wider: 'Wider',
     calibrateDone: 'The card matches',

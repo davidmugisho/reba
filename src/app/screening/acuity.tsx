@@ -68,12 +68,11 @@ const STAGE_BLEED = space.sm * 2;
 const NUDGE = 2;
 
 /**
- * How much of the standing card is drawn.
+ * How tall the box is drawn.
  *
- * At true scale the card is around 520 units tall, which is more than a phone
- * has to spare. Only the two sides are being matched, so the top of the card
- * is enough, and stopping well clear of the footer keeps the open bottom edge
- * reading as "this continues" rather than as a button that clipped it.
+ * Nothing about the height is measured. It only has to be tall enough that a
+ * sliver showing past the side of the card is easy to see, and short enough
+ * to stay clear of the footer.
  */
 const OUTLINE_MAX_H = 190;
 
@@ -182,10 +181,10 @@ export default function Acuity() {
           </Pressable>
         </View>
 
-        {/* The outline sits below the buttons and not above them. A card
-            standing against the glass covers everything under its top edge,
-            so controls placed beneath it can only be reached by taking the
-            card off the screen, which loses the alignment being made. */}
+        {/* The box sits below the buttons and not above them. A card standing
+            against the glass covers everything under its top edge, so controls
+            placed beneath it can only be reached by taking the card off the
+            screen, which loses the alignment being made. */}
         <View style={s.cardStage}>
           <View
             style={[
@@ -376,14 +375,15 @@ const s = StyleSheet.create({
     overflow: 'hidden',
   },
   cardOutline: {
-    borderWidth: 2.5,
-    borderColor: color.accent,
-    borderTopLeftRadius: radius.md,
-    borderTopRightRadius: radius.md,
-    backgroundColor: color.accentSoft,
-    // Left open: the bottom of the card is off the screen and the examiner
-    // is matching the two sides, not the corners.
-    borderBottomWidth: 0,
+    // Solid, not a tint. The card laid on top of this is opaque, so the only
+    // thing the examiner can judge is whether any of the box still shows past
+    // its edges. A pale fill cannot be seen in a sliver a millimetre wide,
+    // which left them guessing at the one measurement everything else scales
+    // from.
+    backgroundColor: color.accent,
+    borderWidth: 2,
+    borderColor: color.ink,
+    borderRadius: radius.md,
   },
   sizeRow: { flexDirection: 'row', alignItems: 'center', gap: space.md, justifyContent: 'center' },
   sizeBtn: {
