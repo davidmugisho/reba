@@ -1,0 +1,256 @@
+<!doctype html>
+<!--
+  What the presenter needs to understand before explaining Reba on stage.
+  Source of Reba-presenter-notes.pdf.
+
+  Written to be read slowly, in the hours before speaking. The reasoning is in
+  French because that is the language it needs to be understood in; the lines
+  in the blue boxes are English because that is the language they get said in.
+
+  To regenerate: open in a browser, print to PDF, A4, backgrounds on.
+-->
+<html lang="fr"><head><meta charset="utf-8"><title>Reba: notes du presentateur</title>
+<style>
+  @page { size: A4; margin: 18mm 17mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: #07203C;
+         font-size: 11pt; line-height: 1.55; }
+
+  h1 { font-size: 27pt; letter-spacing: -1pt; margin-bottom: 1mm; }
+  h1 .dot { color: #00A1DE; }
+  .sub { font-size: 12pt; color: #0E3A63; font-weight: 600; }
+  .meta { font-size: 9pt; color: #5B738C; margin-bottom: 8mm; }
+
+  h2 { font-size: 15pt; letter-spacing: -0.4pt; margin: 9mm 0 3mm;
+       padding-bottom: 1.5mm; border-bottom: 1.5pt solid #07203C; }
+  h3 { font-size: 12pt; margin: 6mm 0 2mm; color: #0E3A63; }
+  p { margin-bottom: 3mm; }
+  b { color: #07203C; }
+
+  ul { margin: 0 0 3mm 0; padding-left: 5mm; }
+  li { margin-bottom: 1.5mm; }
+
+  .say { background: #F2F9FD; border-left: 3.5pt solid #00A1DE;
+         padding: 4mm 5mm; margin: 4mm 0; page-break-inside: avoid; }
+  .say .who { font-size: 8.5pt; letter-spacing: 1.2pt; text-transform: uppercase;
+              color: #00A1DE; font-weight: 700; margin-bottom: 2.5mm; }
+  .say p { font-size: 11.5pt; line-height: 1.5; margin-bottom: 2.5mm; font-style: italic; }
+  .say p:last-child { margin-bottom: 0; }
+
+  .warn { background: #FDF3F2; border-left: 3.5pt solid #C0392B;
+          padding: 4mm 5mm; margin: 4mm 0; page-break-inside: avoid; }
+  .warn .who { font-size: 8.5pt; letter-spacing: 1.2pt; text-transform: uppercase;
+               color: #C0392B; font-weight: 700; margin-bottom: 2.5mm; }
+
+  table { width: 100%; border-collapse: collapse; margin: 3mm 0 4mm; font-size: 10.5pt; }
+  th { text-align: left; font-size: 8pt; letter-spacing: 0.8pt; text-transform: uppercase;
+       color: #5B738C; border-bottom: 1pt solid #D5E2ED; padding: 0 3mm 1.5mm 0; }
+  td { padding: 1.6mm 3mm 1.6mm 0; border-bottom: 0.4pt solid #E8EFF5; vertical-align: top; }
+  td.k { font-weight: 700; width: 52mm; }
+  td.n { font-variant-numeric: tabular-nums; text-align: right; width: 30mm; }
+
+  code { font-family: Menlo, Consolas, monospace; font-size: 10pt;
+         background: #F2F9FD; padding: 0.3mm 1mm; border-radius: 1mm; }
+  .formula { font-family: Menlo, Consolas, monospace; font-size: 11pt;
+             background: #07203C; color: #FFF; padding: 4mm 5mm;
+             border-radius: 2mm; margin: 3mm 0; }
+  .break { page-break-before: always; }
+  footer { margin-top: 9mm; padding-top: 2.5mm; border-top: 1pt solid #D5E2ED;
+           font-size: 9pt; color: #5B738C; }
+</style></head><body>
+
+<h1>Reba<span class="dot">.</span></h1>
+<p class="sub">Notes du presentateur</p>
+<p class="meta">Ce qu'il faut comprendre avant d'expliquer. Ceremonie de cloture STP'26.</p>
+
+<h2>1. Le langage, et l'absence de serveur</h2>
+
+<p>Un seul langage pour tout : <b>TypeScript</b>. Il n'y a pas de partie serveur,
+donc il n'y a pas de second langage.</p>
+
+<table>
+  <tr><th>Quoi</th><th>Avec quoi</th></tr>
+  <tr><td class="k">L'application</td><td>React Native + Expo, un seul code pour iOS et Android</td></tr>
+  <tr><td class="k">Le langage</td><td>TypeScript</td></tr>
+  <tr><td class="k">La navigation</td><td>expo-router</td></tr>
+  <tr><td class="k">Les dossiers patients</td><td>AsyncStorage, la memoire du telephone</td></tr>
+  <tr><td class="k">Les photos</td><td>expo-file-system, les fichiers du telephone</td></tr>
+  <tr><td class="k">L'appareil photo</td><td>expo-camera</td></tr>
+  <tr><td class="k">Lire les pixels d'une photo</td><td>expo-image-manipulator et jpeg-js</td></tr>
+</table>
+
+<p><b>Il n'y a aucun backend.</b> Ce n'est pas un manque, c'est la decision principale
+du projet. Pas de serveur, pas de compte, pas de synchronisation, pas d'analytics.
+Dans tout le code il existe <b>un seul appel reseau</b>, celui du chat EjoChat, et il
+est optionnel. Le depistage lui-meme ne touche jamais Internet.</p>
+
+<div class="say">
+  <p class="who">Si on demande "front and back ?"</p>
+  <p>There is no back end. Everything runs on the phone.</p>
+  <p>That is the point. A family agrees to a check on their child without agreeing
+  to anything leaving the room.</p>
+</div>
+
+<h2>2. Le calcul</h2>
+
+<h3>A. L'acuite visuelle</h3>
+
+<div class="formula">taille de la lettre (mm) = 8,73 &times; (distance / 6) &times; (denominateur / 6)</div>
+
+<p><b>D'ou vient 8,73 ?</b> Une lettre 6/6 doit occuper exactement <b>5 minutes
+d'arc</b> dans l'oeil. A 6 metres, cela fait 8,73 mm. C'est de la trigonometrie :
+<code>tan(5/60 degre) &times; 6000 mm = 8,73 mm</code>.</p>
+
+<p>A la distance de 3 metres utilisee par Reba :</p>
+
+<table>
+  <tr><th>Ligne</th><th>Taille reelle</th><th>Pixels a 6,04 px/mm</th></tr>
+  <tr><td class="k">6/60</td><td class="n">43,65 mm</td><td class="n">264</td></tr>
+  <tr><td class="k">6/18</td><td class="n">13,10 mm</td><td class="n">79</td></tr>
+  <tr><td class="k">6/12</td><td class="n">8,73 mm</td><td class="n">53</td></tr>
+  <tr><td class="k">6/6</td><td class="n">4,37 mm</td><td class="n">26</td></tr>
+</table>
+
+<h3>B. Le reflet rouge</h3>
+
+<div class="formula">rougeur = rouge / (rouge + vert + bleu)</div>
+
+<ul>
+  <li>Gris ou blanc neutre : <b>0,333</b></li>
+  <li>Reflet rouge sain : <b>environ 0,47</b></li>
+  <li>Pupille pale : <b>environ 0,38</b></li>
+</ul>
+
+<p>Mesure sur un <b>anneau</b> dans la pupille, entre 10 % et 28 % du cadre.
+L'anneau exclut le point de flash au centre, qui est blanc dans <b>tous</b> les
+yeux, meme sains. Le prendre en compte fausserait la mesure.</p>
+
+<p>Puis on compare les deux yeux : un ecart superieur a 0,08, ou un oeil sous
+0,42, declenche une alerte.</p>
+
+<h3>C. Le triage</h3>
+
+<ul>
+  <li>Pire oeil a 6/18 ou moins : <b>referer</b></li>
+  <li>Deux lignes d'ecart entre les deux yeux : <b>referer</b>, c'est l'amblyopie</li>
+  <li>Pire oeil a 6/12 : <b>surveiller</b></li>
+  <li>La photo ne peut que <b>monter</b> le niveau d'alerte, jamais le baisser</li>
+</ul>
+
+<div class="break"></div>
+
+<h2>3. Pourquoi la carte d'identite</h2>
+
+<p>C'est la question a savoir par coeur. C'est la partie la plus fine du projet.</p>
+
+<h3>Le probleme</h3>
+
+<p>L'acuite se definit par un <b>angle</b> : une lettre doit occuper exactement
+5 minutes d'arc dans l'oeil. L'angle depend de deux choses, la distance et la
+taille physique.</p>
+
+<p>La distance, tu la controles : trois metres, tu le dis a l'agent. La taille
+physique, l'application doit la dessiner : 43,65 mm exactement pour la plus
+grande lettre.</p>
+
+<p><b>Mais un telephone ne connait que des pixels. Il ne sait pas combien un
+pixel mesure.</b> Un telephone de 6 pouces en 1080p et un de 5 pouces en 720p
+n'ont pas du tout la meme densite. Et il n'existe aucun moyen fiable de demander
+au systeme combien de pixels font un millimetre : sur Android, les constructeurs
+declarent des valeurs fausses en permanence.</p>
+
+<h3>La solution</h3>
+
+<p>Utiliser un objet dont la taille est normalisee dans le monde entier.</p>
+
+<p><b>ISO/IEC 7810 ID-1.</b> Toute carte bancaire, toute carte d'identite, tout
+permis de conduire sur Terre mesure <b>85,60 &times; 53,98 mm</b>. Exactement.
+C'est une norme de fabrication, sinon les cartes n'entreraient pas dans les
+distributeurs automatiques.</p>
+
+<p>L'agent fait coincider un rectangle avec sa carte. L'application apprend
+alors que <code>324 pixels = 53,98 mm</code>, donc <b>6,00 pixels par
+millimetre</b>. A partir de la, elle peut dessiner n'importe quelle taille
+physique correctement.</p>
+
+<div class="warn">
+  <p class="who">Sans cette etape</p>
+  <p>Une lettre 6/12 sur ton telephone serait une lettre 6/20 sur un autre.
+  Le chiffre ne voudrait rien dire. Le test aurait l'air clinique et serait faux.</p>
+</div>
+
+<div class="say">
+  <p class="who">Ce que tu dis, ecran de la carte</p>
+  <p>This is the step that makes the test real.</p>
+  <p>A phone knows pixels. It does not know millimetres. So it cannot draw a
+  letter of a known physical size, and eye tests are all about physical size.</p>
+  <p>Every bank card and ID card in the world is exactly the same: eighty five
+  point six by fifty four millimetres. It is a manufacturing standard, so cards
+  fit in cash machines.</p>
+  <p>The worker matches the outline to the card. Now the phone knows how big a
+  millimetre is on this screen. Every letter after this is a true physical size,
+  not a guess.</p>
+</div>
+
+<div class="say">
+  <p class="who">Si on insiste : "why not ask the operating system ?"</p>
+  <p>Because Android manufacturers report it wrong. The card cannot lie.</p>
+</div>
+
+<h2>4. L'ecran du E, a trois metres</h2>
+
+<p>Le patient ne lit jamais et ne touche jamais le telephone. Il pointe. C'est ce
+qui fait que le test marche pour un enfant de trois ans comme pour un adulte qui
+ne sait pas lire.</p>
+
+<ul>
+  <li>Trois lettres par ligne. Chaque ligne reussie, la suivante est plus petite.</li>
+  <li>Deux erreurs sur une ligne terminent cet oeil.</li>
+  <li>Ce qui sort est une mesure : 6/12, 6/18. Un nombre, pas une impression.</li>
+</ul>
+
+<div class="say">
+  <p class="who">Ce que tu dis, ecran du E</p>
+  <p>The child stands three metres away, one eye covered.</p>
+  <p>A letter E appears, turned a random way. The child points which way the legs
+  face. The worker taps that arrow. The child never reads and never touches the
+  phone.</p>
+  <p>Three letters per line. Each line they get right, the next one is smaller.
+  Two mistakes ends that eye.</p>
+  <p>What comes out is a measurement. Six over twelve. Six over eighteen.
+  A number, not an impression.</p>
+</div>
+
+<h3>Deux details a avoir prets</h3>
+
+<div class="say">
+  <p class="who">Si on demande pourquoi un E dessine</p>
+  <p>The E is drawn from rectangles, not from a font. A font renders "E" at a
+  different fraction of the point size on every device, which would quietly make
+  the test wrong.</p>
+</div>
+
+<div class="say">
+  <p class="who">Sur l'honnetete de la mesure</p>
+  <p>If an eye was never measured, we store nothing. Never a number. An acuity
+  that was not taken must not be able to look like one that was.</p>
+</div>
+
+<h2>5. La phrase qui relie les deux ecrans</h2>
+
+<div class="say">
+  <p class="who">A dire si tu ne dois retenir qu'une chose</p>
+  <p>The card sets the scale. The distance is fixed at three metres. Size and
+  distance together are an angle, and an angle is what an eye test actually
+  measures.</p>
+</div>
+
+<p>Dis cette phrase, et toute personne dans la salle qui connait l'optique saura
+que tu comprends ton propre outil.</p>
+
+<footer>
+  Reba ne diagnostique pas. Il signale les yeux qu'une infirmiere ou un medecin
+  doit examiner. La decision leur revient toujours.
+</footer>
+
+</body></html>
