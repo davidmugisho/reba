@@ -74,7 +74,7 @@ export const fr: Strings = {
 
     calibrateTitle: "Ajustez à une carte d'identité",
     calibrateLead:
-      "Posez une carte debout sur le rectangle bleu. Elle dépassera en bas du téléphone, c'est normal. Appuyez sur + jusqu'à voir du bleu des deux côtés, puis sur − jusqu'à ce qu'il disparaisse.",
+      "Posez une carte bancaire debout sur le rectangle bleu. Préférez une carte bancaire : elles ont toutes exactement la même taille, alors qu'une carte d'identité ou une attestation peut varier. Elle dépassera en bas du téléphone, c'est normal. Appuyez sur + jusqu'à voir du bleu des deux côtés, puis sur − jusqu'à ce qu'il disparaisse.",
     narrower: 'Plus étroit',
     wider: 'Plus large',
     calibrateDone: 'La carte correspond',

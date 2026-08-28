@@ -23,7 +23,13 @@ export const PER_LINE = 3;
 export const MISSES_TO_STOP = 2;
 
 /**
- * ISO/IEC 7810 ID-1 — the shape of every bank and national ID card.
+ * ISO/IEC 7810 ID-1 — the shape of every bank card.
+ *
+ * A bank card cannot be the wrong size: it has to fit a cash machine and a
+ * payment terminal, so the standard is enforced by the hardware. National ID
+ * cards and driving licences usually follow it and sometimes do not, and a
+ * printed attestation standing in for a licence has no reason to. The copy
+ * asks for a bank card first for that reason.
  *
  * The SHORT edge is what we calibrate against, and that is not an aesthetic
  * choice. A phone screen is about 65 mm wide. The card's long edge is 85.6 mm.
